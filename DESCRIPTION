@@ -1,0 +1,48 @@
+Package: nestedmodels
+Title: Tidymodels for Nested/Panel Data
+Version: 0.0.0.9000
+Authors@R: 
+    person("Ashby", "Thorpe", , "ashbythorpe@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-3106-099X"))
+Description: The goal of 'nestedmodels' is to allow the modelling of
+    nested data. Some models only accept certain predictors. For panel
+    data, it is often desirable to create a model for each panel.
+    'nestedmodels' enhances the 'tidymodels' set of packages by allowing
+    the user to classify a model or workflow as 'nested'.
+License: MIT + file LICENSE
+URL: https://github.com/ashbythorpe/nestedmodels
+BugReports: https://github.com/ashbythorpe/nestedmodels/issues
+Imports: 
+    butcher,
+    cli,
+    dplyr,
+    finetune,
+    foreach,
+    generics,
+    ggplot2,
+    glue,
+    gridExtra,
+    lifecycle,
+    magrittr,
+    methods,
+    purrr,
+    rlang (>= 0.4.11),
+    tibble,
+    tidyr,
+    withr,
+    workflowsets
+Suggests: 
+    glmnet,
+    knitr,
+    rmarkdown,
+    roxygen2,
+    stacks,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1
+Depends: 
+    R (>= 2.10)
+LazyData: true
+VignetteBuilder: knitr

@@ -1,0 +1,72 @@
+---
+title: "tune-nestedmodels"
+description: "Learn how to tune the hyperparameters of nested models"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{tune-nestedmodels}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette provides an introduction to hyperparameter tuning with nestedmodels. It is assumed that you are familiar with the basics of nestedmodels, and that you are familiar with using the '[tune](https://tune.tidymodels.org)' package to perform hyperparameter tuning, and the '[rsample](https://rsample.tidymodels.org)' package to create resamples.
+
+```{r setup include = FALSE}
+library(nestedmodels)
+library(tidymodels)
+library(gapminder)
+library(finetune)
+```
+
+This vignette uses the 'gapminder' dataset. This is a good example of panel data, and one that was described and modelled in [R for Data Science](https://r4ds.had.co.nz/many-models.html#gapminder).
+
+```{r gapminder}
+gapminder
+```
+
+The aim is to try to predict the life expectancy given a set of numeric predictors, for each country.
+
+```{r nest}
+gapminder %>%
+  nest(data = -c(country, continent))
+```
+
+First, we're going to have to create an initial split.
+
+```{r split}
+split <- nested_resamples()
+```
+
+
+We're going to once again use a linear model, but this time we want to find the optimum values for the 'penalty' and 'mixture' hyperparameters.
+
+```{r model}
+model <- linear_reg(
+  penalty = tune(), 
+  mixture = tune()
+) %>%
+  set_engine("glmnet")
+```
+
+The recipe used is pretty simple: no preprocessing is needed apart from to nest the data.
+
+```{r recipe}
+recipe <- recipe(gapminder) %>%
+  step_nest(-c(country, continent))
+```
+
+Finally, we create the workflow.
+
+```{r}
+wf <- nested_workflow() %>%
+  add_model(model) %>%
+  add_recipe(recipe)
+```
+
+

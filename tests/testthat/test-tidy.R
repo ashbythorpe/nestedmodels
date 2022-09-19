@@ -1,0 +1,11 @@
+test_that("general tests", {
+  tidied_recipe <- tidy(recipe)
+  expect_equal(nrow(tidied_recipe), 2)
+  expect_equal(tidied_recipe$type[2], "nest")
+  tuned_augmented <- suppressWarnings(augment(tuned_1))
+  expect_equal(nrow(tuned_1), nrow(data))
+  tidy(fitted)
+  augment(fitted, data)
+  expect_equal(nrow(glance(fitted)), 1)
+  expect_equal(nrow(predict(fitted, data)), nrow(data))
+})
