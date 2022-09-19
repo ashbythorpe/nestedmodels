@@ -49,9 +49,11 @@ fit.nested_model <- function(object, formula, data, case_weights = NULL,
   fits <- purrr::map(nested_data$data, fit, object = model,
                      formula = formula, case_weights = case_weights, 
                      control = control, ...)
-
+  
+  cols <- colnames(purrr::compact(nested_data$data)[[1]])
+  
   nested_data %>%
     dplyr::select(-.data$data) %>%
     dplyr::mutate(.model_fit = .env$fits) %>%
-    new_nested_model_fit(spec = model)
+    new_nested_model_fit(spec = model, inner_names = cols)
 }

@@ -7,8 +7,8 @@
 #' @param ... Passed on to [structure()]
 #'
 #' @noRd
-new_nested_model_fit <- function(fit, spec, ...) {
-  list(spec = spec, fit = fit) %>%
+new_nested_model_fit <- function(fit, spec, inner_names, ...) {
+  list(spec = spec, fit = fit, inner_names = inner_names) %>%
     structure(class = "nested_model_fit", ...)
 }
 

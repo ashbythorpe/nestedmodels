@@ -2,36 +2,15 @@
 % Please edit documentation in R/tidy.R
 \name{tidy.nested_model_fit}
 \alias{tidy.nested_model_fit}
-\alias{tidy.nested_workflow_fit}
-\alias{augment.nested_model_fit}
-\alias{augment.nested_workflow_fit}
 \alias{glance.nested_model_fit}
 \alias{glance.nested_workflow_fit}
-\alias{tidy.nested_resamples}
-\alias{augment.nested_tune_results}
-\alias{augment.nested_resample_results}
-\alias{augment.nested_last_fit}
 \title{Tidy, augment and glance methods for nested objects}
 \usage{
 \method{tidy}{nested_model_fit}(x, ...)
 
-\method{tidy}{nested_workflow_fit}(x, ...)
-
-\method{augment}{nested_model_fit}(object, new_data, ...)
-
-\method{augment}{nested_workflow_fit}(object, new_data, ...)
-
 \method{glance}{nested_model_fit}(x, ...)
 
 \method{glance}{nested_workflow_fit}(x, ...)
-
-\method{tidy}{nested_resamples}(x, ...)
-
-\method{augment}{nested_tune_results}(x, parameters = NULL, ...)
-
-\method{augment}{nested_resample_results}(x, ...)
-
-\method{augment}{nested_last_fit}(x, ...)
 }
 \arguments{
 \item{x}{The object to be converted into a tidy \code{\link[tibble:tibble]{tibble::tibble()}}.}

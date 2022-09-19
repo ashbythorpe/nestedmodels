@@ -32,10 +32,12 @@ fit_xy.nested_model <- function(object, x, y, case_weights = NULL,
                       object = model, case_weights = case_weights,
                       control = control, ...)
   
+  cols <- colnames(purrr::compact(nested_data$data)[[1]])
+  
   nested_x %>%
     dplyr::select(-.data$data) %>%
     dplyr::mutate(.model_fit = .env$fits) %>%
-    new_nested_model_fit(spec = model)
+    new_nested_model_fit(spec = model, inner_names = cols)
 }
 
 pass_down_args <- function(inner, outer) {

@@ -33,7 +33,6 @@
 #' tidy(resamples)
 #'
 #' @importFrom generics tidy
-#' @importFrom generics augment
 #' @importFrom generics glance
 #' 
 #' @export
@@ -46,40 +45,6 @@ tidy.nested_model_fit <- function(x, ...) {
 
 #' @rdname tidy.nested_model_fit
 #' @export
-tidy.nested_workflow_fit <- function(x, ...) {
-  purrr::map(x, broom::tidy, ...) %>%
-    bind_rows_with_nest_id()
-}
-
-#' @rdname tidy.nested_model_fit
-#' @export
-augment.nested_model_fit <- function(object, new_data, ...) {
-  if (is.null(new_data$data) | purrr::none(new_data$data, is.data.frame)) {
-    cli::cli_abort(c(
-      "{.arg data} must be nested.",
-      "i" = "Try using {.fun step_nest}."
-    ))
-  }
-  purrr::map2(object, new_data$data, augment, ...) %>%
-    dplyr::bind_rows()
-}
-
-#' @rdname tidy.nested_model_fit
-#' @export
-augment.nested_workflow_fit <- function(object, new_data, ...) {
-  nested_recipe <- attr(object, "nested_recipe")
-  nested_data <- apply_nested_recipe(new_data, nested_recipe)
-
-  augment_list <- purrr::map2(object, nested_data$data, augment, ...)
-  if (length(augment_list) == 1) {
-    augment_list[[1]]
-  } else {
-    purrr::reduce(augment_list, bind_rows)
-  }
-}
-
-#' @rdname tidy.nested_model_fit
-#' @export
 glance.nested_model_fit <- function(x, ...) {
   purrr::map(x, glance) %>%
     purrr::pmap(combine_nested_rows) %>%
@@ -88,41 +53,8 @@ glance.nested_model_fit <- function(x, ...) {
 
 #' @rdname tidy.nested_model_fit
 #' @export
-glance.nested_workflow_fit <- function(x, ...) {
-  purrr::map(x, glance) %>%
-    purrr::pmap(combine_nested_rows) %>%
-    tibble::as_tibble()
-}
-
-#' @rdname tidy.nested_model_fit
-#' @export
-tidy.nested_resamples <- function(x, ...) {
-  purrr::map(x, tidy, ...) %>%
-    bind_rows_with_nest_id()
-}
-
-#' @rdname tidy.nested_model_fit
-#' @export
-augment.nested_tune_results <- function(x, parameters = NULL, ...) {
-  purrr::map(listify_tuned_nested(x), NextMethod,
-    generic = "augment",
-    parameters = parameters, ...
-  ) %>%
-    dplyr::bind_rows()
-}
-
-#' @rdname tidy.nested_model_fit
-#' @export
-augment.nested_resample_results <- function(x, ...) {
-  purrr::map(listify_tuned_nested(x), NextMethod, generic = "augment", ...) %>%
-    dplyr::bind_rows()
-}
-
-#' @rdname tidy.nested_model_fit
-#' @export
-augment.nested_last_fit <- function(x, ...) {
-  purrr::map(listify_tuned_nested(x), NextMethod, generic = "augment", ...) %>%
-    dplyr::bind_rows()
+glance.nested_model_fit <- function(x, ...) {
+  
 }
 
 combine_nested_rows <- function(...) {

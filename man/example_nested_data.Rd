@@ -5,10 +5,15 @@
 \alias{example_nested_data}
 \title{Example nested data}
 \format{
-A tibble with 100 rows and 4 variables
+A tibble with 2500 rows and 7 variables
 \describe{
-\item{id}{the ID, either 1 or 2}
-\item{x, y, z}{the columns to nest}
+\item{id}{A column that can be nested, ranging from 1 to 50.}
+\item{id2}{Another column that can be nested, ranging from 1 to 100.}
+\item{x}{A numeric column that depends on 'id'.}
+\item{y}{A sequential numeric column, independent of the other columns.}
+\item{z}{A column dependent on id, id2, x and y.}
+\item{a}{A randomly generated numeric column, ranging from 1 to 100.}
+\item{b}{A randomly generated numeric column, centred around 50.}
 }
 }
 \usage{

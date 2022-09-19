@@ -8,8 +8,7 @@ nested_resamples(
   data,
   resamples,
   nesting_method = NULL,
-  size_action = c("truncate", "recycle", "recycle-random", "combine", "combine-end",
-    "combine-random", "error"),
+  size_action = c("truncate", "combine", "combine-random", "recycle", "error"),
   ...
 )
 }

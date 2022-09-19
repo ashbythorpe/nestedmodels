@@ -1,5 +1,8 @@
 make_nested_model <- function() {
-  #parsnip::set_new_model("nested_model")
+  current <- parsnip::get_model_env()
+  if(!"nested_model" %in% current$models) {
+    parsnip::set_new_model("nested_model")
+  }
   
   parsnip::set_model_mode(model = "nested_model", mode = "classification")
   parsnip::set_model_mode(model = "nested_model", mode = "regression")
