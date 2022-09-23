@@ -1,3 +1,4 @@
+# nocov start
 make_nested_model <- function() {
   current <- parsnip::get_model_env()
   if(!"nested_model" %in% current$models) {
@@ -23,3 +24,4 @@ make_nested_model <- function() {
   )
   
 }
+# nocov end

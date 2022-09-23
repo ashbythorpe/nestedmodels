@@ -25,6 +25,7 @@ Imports:
     lifecycle,
     magrittr,
     methods,
+    pillar,
     purrr,
     rlang (>= 0.4.11),
     tibble,

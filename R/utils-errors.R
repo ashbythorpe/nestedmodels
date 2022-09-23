@@ -40,3 +40,17 @@ test_logical_arg <- function(x, call = rlang::caller_env()) {
     stop_bad_length(name, 1, length(x), call = call)
   }
 }
+
+warn_ambiguous_column <- function(name) {
+  cli::cli_warn(c(
+    "Ambiguous column to unnest in {.arg new_data}.",
+    "Using column {.val {name}}."
+  ))
+}
+
+stop_not_nested <- function(call = rlang::caller_env()) {
+  cli::cli_abort(c(
+    "{.arg new_data} is not nested.",
+    "i" = "Try manually nesting the data with {.fun tidyr::nest}."
+  ), call = call, class = "not_nested")
+}

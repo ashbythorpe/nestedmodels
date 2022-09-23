@@ -44,85 +44,66 @@ predict.nested_model_fit <- function(object, new_data, type = NULL,
   order_name <- get_name(".order", colnames(new_data))
   pred_name <- get_name(".pred", colnames(new_data))
   
-  if("nest_id" %in% colnames(data)) {
-    format_data <- new_data %>%
-      dplyr::mutate(!!order_name := 1:nrow(new_data)) %>%
-      dplyr::arrange(.data$nest_id)
-    
-    nested_data <-
-      tidyr::nest(new_data, data = -.data$nest_id)
-    
-    model_map <- dplyr::left_join(nested_data, fit, by = "nest_id")
-  } else {
-    names <- colnames(fit)[-ncol(fit)]
-    
-    if(all(!names %in% colnames(new_data))) {
-      cli::cli_abort(c(
-        "None of the columns used to nest the training set exist in 
+  outer_names <- colnames(fit)[-ncol(fit)]
+  inner_names <- object$inner_names
+  
+  if(all(!outer_names %in% colnames(new_data))) {
+    cli::cli_abort(c(
+      "None of the columns used to nest the training set exist in 
         {.arg new_data}."
-      ))
-    } else if(any(!names %in% colnames(new_data))) {
-      cli::cli_warn(c(
-        "Some of the columns used to nest the training set don't exist in
+    ))
+  } else if(any(!outer_names %in% colnames(new_data))) {
+    cli::cli_warn(c(
+      "Some of the columns used to nest the training set don't exist in
         {.arg new_data}."
-      ))
-      names <- names[names %in% colnames(new_data)]
-      fit <- fit[,c(names, ".model_fit")] %>%
-        tidyr::chop(.model_fit)
-    }
-    
-    if("data" %in% colnames(new_data) && 
-       purrr::every(new_data$data, is.data.frame)) {
-      format_data <- new_data %>%
-        dplyr::mutate(!!order_name := 1:nrow(.env$new_data)) %>%
-        dplyr::arrange(.data$data)
-      
-      nested_data <- tidyr::nest(new_data, data = -.data$data)
-    } else {
-      format_data <- new_data %>%
-        dplyr::mutate(!!order_name := 1:nrow(.env$new_data)) %>%
-        dplyr::arrange(!!!rlang::syms(names))
-      
-      nested_data <- new_data %>%
-        tidyr::nest(data = -c(!!!rlang::syms(names)))
-    }
-    
-    model_map <- dplyr::left_join(nested_data, fit, by = names)
+    ))
+    outer_names <- outer_names[outer_names %in% colnames(new_data)]
+    fit <- fit[,c(outer_names, ".model_fit")] %>%
+      tidyr::chop(.model_fit)
   }
   
-  predictions <- purrr::map2(model_map$.model_fit, model_map$data, 
+  data_nest <- nest_data(new_data, inner_names, outer_names)
+  nested_data <- data_nest$nested_data
+  unnested_data <- data_nest$unnested_data
+  nested_column <- data_nest$column
+  order <- data_nest$order
+  
+  model_map <- dplyr::left_join(nested_data, fit, by = outer_names)
+  
+  pred <- purrr::map2(model_map$.model_fit, model_map$data, 
                              predict_nested,
                              type = type, opts = opts, ...)
   
-  invalid_predictions <- purrr::map_lgl(predictions, is.null)
-  predictions_format <- predictions[[which(!invalid_predictions)[1]]]
-  format_names <- colnames(predictions_format)
+  predictions <- fix_predictions(pred)
   
-  if(all(invalid_predictions)) {
-    cli::cli_abort(c(
-      "All of the predictions failed."
-    ))
-  } else if(any(invalid_predictions)) {
+  if(is.data.frame(predictions[[1]])) {
+    dplyr::bind_rows(predictions)[order,]
+  } else if(is.vector(predictions[[1]])) {
+    vctrs::vec_c(!!!predictions)[order,]
+    # Switch to purrr::list_c() when that releases
+  } else {
     cli::cli_warn(c(
-      "Some predictions failed."
+      "Prediction format not recognised. Returning list of results."
     ))
-    predictions[invalid_predictions] <- 
-      purrr::map(model_map$data[invalid_predictions],
-                 fix_predictions, names = format_names)
+    predictions
   }
-  
-  dplyr::bind_cols(format_data, dplyr::bind_rows(predictions)) %>%
-    dplyr::arrange(.data[[order_name]]) %>%
-    dplyr::select(tidyselect::all_of(format_names))
 }
-
 
 predict_nested <- function(model, data, ...) {
   if(!is.list(model) && is.na(model)) {
     NULL
   } else if(rlang::is_bare_list(model)) {
-    predictions <- purrr::map(model, predict_nested, data = data, ...)
-    combine_predictions(purrr::compact(predictions))
+    predictions <- purrr::map(model, predict_nested, data = data, ...) %>%
+      purrr::compact()
+    if(length(predictions) == 0) {
+      return(NULL)
+    } else if (is.data.frame(predictions[[1]])) {
+      combine_predictions(predictions)
+    } else if(is.vector(predictions[[1]])){
+      combine_vector_predictions(predictions)
+    } else {
+      list[[1]]
+    }
   } else {
     safe_predict(model, data, ...)
   }
@@ -131,6 +112,8 @@ predict_nested <- function(model, data, ...) {
 combine_predictions <- function(list) {
   if(length(list) == 0) {
     NULL
+  } else if(length(list) == 1) {
+    list[[1]]
   } else {
     names <- colnames(list[[1]])
     purrr::pmap(list, combine_predictions_row) %>%
@@ -140,52 +123,47 @@ combine_predictions <- function(list) {
 }
 
 combine_predictions_row <- function(...) {
-  data.frame(...) %>%
-    rowMeans()
+  rowMeans(data.frame(...))
 }
 
-safe_predict <- function() {}
+fix_predictions <- function(pred) {
+  invalid_predictions <- purrr::map_lgl(pred, is.null)
+  predictions_format <- pred[[which(!invalid_predictions)[1]]]
+  
+  if(all(invalid_predictions)) {
+    cli::cli_abort(c(
+      "All of the predictions failed."
+    ))
+  } else if(any(invalid_predictions)) {
+    cli::cli_warn(c(
+      "Some predictions failed."
+    ))
+    if(is.data.frame(predictions_format)) {
+      format_names <- colnames(predictions_format)
+      pred[invalid_predictions] <- 
+        purrr::map(model_map$data[invalid_predictions],
+                   fix_df_predictions, names = format_names)
+    } else if(is.vector(predictions_format)) {
+      pred[invalid_predictions] <-
+        purrr::map(model_map$data[invalid_predictions],
+                   fix_vector_predictions)
+    }
+  }
+}
 
-fix_predictions <- function(data, names) {
+fix_df_predictions <- function(data, names) {
   purrr::map(names, ~ {rep(NA, nrow(data))}) %>%
     purrr::set_names(names) %>%
     tibble::as_tibble()
 }
 
-# predict.nested_workflow_fit <- function(object, new_data,
-#                                             type = NULL,
-#                                             opts = list(), ...) {
-#   nested_recipe <- attr(object, "nested_recipe")
-# 
-#   if (!inherits(nested_recipe, "recipe")) {
-#     rlang::abort("The 'nested_recipe' attribute of `object` must be a recipe")
-#   }
-# 
-#   nested_data <- apply_nested_recipe(new_data, nested_recipe)
-# 
-#   # the predictions are made on each nested data set
-#   purrr::map2(
-#     object, nested_data$data,
-#     predict, type, opts, ...
-#   ) %>%
-#     dplyr::bind_rows()
-# }
-# 
-# predict.nested_model_fit <- function(object, new_data,
-#                                          type = NULL, opts = list(),
-#                                          ...) {
-#   # the predictions are made on each data set
-#   purrr::map2(
-#     object, new_data$data,
-#     predict, type, opts, ...
-#   ) %>%
-#     dplyr::bind_rows()
-# }
-
-nest_data_with_model <- function(data, model) {
-  names <- colnames(model)[-ncol(model)]
-  
-  if(all(!names %in% data)) {
-    cli::cli_abort("")
-  }
+combine_vector_predictions <- function(list) {
+  rowMeans(as.data.frame(list))
 }
+
+fix_vector_predictions <- function(data) {
+  rep(NA, nrow(data))
+}
+
+
+safe_predict <- function() {} # nocov

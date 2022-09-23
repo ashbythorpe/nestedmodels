@@ -2,15 +2,19 @@
 % Please edit documentation in R/nested.R
 \name{nested}
 \alias{nested}
+\alias{nested.default}
 \alias{nested.model_spec}
 \alias{nested.nested_model}
 \alias{nested.workflow}
 \alias{is_nested}
+\alias{is_nested.default}
 \alias{is_nested.model_spec}
 \alias{is_nested.workflow}
 \title{Create a Nested Model}
 \usage{
 nested(x, ...)
+
+\method{nested}{default}(x, ...)
 
 \method{nested}{model_spec}(x, ...)
 
@@ -20,14 +24,16 @@ nested(x, ...)
 
 is_nested(x, ...)
 
+\method{is_nested}{default}(x, ...)
+
 \method{is_nested}{model_spec}(x, ...)
 
 \method{is_nested}{workflow}(x, ...)
 }
 \arguments{
-\item{x}{A model specification or workflow}
+\item{x}{A model specification or workflow.}
 
-\item{...}{Not used}
+\item{...}{Not currently used.}
 }
 \value{
 A nested model object, or a workflow containing a nested model.

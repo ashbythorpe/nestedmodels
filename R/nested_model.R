@@ -19,10 +19,12 @@ nested_model <- function(mode, model_spec) {
   )
 }
 
+#' @importFrom generics tunable
+#' 
 #' @export
 tunable.nested_model <- function(x, ...) {
   spec <- x$eng_args$model_spec[[1]]
-  res <- tunable(spec)
+  res <- tunable(spec, ...)
   res$component <- "nested_model"
   res
 }
@@ -34,6 +36,20 @@ update.nested_model <- function(object, ...) {
   spec <- object$eng_args$model_spec[[1]]
   updated_spec <- update(spec, ...)
   nested(updated_spec)
+}
+
+#' @importFrom parsnip translate
+#' 
+#' @export
+translate.nested_model <- function(x, ...) {
+  translate(x$eng_args$model_spec[[1]])
+}
+
+#' @importFrom generics required_pkgs
+#' 
+#' @export
+required_pkgs.nested_model <- function(x, ...) {
+  c("nestedmodels", required_pkgs(x$eng_args$model_spec[[1]], ...))
 }
 
 #' @export

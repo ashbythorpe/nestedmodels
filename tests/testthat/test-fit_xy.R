@@ -6,7 +6,7 @@ simple_model <- parsnip::linear_reg() %>%
   nested()
 
 recipe <- recipes::recipe(example_nested_data, z ~ .) %>%
-  step_nest(id)
+  step_nest(id, id2)
 
 simple_wf <- workflows::workflow() %>%
   workflows::add_model(simple_model) %>%
@@ -30,8 +30,6 @@ model2 <- parsnip::svm_rbf(
 wf <- workflows::workflow() %>%
   workflows::add_model(model) %>%
   workflows::add_recipe(recipe)
-
-fit(wf, example_nested_data)
 
 wfset <- workflowsets::workflow_set(list(recipe), list(model, model2))
 
@@ -67,6 +65,12 @@ nested_data <- example_nested_data %>%
 
 model_fit <- fit(simple_model, z ~ ., nested_data)
 
+print(model_fit)
+
+tidy()
+
+class(model_fit$fit)
+
 predict(model_fit, example_nested_data)
 
 augment(model_fit, example_nested_data)
@@ -75,8 +79,10 @@ wf_fit <- fit(simple_wf, example_nested_data)
 
 predict(wf_fit, example_nested_data)
 
+augment(wf_fit, example_nested_data)
+
 resamples <- nested_resamples(
-  example_nested_data %>% tidyr::nest(data = -id), 
+  example_nested_data %>% dplyr::group_by(id), 
   rsample::vfold_cv()
 )
 
@@ -95,3 +101,5 @@ final_wf
 fit <- fit(final_wf, example_nested_data)
 
 predict(fit, example_nested_data)
+
+

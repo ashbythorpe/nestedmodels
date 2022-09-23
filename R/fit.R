@@ -44,7 +44,7 @@ fit.nested_model <- function(object, formula, data, case_weights = NULL,
     model <- pass_down_args(model, object)
   }
   
-  nested_data <- nest_data(data)
+  nested_data <- nest_data_method(data)
 
   fits <- purrr::map(nested_data$data, fit, object = model,
                      formula = formula, case_weights = case_weights, 

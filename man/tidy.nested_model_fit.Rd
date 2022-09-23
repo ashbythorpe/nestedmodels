@@ -3,23 +3,20 @@
 \name{tidy.nested_model_fit}
 \alias{tidy.nested_model_fit}
 \alias{glance.nested_model_fit}
-\alias{glance.nested_workflow_fit}
 \title{Tidy, augment and glance methods for nested objects}
 \usage{
 \method{tidy}{nested_model_fit}(x, ...)
 
 \method{glance}{nested_model_fit}(x, ...)
-
-\method{glance}{nested_workflow_fit}(x, ...)
 }
 \arguments{
 \item{x}{The object to be converted into a tidy \code{\link[tibble:tibble]{tibble::tibble()}}.}
 
 \item{...}{Additional arguments passed into their respective functions.
-(e.g. for \code{tidy.nested_rset()}, \code{\link[rsample:tidy.rsplit]{rsample::tidy.rset()}}).}
+(e.g. for \code{tidy.nested_model_fit()}, \code{\link[parsnip:tidy.model_fit]{parsnip::tidy.model_fit()}}).}
 }
 \value{
-A \code{\link[tibble:tibble]{tibble::tibble()}}. For \code{glance()}, the tibble will have 1 row.
+A \code{\link[tibble:tibble]{tibble::tibble()}}. With \code{glance()}, the tibble will have 1 row.
 }
 \description{
 These methods allow the usage of \code{broom} functions on nested objects.
@@ -38,7 +35,7 @@ single row. Specifically:
 \itemize{
 \item If a column contains 1 unique value, that value is used.
 \item If a column is numeric, the mean will be calculated.
-\item Otherwise, the results will be combined into a list
+\item Otherwise, the results will be combined into a list.
 }
 
 This may not give you the most useful of results.

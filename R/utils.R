@@ -82,6 +82,12 @@ remove_class <- function(object, class) {
   object
 }
 
+#' @noRd
+as_ordered_factor <- function(x) {
+  forcats::as_factor(x) %>%
+    forcats::fct_inorder()
+}
+
 # copied from the rlang package
 #' @noRd
 `%||%` <- function(x, y) {

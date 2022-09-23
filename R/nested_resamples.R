@@ -64,7 +64,7 @@ nested_resamples <- function(data, resamples, nesting_method = NULL,
   
   resamples <- get_resamples(quo, cl)
   
-  nested_data <- nest_data(data, nesting_method)
+  nested_data <- nest_data_method(data, nesting_method)
   
   colname <- get_colname(data, nesting_method)
   
@@ -72,9 +72,9 @@ nested_resamples <- function(data, resamples, nesting_method = NULL,
   
   unnested_data <- tidyr::unnest(nested_data, dplyr::all_of(nested_colname))
   
-  actual_resamples <- create_resamples(nested_data[[nested_colname]], 
-                                       unnested_data, resamples, size_action,
-                                       env, ...)
+  create_resamples(nested_data[[nested_colname]], 
+                   unnested_data, resamples, size_action,
+                   env, ...)
 }
 
 get_resamples <- function(quo, call) {
@@ -97,33 +97,33 @@ get_resamples <- function(quo, call) {
 
 create_resamples <- function(x, data, resamples, action, env, ...) {
   actual_resamples <- purrr::map(x, eval_resamples, resamples, env, ...)
-  if(!is.data.frame(actual_resamples[[1]])) {
-    combine_rsets(actual_resamples, x = x)
+  if(inherits(actual_resamples[[1]], "nested_cv")) {
+    combine_nested_cv(actual_resamples, data = data, x = x, action = action)
+  } else if(!is.data.frame(actual_resamples[[1]])) {
+    combine_rsets(actual_resamples, data = data, x = x, format = actual_resamples[[1]])
   } else {
-    match_sizes(actual_resamples, action)
-    combine_resamples(resamples)
+    res <- match_sizes(actual_resamples, action)
+    format <- res[[1]][[res[[2]]]]
+    purrr::map(res[[1]], "splits") %>%
+      purrr::pmap( ~ {combine_rsets(list(...), data = data, x = x)}) %>%
+      new_nested_rset(format = format)
   }
 }
-
-c("truncate", "combine", "combine-end",
-  "combine-random", "recycle", 
-  "recycle-random",
-  "error")
 
 match_sizes <- function(actual_resamples, method) {
   l <- purrr::map_int(actual_resamples, nrow)
   if(method == "truncate") {
-    purrr::map(actual_resamples, res_truncate, min(l))
+    list(purrr::map(actual_resamples, res_truncate, min(l)), which.min(l))
   } else if(method == "combine") {
-    purrr::map(actual_resamples, res_combine, min(l))
+    list(purrr::map(actual_resamples, res_combine, min(l)), which.min(l))
   } else if(method == "combine-end") {
-    purrr::map(actual_resamples, res_combine_end, min(l))
+    list(purrr::map(actual_resamples, res_combine_end, min(l)), which.min(l))
   } else if(method == "combine-random") {
-    purrr::map(actual_resamples, res_combine_random, min(l))
+    list(purrr::map(actual_resamples, res_combine_random, min(l)), which.min(l))
   } else if(method == "recycle") {
-    purrr::map(actual_resamples, res_recycle, max(l))
+    list(purrr::map(actual_resamples, res_recycle, max(l)), which.max(l))
   } else if(method == "recycle-random") {
-    purrr::map(actual_resamples, res_recycle_random, max(l))
+    list(purrr::map(actual_resamples, res_recycle_random, max(l)), which.max(l))
   } else {
     cli::cli_abort(c(
       "{.arg resamples} produced different numbers of resamples."
@@ -131,149 +131,10 @@ match_sizes <- function(actual_resamples, method) {
   }
 }
 
-res_truncate <- function(res, len) {
-  if(nrow(res) == len) {
-    return(res)
-  }
-  preserve_attributes(res[1:len,], res)
-}
-
-res_combine <- function(res, len) {
-  if(nrow(res) == len) {
-    return(res)
-  }
-  res_len <- nrow(res)
-  combine_with <- rep(seq_len(len), length.out = res_len - len)
-  combine_indexes <- purrr::map(seq_len(len), 
-                                ~ which(combine_with == .) + len) %>%
-    purrr::flatten_int()
-  to_combine <- purrr::map2(seq_len(len), combine_indexes, ~ {
-    res$splits[c(.x, .y)]
-  })
-  
-  lres <- res_truncate(res, len)
-  print(x)
-  lres$splits <- purrr::map(to_combine, combine_same_rsets)
-  lres
-}
-
-res_combine_end <- function(res, len) {
-  if(nrow(res) == len) {
-    return(res)
-  }
-  
-  res_len <- nrow(res)
-  combine_indexes <- (len+1L):res_len
-  to_combine <- res$splits[combine_indexes]
-  
-  lres <- res_truncate(res, len)
-  lres$splits[[len]] <- combine_same_rsets(to_combine)
-  lres
-}
-
-res_combine_random <- function(res, len) {
-  if(nrow(res) == len) {
-    return(res)
-  }
-  
-  res_len <- nrow(res)
-  combine_with <- c(
-    safe_sample(rep(seq_len(len), res_len %/% (len - 1L))),
-    safe_sample(seq_len(len)[seq_len(res_len %% len)])
-  )
-  combine_indexes <- purrr::map(seq_len(len), 
-                                ~ which(combine_with == .) + len) %>%
-    purrr::flatten_int()
-  to_combine <- purrr::map2(seq_len(len), combine_indexes, ~ {
-    res$splits[c(.x, .y)]
-  })
-  
-  lres <- res_truncate(res, len)
-  lres$splits <- purrr::map(to_combine, combine_same_rsets)
-  lres
-}
-
-res_recycle <- function(res, len) {
-  if(nrow(res) == len) {
-    return(res)
-  }
-  
-  res_len <- nrow(res)
-  copy_of <- rep(seq_len(res_len), length.out <- len-res_len)
-  copy_indexes <- purrr::map(seq_len(res_len), 
-                             ~ which(copy_of == .) + res_len) %>%
-    purrr::flatten_int()
-  to_copy <- purrr::map(copy_indexes, ~ {
-    res$splits[.]
-  })
-  
-  lres <- res_extend(res, len)
-  lres$splits[res_len + 1,] <- to_copy
-  lres
-}
-
-res_recycle_random <- function(res, len) {
-  if(nrow(res) == len) {
-    return(res)
-  }
-  
-  res_len <- nrow(res)
-  copy_of <- c(
-    safe_sample(rep(seq_len(res_len), len %/% (res_len - 1L))),
-    safe_sample(seq_len(res_len)[seq_len(len %% res_len)])
-  )
-  copy_indexes <- purrr::map(seq_len(res_len), 
-                             ~ which(copy_of == .) + res_len) %>%
-    purrr::flatten_int()
-  to_copy <- purrr::map(copy_indexes, ~ {
-    res$splits[.]
-  })
-  
-  lres <- res_extend(res, len)
-  lres$splits[res_len + 1,] <- to_copy
-  lres
-}
-
-res_extend <- function(res, len) {
-  extended_res <- tibble::add_row(splits = rep(NA, len - nrow(res)))
-  id_prefix <- stringr::str_extract(res$id[1], "^[:alpha:]+")
-  extended_res$id <- recipes::names0(len, prefix = id_prefix)
-}
-
-safe_sample <- function(x, ...) {
-  if(length(x == 1)) {
-    x
-  } else {
-    sample(x, ...)
-  }
-}
-
-combine_same_rsets <- function(splits) {
-  full_splits <- purrr::map(splits, rsample::populate)
-  
-  data <- full_splits[[1]]$data
-  
-  split_indexes <- full_splits %>%
-    purrr::map(~ {list(.$in_id, .$out_id)})
-  
-  split_indexes %>%
-    purrr::transpose() %>%
-    purrr::map(combine_indices) %>%
-    purrr::set_names() %>%
-    rlang::set_names("analysis", "assessment") %>%
-    rsample::make_splits(data = data) %>%
-    preserve_attributes(splits[[1]])
-}
-
-combine_indices <- function(list) {
-  purrr::flatten_int(list) %>%
-    unique()
-}
-
 eval_resamples <- function(data, resamples, .env, ...) {
   if(rlang::is_call(resamples)) {
     rlang::call_modify(resamples, data = data) %>%
-      rlang::eval_tidy(env = env)
+      rlang::eval_tidy(env = .env)
   } else if(is.function(resamples)) {
     rlang::exec(resamples, data = data, ..., .env = .env)
   } else if(is.vector(resamples) && is.character(resamples)) {
@@ -290,28 +151,16 @@ eval_resamples <- function(data, resamples, .env, ...) {
   }
 }
 
-new_nested_rset <- function(data, column, inside) {
-  cl <- rlang::call_match()[["inside"]]
-  nrows <- purrr::map_int(column, nrow)
-  c_nrows <- c(0L, cumsum(nrows))
-  
-  outside <- purrr::map2(head(c_nrows, -1), tail(c_nrows, -1), ~ (.x+1):.y) %>%
-    purrr::map(~ list(analysis = .)) %>%
-    purrr::map(rsample::make_splits, data = data) %>%
-    rsample::manual_rset(ids = glue::glue("Nest {1:length(.)}"))
-  
-  splits <- rlang::inject(rsample::nested_cv(data, outside, !!cl))
-  
-  splits %>%
-    dplyr::select(-.data$splits) %>%
-    dplyr::rename(nest_id = "id") %>%
-    tidyr::unnest(.data$inner_resamples) %>%
-    dplyr::relocate(.data$splits) %>%
-    preserve_attributes(splits) %>%
-    new_nested_resamples()
+new_nested_rset <- function(splits, format, ...) {
+  extra_columns <- rlang::list2(...)
+  format$splits <- splits
+  purrr::walk2(names(extra_columns), extra_columns, ~ {
+    format[[.x]] <<- .y
+  })
+  format
 }
 
-nest_data <- function(data, nesting_method = NULL) {
+nest_data_method <- function(data, nesting_method = NULL) {
   if(is.null(nesting_method)) {
     if(dplyr::is_grouped_df(data)) {
       tidyr::nest(data) %>%

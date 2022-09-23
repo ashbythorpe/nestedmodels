@@ -1,18 +1,20 @@
 test_that("nested works", {
-  x <- linear_reg() %>%
-    set_engine("glmnet") %>%
-    nested()
-  expect_equal(class(x), c("linear_reg", "nested_model", "model_spec"))
-})
-
-test_that("control_nested is saved", {
-  x <- linear_reg() %>%
-    set_engine("glmnet") %>%
-    nested(control = control_nested(verbose = T))
-  expect_equal(attributes(x)$control_nested, control_nested(verbose = T))
-})
-
-test_that("general tests", {
-  expect_s3_class(model, c("linear_reg", "nested_model", "model_spec"))
-  expect_true(is_nested(model))
+  expect_error(nested(1), class = "bad_class")
+  spec <- parsnip::linear_reg()
+  
+  nested_spec <- nested(spec)
+  expect_s3_class(nested_spec, c("nested_model", "model_spec"), exact = T)
+  expect_equal(nested_spec$eng_args$model_spec[[1]], spec)
+  
+  workflow <- workflows::workflow() %>%
+    workflows::add_model(spec)
+  expect_false(is_nested(workflow))
+  expect_equal(nested(workflow)$fit$actions$model$spec, nested_spec)
+  expect_true(is_nested(nested(workflow)))
+  
+  expect_true(is_nested(workflows::update_model(workflow, nested_spec)))
+  
+  expect_true(is_nested(nested_spec))
+  expect_false(is_nested(spec))
+  expect_false(is_nested(1))
 })

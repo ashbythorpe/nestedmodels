@@ -4,4 +4,6 @@
   safe_multi_predict <<- purrr::possibly(multi_predict, otherwise = NULL, 
                                         quiet = F)
   safe_predict <<- purrr::possibly(predict, otherwise = NULL, quiet = F)
+  
+  safe_augment <<- purrr::possibly(augment, otherwise = NULL, quiet = F)
 }

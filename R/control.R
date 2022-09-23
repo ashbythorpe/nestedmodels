@@ -20,3 +20,6 @@
 #   cat("nested control object\n")
 #   invisible(x)
 # }
+# new_control_nested <- function(x, ...) {
+#   structure(x, class = "new_control_nested")
+# }
