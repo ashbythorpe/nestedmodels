@@ -21,7 +21,7 @@ test_that("res_combine works", {
   expect_equal(nrow(res_combine(resamples2, 1L)), 1L)
 })
 
-test_that("res_combine_end", {
+test_that("res_combine_end works", {
   resamples <- rsample::vfold_cv(example_nested_data, 10)
   resamples2 <- rsample::rolling_origin(
     example_nested_data, initial = 100, assess = 10, cumulative = F, skip = 50
@@ -51,7 +51,7 @@ test_that("res_combine_random works", {
   expect_equal(nrow(res_combine_random(resamples2, 1L)), 1L)
 })
 
-test_that("res_recycle", {
+test_that("res_recycle works", {
   resamples <- rsample::vfold_cv(example_nested_data, 10)
   
   expect_equal(res_recycle(resamples, 10L), resamples)
@@ -60,7 +60,7 @@ test_that("res_recycle", {
   expect_equal(nrow(res_recycle(resamples, 25L)), 25L)
 })
 
-test_that("res_recycle_random", {
+test_that("res_recycle_random works", {
   resamples <- rsample::vfold_cv(example_nested_data, 10)
   
   expect_equal(res_recycle_random(resamples, 10L), resamples)

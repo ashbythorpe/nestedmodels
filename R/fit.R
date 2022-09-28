@@ -1,21 +1,26 @@
-#' Fit a nested model or workflow to a dataset
+#' Fit a nested model to a dataset
 #'
-#' [generics::fit()] methods for nested models and workflows.
-#' Do not use `fit_xy` for nested models or workflows.
-#'
-#' @param object An object of class 'nested_model', 'nested_workflow', 
-#' 'nested_models' or 'nested_workflows'.
-#' @param formula An object of class formula. Passed into 
+#' [generics::fit()] method for nested models.
+#' @param object An object of class `nested_model`.
+#' @param formula An object of class `formula`. Passed into 
 #' [parsnip::fit.model_spec()].
 #' @param data A data frame. If used with a 'nested_model' object, the data 
 #' frame must already be nested.
-#' @param control A [parsnip::control_parsnip()], 
-#' [workflows::control_workflow()] or [control_nested()] object.
-#' @param ... Passed into the respective fit functions. Currently unused.
+#' @param case_weights An optional vector of case weights. Passed into
+#' [parsnip::fit.model_spec()].
+#' @param control A [parsnip::control_parsnip()] object. Passed into
+#' [parsnip::fit.model_spec()].
+#' @param ... Passed into [parsnip::fit.model_spec()]. Currently unused.
 #'
-#' @returns A 'nested_model_fit' or 'nested_workflow_fit' object.
-#'
-#' @seealso [parsnip::fit.model_spec] [workflows::fit.workflow]
+#' @returns A `nested_model_fit` object with several elements:
+#'  * `spec`: The model specification object (the inner model of the
+#'   nested model object)
+#'  * `fit`: A tibble containing the model fits and the nests that they
+#'   correspond to.
+#'  * `inner_names`: A character vector of names, used to help with
+#'   nesting the data during predictions.
+#'   
+#' @seealso [parsnip::fit.model_spec()] [parsnip::model_fit]
 #'
 #' @examples
 #' data("example_nested_data")
@@ -24,36 +29,42 @@
 #'   parsnip::set_engine("lm") %>%
 #'   nested()
 #'
-#' recipe <- recipes::recipe(example_nested_data, z ~ x + y + id) %>%
-#'   step_nest(id)
+#' nested_data <- tidyr::nest(example_nested_data, data = -id)
 #'
-#' wf <- workflow() %>%
-#'   add_recipe(recipe) %>%
-#'   add_model(model)
-#'
-#' fit(wf, example_nested_data)
+#' fit(model, z ~ ., nested_data)
 #'
 #' @importFrom generics fit
 #'
 #' @export
 fit.nested_model <- function(object, formula, data, case_weights = NULL,
                              control = parsnip::control_parsnip(), ...) {
-  model <- object$eng_args$model_spec[[1]]
+  if(!is.null(formula) && !rlang::is_formula(formula)) {
+    stop_bad_type("formula", "a formula or NULL", formula)
+  }
+  data <- check_df(data, "data")
+  
+  model <- extract_inner_model(object)
   
   if(!is.null(object$args)) {
     model <- pass_down_args(model, object)
   }
   
-  nested_data <- nest_data_method(data)
-
-  fits <- purrr::map(nested_data$data, fit, object = model,
+  nest_data_results <- nest_data_method(data)
+  nested_data <- nest_data_results$data
+  nested_colname <- nest_data_results$colname
+  
+  fits <- purrr::map(nested_data[[nested_colname]], safe_fit, object = model,
                      formula = formula, case_weights = case_weights, 
                      control = control, ...)
   
-  cols <- colnames(purrr::compact(nested_data$data)[[1]])
+  cols <- colnames(purrr::compact(nested_data[[nested_colname]])[[1]])
   
-  nested_data %>%
-    dplyr::select(-.data$data) %>%
-    dplyr::mutate(.model_fit = .env$fits) %>%
-    new_nested_model_fit(spec = model, inner_names = cols)
+  fit <- nested_data[,names(nested_data) != nested_colname]
+  fit$.model_fit <- fits
+  
+  new_nested_model_fit(fit = fit, spec = model, inner_names = cols)
+}
+
+safe_fit <- function(...) {
+  try(fit(...))
 }

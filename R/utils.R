@@ -1,32 +1,75 @@
-#' Developer utility functions.
-#'
-#' Not intended for use by the general public
-#'
-#' @noRd
+
 get_name <- function(name, colnames) {
-  vctrs::vec_as_names(c(name, colnames))[1]
+  vctrs::vec_as_names(c(name, colnames), repair = "unique", quiet = TRUE)[1]
 }
 
-#' @noRd
-preserve_attributes <- function(new_object, old_object) {
-  classes <- class(old_object)
-  attributes <- attributes(old_object)[
-    !names(attributes(old_object)) %in% c("row.names", "names", "class")
-  ]
-  attributes(new_object) <- c(attributes(new_object), attributes)
-  class(new_object) <- unique(c(class(new_object), classes))
-  new_object
+get_nested_step <- function(recipe) {
+  index <- get_nested_step_index(recipe)
+  recipe$steps[[index]]
 }
 
-#' @noRd
-bind_rows_with_nest_id <- function(list) {
-  nest_ids <- glue::glue("nested_data_{1:length(list)}")
-  tibble::tibble(nest_id = nest_ids, data = list) %>%
-    tidyr::unnest(data) %>%
-    preserve_attributes(list[[1]])
+check_df <- function(x, name) {
+  if(!is.data.frame(x)) {
+    x <- tryCatch(
+      as.data.frame(x),
+      error = function(c) stop_bad_type(name, "a data frame", x)
+    )
+  }
+  x
 }
 
-#' @noRd
+nest_data_method <- function(data, nesting_method = NULL) {
+  colname <- get_name(".data", colnames(data))
+  if(is.null(nesting_method)) {
+    if(dplyr::is_grouped_df(data)) {
+      group_vars <- dplyr::group_vars(data)
+      nested_data <- data %>%
+        tidyr::nest(!!colname := -c(!!!rlang::syms(group_vars))) %>%
+        dplyr::ungroup()
+    } else {
+      nested_data <- data
+      colname <- find_nested_column(data)
+    }
+  } else if(inherits(nesting_method, "recipe")) {
+    nested_step <- get_nested_step(nesting_method)
+    nested_data <- tidyr::nest(example_nested_data, 
+                               !!colname := -c(!!!nested_step$terms))
+  } else if(inherits(nesting_method, "workflow")) {
+    nested_step <- get_nested_step(nesting_method$pre$actions$recipe$recipe)
+    nested_data <- tidyr::nest(example_nested_data, 
+                               !!colname := -c(!!!nested_step$terms))
+  }
+  list(
+    data = nested_data,
+    colname = colname
+  )
+}
+
+find_nested_column <- function(data) {
+  list_columns <- purrr::map_lgl(data, is.list)
+  
+  if(any(list_columns)) {
+    data <- data[,list_columns]
+    df_cols <- purrr::map_lgl(data, purrr::some, is.data.frame)
+    if(any(df_cols)) {
+      if(length(which(df_cols)) == 1) {
+        return(colnames(data)[df_cols])
+      }
+      data <- data[,df_cols]
+      index <- which.max(purrr::map_int(data, ~ {
+        sum(purrr::map_lgl(., is.data.frame))
+      }))
+      colname <- colnames(data)[index]
+      warn_ambiguous_column(colname)
+      return(colname)
+    } else {
+      stop_not_nested("data")
+    }
+  } else {
+    stop_not_nested("data")
+  }
+}
+
 get_nested_step_index <- function(recipe) {
   recipe$steps %>%
     purrr::map(class) %>%
@@ -37,63 +80,25 @@ get_nested_step_index <- function(recipe) {
 }
 
 
-#' @noRd
-apply_nested_recipe <- function(data, recipe) {
-  if (is.null(recipe)) {
-    if (is.null(data$data) | purrr::none(data$data, is.data.frame)) {
-      cli::cli_abort(c(
-        "{.arg new_data} must be nested.", 
-        "*" = "The recipe does not contain a nesting step.",
-        "i" = "Try using {.fun step_nest}."
-      ))
-    }
-    data
-  } else {
-    recipe %>%
-      recipes::prep(data) %>%
-      recipes::bake(data)
-  }
-}
-
-get_nested_recipe <- function(recipe, index = NULL) {
-  if(is.null(index)) {
-    if(recipes::detect_step(recipe, "nest")) {
-      index <- get_nested_step_index(recipe)
-    } else {
-      name <- rlang::expr_name(substitute(recipe))
-      cli::cli_abort(c(
-        "{.arg {name}} does not have a nesting step",
-        "i" = "Try using {.fun step_nest}"
-      ))
-    }
-  }
-  nested_step <- recipe$steps[[index]]
-  
-  # creates a recipe that just applies the nest step
-  nested_recipe <- recipe
-  nested_recipe$steps <- NULL
-  recipes::add_step(nested_recipe, nested_step)
-}
-
-#' @noRd
 remove_class <- function(object, class) {
   class(object) <-
-    stringr::str_subset(class(object), glue::glue("^{class}$"), negate = T)
+    setdiff(class(object), class)
   object
 }
 
-#' @noRd
 as_ordered_factor <- function(x) {
   forcats::as_factor(x) %>%
     forcats::fct_inorder()
 }
 
 # copied from the rlang package
-#' @noRd
-`%||%` <- function(x, y) {
-  if (is.null(x)) {
-    y
-  } else {
-    x
-  }
-}
+# `%||%` <- function(x, y) {
+#   if (is.null(x)) {
+#     y
+#   } else {
+#     x
+#   }
+# }
+
+
+

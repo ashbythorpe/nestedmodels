@@ -15,7 +15,7 @@ test_that("combine_rsets works", {
          assessment = c(5L, 10L, 15L)),
     data
   )
-  res <- combine_rsets(splits, data = data, x = x)
+  res <- combine_rsets(splits, data = data, x = x, format_index = 1)
   expect_equal(actual_splits$data, res$data)
   expect_equal(length(actual_splits$in_id), length(res$in_id))
   expect_equal(length(actual_splits$out_id), length(res$out_id))

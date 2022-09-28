@@ -1,20 +1,23 @@
-#' Nested Model predictions
+#' Nested Model Predictions
 #'
-#' [stats::predict()] methods for nested models and workflows
-#'
-#' @param object An object with class 'nested_model_fit' or 
-#'  'nested_workflow_fit'
-#' @param new_data A data frame to make predictions on.
+#' Apply a fitted nested models to generate different types of predictions.
+#' [stats::predict()] methods for nested model fits.
+#' 
+#' @param object A `nested_model_fit` object produced by
+#'  [fit.nested_model_spec()].
+#' @param new_data A data frame to make predictions on. Can be nested or
+#'  non-nested.
 #' @param type A singular character vector or NULL. Passed on to 
-#'  [parsnip::predict.model_fit()] or [workflows::predict.workflow()].
+#'  [parsnip::predict.model_fit()].
 #' @param opts A list of optional arguments. Passed on to 
-#'  [parsnip::predict.model_fit()] or [workflows::predict.workflow()].
+#'  [parsnip::predict.model_fit()].
 #' @param ... Arguments for the underlying model's predict function. Passed on 
-#'  to [parsnip::predict.model_fit()] or [workflows::predict.workflow()].
+#'  to [parsnip::predict.model_fit()].
 #'
-#' @returns A data frame of model predictions.
+#' @returns A data frame of model predictions. For `predict_raw()`, a
+#' matrix, data frame, vector or list.
 #'
-#' @seealso [parsnip::predict.model_fit()] [workflows::predict.workflow()]
+#' @seealso [parsnip::predict.model_fit()]
 #'
 #' @examples
 #' data("example_nested_data")
@@ -23,16 +26,13 @@
 #'   parsnip::set_engine("lm") %>%
 #'   nested()
 #'
-#' recipe <- recipes::recipe(example_nested_data, z ~ x + y + id) %>%
-#'   step_nest(id)
+#' nested_data <- tidyr::nest(example_nested_data, data = -id)
 #'
-#' wf <- workflow() %>%
-#'   add_recipe(recipe) %>%
-#'   add_model(model)
-#'
-#' fitted <- fit(wf, example_nested_data)
+#' fitted <- fit(model, nested_data)
 #'
 #' predict(fitted, example_nested_data)
+#'
+#' predict_raw(fitted, example_nested_data)
 #'
 #' @importFrom stats predict
 #'
@@ -44,7 +44,7 @@ predict.nested_model_fit <- function(object, new_data, type = NULL,
   order_name <- get_name(".order", colnames(new_data))
   pred_name <- get_name(".pred", colnames(new_data))
   
-  outer_names <- colnames(fit)[-ncol(fit)]
+  outer_names <- colnames(fit)[colnames(fit) != ".model_fit"]
   inner_names <- object$inner_names
   
   if(all(!outer_names %in% colnames(new_data))) {
@@ -59,7 +59,8 @@ predict.nested_model_fit <- function(object, new_data, type = NULL,
     ))
     outer_names <- outer_names[outer_names %in% colnames(new_data)]
     fit <- fit[,c(outer_names, ".model_fit")] %>%
-      tidyr::chop(.model_fit)
+      tidyr::chop(.model_fit) %>%
+      dplyr::mutate(.model_fit = .model_fit[[1]])
   }
   
   data_nest <- nest_data(new_data, inner_names, outer_names)
@@ -79,8 +80,10 @@ predict.nested_model_fit <- function(object, new_data, type = NULL,
   if(is.data.frame(predictions[[1]])) {
     dplyr::bind_rows(predictions)[order,]
   } else if(is.vector(predictions[[1]])) {
-    vctrs::vec_c(!!!predictions)[order,]
+    vctrs::vec_c(!!!predictions)[order]
     # Switch to purrr::list_c() when that releases
+  } else if(is.matrix(predictions[[1]])){
+    vctrs::vec_rbind(!!!predictions)
   } else {
     cli::cli_warn(c(
       "Prediction format not recognised. Returning list of results."
@@ -89,41 +92,20 @@ predict.nested_model_fit <- function(object, new_data, type = NULL,
   }
 }
 
+#' @importFrom parsnip predict_raw
+#' 
+#' @rdname predict.nested_model_fit
+#' @export
+predict_raw.nested_model_fit <- function(object, new_data, opts = list(), ...) {
+  predict(object, new_data = new_data, type = "raw", opts = opts, ...)
+}
+
 predict_nested <- function(model, data, ...) {
-  if(!is.list(model) && is.na(model)) {
+  if(is.null(model)) {
     NULL
-  } else if(rlang::is_bare_list(model)) {
-    predictions <- purrr::map(model, predict_nested, data = data, ...) %>%
-      purrr::compact()
-    if(length(predictions) == 0) {
-      return(NULL)
-    } else if (is.data.frame(predictions[[1]])) {
-      combine_predictions(predictions)
-    } else if(is.vector(predictions[[1]])){
-      combine_vector_predictions(predictions)
-    } else {
-      list[[1]]
-    }
   } else {
     safe_predict(model, data, ...)
   }
-}
-
-combine_predictions <- function(list) {
-  if(length(list) == 0) {
-    NULL
-  } else if(length(list) == 1) {
-    list[[1]]
-  } else {
-    names <- colnames(list[[1]])
-    purrr::pmap(list, combine_predictions_row) %>%
-      rlang::set_names(names) %>%
-      tibble::as_tibble()
-  }
-}
-
-combine_predictions_row <- function(...) {
-  rowMeans(data.frame(...))
 }
 
 fix_predictions <- function(pred) {
@@ -147,8 +129,14 @@ fix_predictions <- function(pred) {
       pred[invalid_predictions] <-
         purrr::map(model_map$data[invalid_predictions],
                    fix_vector_predictions)
+    } else if(is.matrix(predictions_format)) {
+      format_names <- colnames(predictions_format)
+      pred[invalid_predictions] <- 
+        purrr::map(model_map$data[invalid_predictions],
+                   fix_matrix_predictions, names = format_names)
     }
   }
+  pred
 }
 
 fix_df_predictions <- function(data, names) {
@@ -157,13 +145,23 @@ fix_df_predictions <- function(data, names) {
     tibble::as_tibble()
 }
 
-combine_vector_predictions <- function(list) {
-  rowMeans(as.data.frame(list))
-}
-
 fix_vector_predictions <- function(data) {
   rep(NA, nrow(data))
 }
 
+fix_matrix_predictions <- function(data, names) {
+  if(is.null(names)) {
+    purrr::map(seq_len(ncol(data)), ~ {rep(NA, nrow(data))}) %>%
+      as.data.frame() %>%
+      as.matrix()
+  } else {
+    purrr::map(names, ~ {rep(NA, nrow(data))}) %>%
+      purrr::set_names(names) %>%
+      as.data.frame() %>%
+      as.matrix()
+  }
+}
+
+ncol(matrix(c(1,2,3)))
 
 safe_predict <- function() {} # nocov

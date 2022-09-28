@@ -10,10 +10,10 @@ step_nest(
   recipe,
   ...,
   role = "predictor",
-  trained = F,
+  trained = FALSE,
   names = NULL,
   lookup_table = NULL,
-  skip = F,
+  skip = FALSE,
   id = recipes::rand_id("nest")
 )
 

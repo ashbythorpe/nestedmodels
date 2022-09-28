@@ -2,30 +2,36 @@
 % Please edit documentation in R/predict.R
 \name{predict.nested_model_fit}
 \alias{predict.nested_model_fit}
-\title{Nested Model predictions}
+\alias{predict_raw.nested_model_fit}
+\title{Nested Model Predictions}
 \usage{
 \method{predict}{nested_model_fit}(object, new_data, type = NULL, opts = list(), ...)
+
+\method{predict_raw}{nested_model_fit}(object, new_data, opts = list(), ...)
 }
 \arguments{
-\item{object}{An object with class 'nested_model_fit' or
-'nested_workflow_fit'}
+\item{object}{A \code{nested_model_fit} object produced by
+\code{\link[=fit.nested_model_spec]{fit.nested_model_spec()}}.}
 
-\item{new_data}{A data frame to make predictions on.}
+\item{new_data}{A data frame to make predictions on. Can be nested or
+non-nested.}
 
 \item{type}{A singular character vector or NULL. Passed on to
-\code{\link[parsnip:predict.model_fit]{parsnip::predict.model_fit()}} or \code{\link[workflows:predict-workflow]{workflows::predict.workflow()}}.}
+\code{\link[parsnip:predict.model_fit]{parsnip::predict.model_fit()}}.}
 
 \item{opts}{A list of optional arguments. Passed on to
-\code{\link[parsnip:predict.model_fit]{parsnip::predict.model_fit()}} or \code{\link[workflows:predict-workflow]{workflows::predict.workflow()}}.}
+\code{\link[parsnip:predict.model_fit]{parsnip::predict.model_fit()}}.}
 
 \item{...}{Arguments for the underlying model's predict function. Passed on
-to \code{\link[parsnip:predict.model_fit]{parsnip::predict.model_fit()}} or \code{\link[workflows:predict-workflow]{workflows::predict.workflow()}}.}
+to \code{\link[parsnip:predict.model_fit]{parsnip::predict.model_fit()}}.}
 }
 \value{
-A data frame of model predictions.
+A data frame of model predictions. For \code{predict_raw()}, a
+matrix, data frame, vector or list.
 }
 \description{
-\code{\link[stats:predict]{stats::predict()}} methods for nested models and workflows
+Apply a fitted nested models to generate different types of predictions.
+\code{\link[stats:predict]{stats::predict()}} methods for nested model fits.
 }
 \examples{
 data("example_nested_data")
@@ -34,18 +40,15 @@ model <- parsnip::linear_reg() \%>\%
   parsnip::set_engine("lm") \%>\%
   nested()
 
-recipe <- recipes::recipe(example_nested_data, z ~ x + y + id) \%>\%
-  step_nest(id)
+nested_data <- tidyr::nest(example_nested_data, data = -id)
 
-wf <- workflow() \%>\%
-  add_recipe(recipe) \%>\%
-  add_model(model)
-
-fitted <- fit(wf, example_nested_data)
+fitted <- fit(model, nested_data)
 
 predict(fitted, example_nested_data)
 
+predict_raw(fitted, example_nested_data)
+
 }
 \seealso{
-\code{\link[parsnip:predict.model_fit]{parsnip::predict.model_fit()}} \code{\link[workflows:predict-workflow]{workflows::predict.workflow()}}
+\code{\link[parsnip:predict.model_fit]{parsnip::predict.model_fit()}}
 }

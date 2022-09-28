@@ -1,3 +1,30 @@
+#' Augment data with predictions
+#' 
+#' [generics::augment()] method for nested models. `augment()` will add 
+#' column(s) for predictions to the given data.
+#' 
+#' @param x A `nested_model_fit` object produced by
+#'  [fit.nested_model_spec()].
+#' @param new_data A data frame - can be nested or non-nested.
+#' @param ... Passed onto [parsnip::augment.model_fit()].
+#' 
+#' @returns A data frame with one or more added columns for predictions.
+#' 
+#' @seealso [parsnip::augment.model_fit()]
+#' 
+#' @examples 
+#' data("example_nested_data")
+#' 
+#' model <- parsnip::linear_reg() %>%
+#'   parsnip::set_engine("lm") %>%
+#'   nested()
+#'
+#' nested_data <- tidyr::nest(example_nested_data, data = -c(id, id2))
+#'
+#' fitted <- fit(model, nested_data)
+#'
+#' augment(fitted, example_nested_data)
+#' 
 #' @importFrom generics augment
 #' 
 #' @export
@@ -7,7 +34,7 @@ augment.nested_model_fit <- function(x, new_data, ...) {
   order_name <- get_name(".order", colnames(new_data))
   pred_name <- get_name(".pred", colnames(new_data))
   
-  outer_names <- colnames(fit)[-ncol(fit)]
+  outer_names <- colnames(fit)[colnames(fit) != ".model_fit"]
   inner_names <- x$inner_names
   
   if(all(!outer_names %in% colnames(new_data))) {
@@ -22,7 +49,8 @@ augment.nested_model_fit <- function(x, new_data, ...) {
     ))
     outer_names <- outer_names[outer_names %in% colnames(new_data)]
     fit <- fit[,c(outer_names, ".model_fit")] %>%
-      tidyr::chop(.model_fit)
+      tidyr::chop(.model_fit) %>%
+      dplyr::mutate(.model_fit = .model_fit[[1]])
   }
   
   data_nest <- nest_data(new_data, inner_names, outer_names)
@@ -43,36 +71,16 @@ augment.nested_model_fit <- function(x, new_data, ...) {
 }
 
 augment_nested <- function(model, data, ..., .inner_names) {
-  if(!is.list(model) && is.na(model)) {
+  if(is.null(model)) {
     NULL
-  } else if(rlang::is_bare_list(model)) {
-    predictions <- purrr::map(model, augment_nested, data = data, ...)
-    combine_augmented_predictions(purrr::compact(predictions), .inner_names)
   } else {
     safe_augment(model, data, ...)
   }
 }
 
-combine_augmented_predictions <- function(list, .inner_names) {
-  if(length(list) == 0) {
-    NULL
-  } else if(length(list) == 0) {
-    list[[1]]
-  } else {
-    first <- list[[1]]
-    names <- colnames(first)[colnames(first) %in% inner_names]
-    format <- first[,names]
-    preds <- purrr::map(list, ~ {
-      .[,!names(.) %in% names]
-    })
-    final_preds <- combine_predictions(preds)
-    dplyr::bind_cols(format, final_preds)
-  }
-}
-
 safe_augment <- function() {}
 
-fix_augmented_predictions <- function(data) {
+fix_augmented_predictions <- function(predictions) {
   invalid_predictions <- purrr::map_lgl(predictions, is.null)
   predictions_format <- predictions[[which(!invalid_predictions)[1]]]
   format_names <- colnames(predictions_format)
@@ -90,6 +98,7 @@ fix_augmented_predictions <- function(data) {
       purrr::map(model_map$data[invalid_predictions],
                  fix_augmented_df_predictions, names = format_names)
   }
+  predictions
 }
 
 fix_augmented_df_predictions <- function(data, names) {

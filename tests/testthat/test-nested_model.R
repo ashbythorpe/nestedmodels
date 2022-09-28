@@ -5,7 +5,9 @@ test_that("nested_model works", {
   
   expect_equal(tunable(normal_model) %>% dplyr::select(-.data$component), 
                tunable(nested_model) %>% dplyr::select(-.data$component))
-  expect_equal(generics::tune_args(normal_model) %>% dplyr::select(-.data$component), 
-               generics::tune_args(nested_model) %>% dplyr::select(-.data$component))
+  expect_equal(generics::tune_args(normal_model) %>% 
+                 dplyr::select(-.data$component), 
+               generics::tune_args(nested_model) %>% 
+                 dplyr::select(-.data$component))
   expect_equal(translate(nested_model), translate(normal_model))
 })

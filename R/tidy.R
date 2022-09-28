@@ -1,6 +1,6 @@
-#' Tidy, augment and glance methods for nested objects
+#' Turn a nested model into a tidy tibble
 #'
-#' These methods allow the usage of `broom` functions on nested objects.
+#' These methods allow the usage of `broom` functions on fitted nested models.
 #'
 #' @param x The object to be converted into a tidy [tibble::tibble()].
 #' @param ... Additional arguments passed into their respective functions.
@@ -26,7 +26,8 @@
 #' `purrr::map(x, glance)`, `lapply(x, glance)`
 #' or similar.
 #' 
-#' @returns A [tibble::tibble()]. With `glance()`, the tibble will have 1 row.
+#' @returns A [tibble::tibble()]. With `glance()`, the tibble will have 
+#' 1 row.
 #'
 #' @examples
 #' data("example_nested_data")
@@ -38,8 +39,12 @@
 #' 
 #' @export
 tidy.nested_model_fit <- function(x, ...) {
-  purrr::map(x$fit$.model_fit, broom::tidy, ...) %>%
-    bind_rows_with_nest_id()
+  fit <- x$fit
+  tidy_name <- get_name(".tidied", colnames(fit))
+  fit[[tidy_name]] <- purrr::map(fit$.model_fit, broom::tidy, ...)
+  fit %>%
+    dplyr::select(-.data$.model_fit) %>%
+    tidyr::unnest(.data[[tidy_name]])
 }
 
 #' @rdname tidy.nested_model_fit
@@ -53,7 +58,7 @@ glance.nested_model_fit <- function(x, ...) {
 combine_nested_rows <- function(...) {
   x <- c(...)
   if (is.numeric(x)) {
-    mean(x, na.rm = T)
+    mean(x, na.rm = TRUE)
   } else if (length(unique(x)) == 1) {
     x
   } else {

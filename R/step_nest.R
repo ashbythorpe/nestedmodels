@@ -64,9 +64,9 @@
 #' @importFrom recipes prep bake
 #'
 #' @export
-step_nest <- function(recipe, ..., role = "predictor", trained = F,
+step_nest <- function(recipe, ..., role = "predictor", trained = FALSE,
                       names = NULL, lookup_table = NULL,
-                      skip = F, id = recipes::rand_id("nest")) {
+                      skip = FALSE, id = recipes::rand_id("nest")) {
   recipes::add_step(
     recipe,
     step_nest_new(
@@ -81,7 +81,8 @@ step_nest <- function(recipe, ..., role = "predictor", trained = F,
   )
 }
 
-step_nest_new <- function(terms, role, trained, names, lookup_table, skip, id) {
+step_nest_new <- function(terms, role, trained, names, lookup_table, skip, 
+                          id) {
   recipes::step(
     subclass = "nest",
     terms = terms,
@@ -138,9 +139,8 @@ bake.step_nest <- function(object, new_data, ...) {
   
   good_models <- purrr::discard(res$nest_id, is.na)
   if(length(good_models) == 0) {
-    cli::cli_abort(c(
-      "{.arg new_data} contains no nests from the training set.",
-      "i" = "Try using {.fun nested_initial_split}."
+    cli::cli_warn(c(
+      "{.arg new_data} contains no nests from the training set."
     ))
   } else if(length(good_models) < nrow(res)){
     cli::cli_warn(c(
