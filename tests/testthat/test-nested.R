@@ -18,3 +18,14 @@ test_that("nested works", {
   expect_false(is_nested(spec))
   expect_false(is_nested(1))
 })
+
+test_that("extract_inner_model works", {
+  m <- parsnip::linear_reg() %>%
+    nested()
+  
+  expect_equal(extract_inner_model(m), parsnip::linear_reg())
+  
+  wf <- workflows::workflow(spec = m)
+  
+  expect_equal(extract_inner_model(wf), parsnip::linear_reg())
+})

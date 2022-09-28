@@ -1,3 +1,31 @@
+#' Nested model predictions across many sub-models
+#' 
+#' [parsnip::multi_predict()] methods for nested models. Allows predictions
+#' to be made on sub-models in a model object.
+#' 
+#' @param object A `nested_model_fit` object produced by
+#'  [fit.nested_model_spec()].
+#' @param new_data A data frame - can be nested or non-nested.
+#' @param ... Passed onto [parsnip::multi_predict()]
+#' 
+#' @returns A tibble with the same number of rows as `new_data`, after it
+#' has been unnested.
+#' 
+#' @seealso [parsnip::multi_predict()]
+#' 
+#' @examples 
+#' data("example_nested_data")
+#' 
+#' model <- parsnip::linear_reg(penalty = 1) %>%
+#'   parsnip::set_engine("glmnet") %>%
+#'   nested()
+#'
+#' nested_data <- tidyr::nest(example_nested_data, data = -id2)
+#'
+#' fitted <- fit(model, nested_data)
+#'
+#' multi_predict(fitted, example_nested_data, penalty = c(0.1, 0.2, 0.3))
+#' 
 #' @importFrom parsnip multi_predict
 #' 
 #' @export
@@ -7,7 +35,7 @@ multi_predict.nested_model_fit <- function(object, new_data, ...) {
   order_name <- get_name(".order", colnames(new_data))
   pred_name <- get_name(".pred", colnames(new_data))
   
-  outer_names <- colnames(fit)[-ncol(fit)]
+  outer_names <- colnames(fit)[colnames(fit) != ".model_fit"]
   inner_names <- object$inner_names
   
   if(all(!outer_names %in% colnames(new_data))) {
@@ -22,7 +50,8 @@ multi_predict.nested_model_fit <- function(object, new_data, ...) {
     ))
     outer_names <- outer_names[outer_names %in% colnames(new_data)]
     fit <- fit[,c(outer_names, ".model_fit")] %>%
-      tidyr::chop(.model_fit)
+      tidyr::chop(.model_fit) %>%
+      dplyr::mutate(.model_fit = .model_fit[[1]])
   }
   
   data_nest <- nest_data(new_data, inner_names, outer_names)
@@ -30,8 +59,8 @@ multi_predict.nested_model_fit <- function(object, new_data, ...) {
   unnested_data <- data_nest$unnested_data
   nested_column <- data_nest$column
   order <- data_nest$order
-    
-  model_map <- dplyr::left_join(nested_data, fit, by = names)
+  
+  model_map <- dplyr::left_join(nested_data, fit, by = outer_names)
   
   pred <- purrr::map2(model_map$.model_fit, model_map$data, 
                              multi_predict_nested, ...)
@@ -42,41 +71,11 @@ multi_predict.nested_model_fit <- function(object, new_data, ...) {
 }
 
 multi_predict_nested <- function(model, data, ...) {
-  if(!is.list(model) && is.na(model)) {
+  if(is.null(model)) {
     NULL
-  } else if(rlang::is_bare_list(model)) {
-    predictions <- purrr::map(model, multi_predict_nested, data = data, ...)
-    combine_multi_predictions(purrr::compact(predictions))
   } else {
     multi_predict(model, data, ...)
   }
-}
-
-combine_multi_predictions <- function(list) {
-  if(length(list) == 0) {
-    NULL
-  } else if(length(list) == 1) {
-    list[[1]]
-  } else {
-    names <- colnames(list[[1]])
-    purrr::pmap(list, combine_multi_prediction_tibbles)
-    
-    combine_multi_predictions(list)
-    purrr::pmap(list, combine_predictions_row) %>%
-      rlang::set_names(names) %>%
-      tibble::as_tibble()
-  }
-}
-
-combine_multi_prediction_tibbles <- function(...) {
-  l <- list(...)
-  pred_colnames <- stringr::str_subset(colnames(..1), "\\.pred")
-  other_colnames <- setdiff(colnames(..1), pred_colnames)
-  purrr::reduce(l, dplyr::full_join, by = colnames(..1)) %>%
-    dplyr::summarise(
-      dplyr::across(tidyselect::all_of(other_colnames), ~ .[1]), 
-      dplyr::across(tidyselect::all_of(pred_colnames), mean)
-    )
 }
 
 safe_multi_predict <- function() {}

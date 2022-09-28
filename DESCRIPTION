@@ -10,13 +10,15 @@ Description: The goal of 'nestedmodels' is to allow the modelling of
     'nestedmodels' enhances the 'tidymodels' set of packages by allowing
     the user to classify a model or workflow as 'nested'.
 License: MIT + file LICENSE
-URL: https://github.com/ashbythorpe/nestedmodels
+URL: https://github.com/ashbythorpe/nestedmodels,
+    https://ashbythorpe.github.io/nestedmodels/
 BugReports: https://github.com/ashbythorpe/nestedmodels/issues
 Imports: 
     butcher,
     cli,
     dplyr,
     finetune,
+    forcats,
     foreach,
     generics,
     ggplot2,

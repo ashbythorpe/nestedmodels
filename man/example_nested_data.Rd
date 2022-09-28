@@ -5,7 +5,7 @@
 \alias{example_nested_data}
 \title{Example nested data}
 \format{
-A tibble with 2500 rows and 7 variables
+A tibble with 1000 rows and 7 variables
 \describe{
 \item{id}{A column that can be nested, ranging from 1 to 50.}
 \item{id2}{Another column that can be nested, ranging from 1 to 100.}

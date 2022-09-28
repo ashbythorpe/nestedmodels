@@ -11,7 +11,8 @@ stop_bad_type <- function(name, expected, actual, call = rlang::caller_env()) {
   ), call = call, class = "bad_type")
 }
 
-stop_bad_length <- function(name, expected, actual, call = rlang::caller_env()) {
+stop_bad_length <- function(name, expected, actual, 
+                            call = rlang::caller_env()) {
   cli::cli_abort(c(
     "{.arg {name}} must have length: {.val {expected}}.",
     "i" = "Actual class: {.val {actual}}."
@@ -41,16 +42,16 @@ test_logical_arg <- function(x, call = rlang::caller_env()) {
   }
 }
 
-warn_ambiguous_column <- function(name) {
+warn_ambiguous_column <- function(name, colname) {
   cli::cli_warn(c(
-    "Ambiguous column to unnest in {.arg new_data}.",
+    "Ambiguous column to unnest in {.arg {name}}.",
     "Using column {.val {name}}."
   ))
 }
 
-stop_not_nested <- function(call = rlang::caller_env()) {
+stop_not_nested <- function(name, call = rlang::caller_env()) {
   cli::cli_abort(c(
-    "{.arg new_data} is not nested.",
+    "{.arg {name}} is not nested.",
     "i" = "Try manually nesting the data with {.fun tidyr::nest}."
   ), call = call, class = "not_nested")
 }

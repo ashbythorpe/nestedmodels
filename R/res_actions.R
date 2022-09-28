@@ -70,9 +70,7 @@ res_recycle <- function(res, len) {
   
   res_len <- nrow(res)
   copy_of <- rep_len(seq_len(res_len), length.out <- len-res_len)
-  to_copy <- purrr::map(copy_of, ~ {
-    res$splits[.]
-  })
+  to_copy <- res$splits[copy_of]
   
   lres <- res_extend(res, len)
   lres$splits[(res_len + 1):len] <- to_copy
@@ -89,9 +87,7 @@ res_recycle_random <- function(res, len) {
     safe_sample(rep(seq_len(res_len), (len %/% res_len) - 1L)),
     safe_sample(seq_len(res_len)[seq_len(len %% res_len)])
   )
-  to_copy <- purrr::map(copy_of, ~ {
-    res$splits[.]
-  })
+  to_copy <- res$splits[copy_of]
   
   lres <- res_extend(res, len)
   lres$splits[(res_len + 1):len] <- to_copy
@@ -122,14 +118,14 @@ combine_same_rsets <- function(splits) {
     purrr::map(~ {list(.$in_id, .$out_id)})
   
   split_indexes %>%
-    purrr::transpose() %>%
-    purrr::map(combine_indices) %>%
-    purrr::set_names() %>%
+    purrr::reduce(combine_indices, .init = list(integer(), integer())) %>%
     rlang::set_names("analysis", "assessment") %>%
     rsample::make_splits(data = data)
 }
 
-combine_indices <- function(list) {
-  purrr::flatten_int(list) %>%
-    unique()
+combine_indices <- function(l1, l2) {
+  list(
+    unique(c(l1[[1]], l2[[1]][!l2[[1]] %in% l1[[2]]])),
+    unique(c(l1[[2]], l2[[2]][!l2[[2]] %in% l1[[1]]]))
+  )
 }

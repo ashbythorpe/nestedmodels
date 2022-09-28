@@ -1,5 +1,61 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
+test_that("workflows work", {
+  model <- parsnip::linear_reg() %>%
+    nested()
+  
+  recipe <- recipes::recipe(example_nested_data, z ~ .) %>%
+    step_nest(id, id2)
+  
+  wf <- workflows::workflow() %>%
+    workflows::add_model(model) %>%
+    workflows::add_recipe(recipe)
+  
+  fit <- fit(wf, example_nested_data)
+  
+  suppressWarnings({
+    expect_equal(nrow(predict(fit, example_nested_data)), 
+                 nrow(example_nested_data))
+    expect_equal(nrow(predict(fit, example_nested_data)), 
+                 nrow(example_nested_data))
+  })
+})
+
+test_that("Nested models can be tuned", {
+  skip_on_cran() # Long test
+  skip_if_not_installed("glmnet")
+  skip_if_not_installed("tune")
+  
+  model <- parsnip::linear_reg(
+    penalty = hardhat::tune()
+  ) %>%
+    parsnip::set_engine("glmnet") %>%
+    nested()
+  
+  recipe <- recipes::recipe(example_nested_data, z ~ .) %>%
+    step_nest(id)
+  
+  wf <- workflows::workflow() %>%
+    workflows::add_model(model) %>%
+    workflows::add_recipe(recipe)
+  
+  resamples <- nested_resamples(
+    example_nested_data %>% dplyr::group_by(id), 
+    rsample::vfold_cv(v = 4)
+  )
+  
+  tuned <- tune::tune_grid(
+    wf,
+    resamples,
+    grid = 5,
+    control = tune::control_grid(verbose = T)
+  )
+  
+  best <- tune::select_best(tuned, "rmse")
+  
+  final_wf <- tune::finalize_workflow(wf, best)
+  
+  fit <- fit(final_wf, example_nested_data)
+  
+  suppressWarnings(predict(fit, example_nested_data))
 })
 
 simple_model <- parsnip::linear_reg() %>%
@@ -62,7 +118,10 @@ predict(stack_fit, example_nested_data)
 
 nested_data <- example_nested_data %>% 
   tidyr::nest(data = -id)
-
+nested_data
+system.time({
+  model_fit <- fit(simple_model, z ~ ., nested_data)
+})
 model_fit <- fit(simple_model, z ~ ., nested_data)
 
 print(model_fit)

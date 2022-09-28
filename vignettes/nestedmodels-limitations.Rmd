@@ -1,0 +1,21 @@
+---
+title: "nestedmodels-limitations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{nestedmodels-limitations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette outlines the limitations of nested modelling, and introduces some alternatives.
+
+```{r setup}
+library(nestedmodels)
+```

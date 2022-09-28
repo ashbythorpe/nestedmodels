@@ -21,7 +21,10 @@
 #' }
 #' These values follow the rule that the following is always true (although 
 #' the column order is sometimes different):
-#' `identical(tidyr::unnest(nested_data, .data[[column]])[order,], unnested_data)`
+#' ```
+#' identical(tidyr::unnest(nested_data, .data[[column]])[order,], 
+#'           unnested_data)
+#' ```
 #' 
 #' @noRd
 nest_data <- function(data, inner_names, outer_names) {
@@ -40,7 +43,7 @@ nest_data <- function(data, inner_names, outer_names) {
     nested_col <- find_nested_column_with_names(data, inner_names)
     nested_data <- data
     unnested_data <- tidyr::unnest(data, .data[[nested_col]])
-    order <- 1:nrow(unnested_data)
+    order <- seq_len(nrow(unnested_data))
   } else {
     if(dplyr::is_grouped_df(data)) {
       nested_data <- tidyr::nest(data) %>%
@@ -51,7 +54,7 @@ nest_data <- function(data, inner_names, outer_names) {
         colnames(nested_data)[colnames(nested_data) != "data"]
       template <- nested_data[,template_names]
       order_var <- get_name(".order", colnames(template))
-      template[[order_var]] <- 1L:nrow(template)
+      template[[order_var]] <- seq_len(nrow(template))
       order <- order(order(dplyr::left_join(
         unnested_data, 
         template, 
@@ -60,10 +63,12 @@ nest_data <- function(data, inner_names, outer_names) {
       if(!all(outer_names %in% colnames(nested_data))) {
         return(nest_data(dplyr::ungroup(data), inner_names, outer_names))
       }
-      if(!all(inner_names %in% colnames(nested_data$data[[1]]))) {
+      if(!all(inner_names %in% 
+              colnames(nested_data$data[[1]]))) {
         try_2 <- nest_data(dplyr::ungroup(data), inner_names, outer_names)
         if(sum(inner_names %in% colnames(nested_data$data[[1]])) < 
-           sum(inner_names %in% colnames(try_2$nested_data[[try_2$column]][[1]]))) {
+           sum(inner_names %in% colnames(try_2$nested_data[[
+             try_2$column]][[1]]))) {
           return(try_2)
         }
       }
@@ -76,7 +81,7 @@ nest_data <- function(data, inner_names, outer_names) {
         colnames(nested_data)[colnames(nested_data) != "data"]
       template <- nested_data[,template_names]
       order_var <- get_name(".order", colnames(template))
-      template[[order_var]] <- 1L:nrow(template)
+      template[[order_var]] <- seq_len(nrow(template))
       order <- order(order(dplyr::left_join(
         unnested_data, 
         template, 
@@ -116,7 +121,7 @@ find_nested_column_with_names <- function(data, names) {
           best <- n_cols_valid == max(n_cols_valid)
           if(length(which(best)) == 1) {
             colname <- colnames(data)[best]
-            warn_ambiguous_column(colname)
+            warn_ambiguous_column("new_data", colname)
             return(colname)
           } else {
             data <- data[,best]
@@ -124,17 +129,17 @@ find_nested_column_with_names <- function(data, names) {
         }
       }
     } else {
-      stop_not_nested()
+      stop_not_nested("new_data")
     }
   } else {
-    stop_not_nested()
+    stop_not_nested("new_data")
   }
-  # If no error + no column decided on
+  # If no error + no single column decided on
   index <- which.max(purrr::map_int(data, ~ {
     sum(purrr::map_lgl(., is.data.frame))
   }))
   colname <- colnames(data)[index]
-  warn_ambiguous_column(colname)
+  warn_ambiguous_column("new_data", colname)
   return(colname)
 }
 
@@ -142,7 +147,7 @@ valid_cols <- function(data, names) {
   if(length(purrr::compact(data)) != 0) {
     names %in% colnames(purrr::compact(data)[[1]])
   } else {
-    F
+    FALSE
   }
 }
 

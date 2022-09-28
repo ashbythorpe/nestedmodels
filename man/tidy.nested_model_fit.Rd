@@ -3,7 +3,7 @@
 \name{tidy.nested_model_fit}
 \alias{tidy.nested_model_fit}
 \alias{glance.nested_model_fit}
-\title{Tidy, augment and glance methods for nested objects}
+\title{Turn a nested model into a tidy tibble}
 \usage{
 \method{tidy}{nested_model_fit}(x, ...)
 
@@ -16,10 +16,11 @@
 (e.g. for \code{tidy.nested_model_fit()}, \code{\link[parsnip:tidy.model_fit]{parsnip::tidy.model_fit()}}).}
 }
 \value{
-A \code{\link[tibble:tibble]{tibble::tibble()}}. With \code{glance()}, the tibble will have 1 row.
+A \code{\link[tibble:tibble]{tibble::tibble()}}. With \code{glance()}, the tibble will have
+1 row.
 }
 \description{
-These methods allow the usage of \code{broom} functions on nested objects.
+These methods allow the usage of \code{broom} functions on fitted nested models.
 }
 \details{
 Tidying a nested object generally involves applying an already defined
