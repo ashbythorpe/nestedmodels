@@ -136,19 +136,27 @@ wf <- workflows::workflow() \%>\%
 
 nested_resamples(nested_data, rsample::vfold_cv())
 
-nested_resamples(dplyr::group_by(example_nested_data, id), 
-                 ~ rsample::initial_split(.))
+nested_resamples(
+  dplyr::group_by(example_nested_data, id),
+  ~ rsample::initial_split(.)
+)
 
-nested_resamples(example_nested_data, ~ {rsample::validation_split(.)}, 
-                 nesting_method = recipe)
+nested_resamples(example_nested_data, ~ {
+  rsample::validation_split(.)
+},
+nesting_method = recipe
+)
 
-nested_resamples(example_nested_data, rsample::bootstraps, 
-                 times = 25, nesting_method = workflow)
+nested_resamples(example_nested_data, rsample::bootstraps,
+  times = 25, nesting_method = workflow
+)
 
 # nested nested resamples
 
-nested_resamples(nested_data, rsample::nested_cv(rsample::vfold_cv(), 
-                 rsample::bootstraps()))
+nested_resamples(nested_data, rsample::nested_cv(
+  rsample::vfold_cv(),
+  rsample::bootstraps()
+))
 
 }
 \seealso{

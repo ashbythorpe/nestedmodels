@@ -23,7 +23,7 @@
 #'   workflows::add_model(model)
 #'
 #' is_nested(wf)
-#' 
+#'
 #' @export
 nested <- function(x, ...) UseMethod("nested")
 
@@ -47,7 +47,7 @@ nested.nested_model <- function(x, ...) x
 #' @rdname nested
 #' @export
 nested.workflow <- function(x, ...) {
-  x$fit$actions$model$spec <- 
+  x$fit$actions$model$spec <-
     nested(x$fit$actions$model$spec)
   x
 }
@@ -78,22 +78,22 @@ is_nested.workflow <- function(x, ...) {
 
 
 #' Get the inner model of a nested model object
-#' 
+#'
 #' This function allows you to extract the inner model of a `nested_model`
 #' object, or a workflow containing a nested model.
-#' 
+#'
 #' @param x A model spec or workflow
-#' 
+#'
 #' @returns A `model_spec` object
-#' 
-#' @examples 
-#' 
+#'
+#' @examples
+#'
 #' model <- parsnip::linear_reg() %>%
 #'   parsnip::set_engine("lm") %>%
 #'   nested()
-#'   
+#'
 #' extract_inner_model(model)
-#' 
+#'
 extract_inner_model <- function(x, ...) UseMethod("extract_inner_model")
 
 #' @rdname extract_inner_model

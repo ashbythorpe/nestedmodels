@@ -11,7 +11,7 @@ stop_bad_type <- function(name, expected, actual, call = rlang::caller_env()) {
   ), call = call, class = "bad_type")
 }
 
-stop_bad_length <- function(name, expected, actual, 
+stop_bad_length <- function(name, expected, actual,
                             call = rlang::caller_env()) {
   cli::cli_abort(c(
     "{.arg {name}} must have length: {.val {expected}}.",
@@ -33,11 +33,11 @@ stop_length_zero <- function(name, call = rlang::caller_env()) {
 
 test_logical_arg <- function(x, call = rlang::caller_env()) {
   name <- rlang::expr_name(substitute(x))
-  if(!is.logical(x)) {
+  if (!is.logical(x)) {
     stop_bad_type(name, "a logical vector", x, call = call)
-  } else if(is.na(x)) {
+  } else if (is.na(x)) {
     stop_missing(name, call = call)
-  } else if(length(x) != 1) {
+  } else if (length(x) != 1) {
     stop_bad_length(name, 1, length(x), call = call)
   }
 }

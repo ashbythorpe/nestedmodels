@@ -4,7 +4,7 @@ combine_rsets <- function(splits, x, data, format_index) {
   format <- splits[[format_index]]
 
   nrows <- purrr::map_int(x, nrow)
-  c_nrows <- c(0L, cumsum(nrows))[- (length(nrows) + 1)]
+  c_nrows <- c(0L, cumsum(nrows))[-(length(nrows) + 1)]
 
   split_indexes <- full_splits %>%
     purrr::map(~ {

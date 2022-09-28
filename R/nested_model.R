@@ -1,14 +1,13 @@
 nested_model <- function(mode, model_spec) {
-  
   eng_args <- list(model_spec = list(model_spec))
-  
+
   tune_args <- generics::tune_args(model_spec)$name
-  if(length(tune_args) != 0) {
+  if (length(tune_args) != 0) {
     args <- model_spec$args[tune_args]
   } else {
     args <- NULL
   }
-  
+
   parsnip::new_model_spec(
     "nested_model",
     args = args,
@@ -20,7 +19,7 @@ nested_model <- function(mode, model_spec) {
 }
 
 #' @importFrom generics tunable
-#' 
+#'
 #' @export
 tunable.nested_model <- function(x, ...) {
   spec <- x$eng_args$model_spec[[1]]
@@ -30,7 +29,7 @@ tunable.nested_model <- function(x, ...) {
 }
 
 #' @importFrom stats update
-#' 
+#'
 #' @export
 update.nested_model <- function(object, ...) {
   spec <- object$eng_args$model_spec[[1]]
@@ -39,14 +38,14 @@ update.nested_model <- function(object, ...) {
 }
 
 #' @importFrom parsnip translate
-#' 
+#'
 #' @export
 translate.nested_model <- function(x, ...) {
   translate(x$eng_args$model_spec[[1]])
 }
 
 #' @importFrom generics required_pkgs
-#' 
+#'
 #' @export
 required_pkgs.nested_model <- function(x, ...) {
   c("nestedmodels", required_pkgs(x$eng_args$model_spec[[1]], ...))

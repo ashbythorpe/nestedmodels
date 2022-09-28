@@ -82,13 +82,13 @@ data <- recipe \%>\%
   recipes::bake(NULL)
 
 recipe2 <- recipes::recipe(example_nested_data, z ~ x + id) \%>\%
-  step_nest(x, z) 
+  step_nest(x, z)
 # equivalent to tidyr::nest(example_nested_data, data = c(x,z))
 
 data2 <- recipe \%>\%
   recipes::prep() \%>\%
   recipes::bake(NULL)
-  
+
 identical(data1, data2) # TRUE
 
 }

@@ -1,5 +1,5 @@
 #' nested_model_fit objects
-#' 
+#'
 #' @param fit A tibble of model fits.
 #' @param spec The original model specification.
 #' @param inner_names A character vector of names

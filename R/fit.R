@@ -2,9 +2,9 @@
 #'
 #' [generics::fit()] method for nested models.
 #' @param object An object of class `nested_model`.
-#' @param formula An object of class `formula`. Passed into 
+#' @param formula An object of class `formula`. Passed into
 #' [parsnip::fit.model_spec()].
-#' @param data A data frame. If used with a 'nested_model' object, the data 
+#' @param data A data frame. If used with a 'nested_model' object, the data
 #' frame must already be nested.
 #' @param case_weights An optional vector of case weights. Passed into
 #' [parsnip::fit.model_spec()].
@@ -19,7 +19,7 @@
 #'   correspond to.
 #'  * `inner_names`: A character vector of names, used to help with
 #'   nesting the data during predictions.
-#'   
+#'
 #' @seealso [parsnip::fit.model_spec()] [parsnip::model_fit]
 #'
 #' @examples
@@ -38,30 +38,32 @@
 #' @export
 fit.nested_model <- function(object, formula, data, case_weights = NULL,
                              control = parsnip::control_parsnip(), ...) {
-  if(!is.null(formula) && !rlang::is_formula(formula)) {
+  if (!is.null(formula) && !rlang::is_formula(formula)) {
     stop_bad_type("formula", "a formula or NULL", formula)
   }
   data <- check_df(data, "data")
-  
+
   model <- extract_inner_model(object)
-  
-  if(!is.null(object$args)) {
+
+  if (!is.null(object$args)) {
     model <- pass_down_args(model, object)
   }
-  
+
   nest_data_results <- nest_data_method(data)
   nested_data <- nest_data_results$data
   nested_colname <- nest_data_results$colname
-  
-  fits <- purrr::map(nested_data[[nested_colname]], safe_fit, object = model,
-                     formula = formula, case_weights = case_weights, 
-                     control = control, ...)
-  
+
+  fits <- purrr::map(nested_data[[nested_colname]], safe_fit,
+    object = model,
+    formula = formula, case_weights = case_weights,
+    control = control, ...
+  )
+
   cols <- colnames(purrr::compact(nested_data[[nested_colname]])[[1]])
-  
-  fit <- nested_data[,names(nested_data) != nested_colname]
+
+  fit <- nested_data[, names(nested_data) != nested_colname]
   fit$.model_fit <- fits
-  
+
   new_nested_model_fit(fit = fit, spec = model, inner_names = cols)
 }
 

@@ -30,7 +30,7 @@
 #' @export
 augment.nested_model_fit <- function(x, new_data, ...) {
   fit <- x$fit
-  
+
   outer_names <- colnames(fit)[colnames(fit) != ".model_fit"]
   inner_names <- x$inner_names
 
@@ -52,15 +52,15 @@ augment.nested_model_fit <- function(x, new_data, ...) {
 
   data_nest <- nest_data(new_data, inner_names, outer_names)
   nested_data <- data_nest$nested_data
-  unnested_data <- data_nest$unnested_data
   nested_column <- data_nest$column
   order <- data_nest$order
 
   model_map <- dplyr::left_join(nested_data, fit, by = outer_names)
 
   pred <- purrr::map2(model_map$.model_fit, model_map[[nested_column]],
-                             augment_nested, ...,
-                             .inner_names = inner_names)
+    augment_nested, ...,
+    .inner_names = inner_names
+  )
 
   predictions <- fix_augmented_predictions(pred, model_map[[nested_column]])
 
@@ -75,7 +75,7 @@ augment_nested <- function(model, data, ..., .inner_names) {
   }
 }
 
-safe_augment <- function() ""
+safe_augment <- function() "" # nocov
 
 fix_augmented_predictions <- function(predictions, data) {
   invalid_predictions <- purrr::map_lgl(predictions, is.null)
@@ -93,7 +93,9 @@ fix_augmented_predictions <- function(predictions, data) {
     ))
     predictions[invalid_predictions] <-
       purrr::map(data[invalid_predictions],
-                 fix_augmented_df_predictions, names = format_names)
+        fix_augmented_df_predictions,
+        names = format_names
+      )
   }
   predictions
 }

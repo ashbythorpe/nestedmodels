@@ -1,21 +1,21 @@
 #' Nested model predictions across many sub-models
-#' 
+#'
 #' [parsnip::multi_predict()] methods for nested models. Allows predictions
 #' to be made on sub-models in a model object.
-#' 
+#'
 #' @param object A `nested_model_fit` object produced by
 #'  [fit.nested_model_spec()].
 #' @param new_data A data frame - can be nested or non-nested.
 #' @param ... Passed onto [parsnip::multi_predict()]
-#' 
+#'
 #' @returns A tibble with the same number of rows as `new_data`, after it
 #' has been unnested.
-#' 
+#'
 #' @seealso [parsnip::multi_predict()]
-#' 
-#' @examples 
+#'
+#' @examples
 #' data("example_nested_data")
-#' 
+#'
 #' model <- parsnip::linear_reg(penalty = 1) %>%
 #'   parsnip::set_engine("glmnet") %>%
 #'   nested()
@@ -25,57 +25,55 @@
 #' fitted <- fit(model, nested_data)
 #'
 #' multi_predict(fitted, example_nested_data, penalty = c(0.1, 0.2, 0.3))
-#' 
+#'
 #' @importFrom parsnip multi_predict
-#' 
+#'
 #' @export
 multi_predict.nested_model_fit <- function(object, new_data, ...) {
   fit <- object$fit
-  
-  order_name <- get_name(".order", colnames(new_data))
-  pred_name <- get_name(".pred", colnames(new_data))
-  
+
   outer_names <- colnames(fit)[colnames(fit) != ".model_fit"]
   inner_names <- object$inner_names
-  
-  if(all(!outer_names %in% colnames(new_data))) {
+
+  if (all(!outer_names %in% colnames(new_data))) {
     cli::cli_abort(c(
-      "None of the columns used to nest the training set exist in 
+      "None of the columns used to nest the training set exist in
         {.arg new_data}."
     ))
-  } else if(any(!outer_names %in% colnames(new_data))) {
+  } else if (any(!outer_names %in% colnames(new_data))) {
     cli::cli_warn(c(
       "Some of the columns used to nest the training set don't exist in
         {.arg new_data}."
     ))
     outer_names <- outer_names[outer_names %in% colnames(new_data)]
-    fit <- fit[,c(outer_names, ".model_fit")] %>%
-      tidyr::chop(.model_fit) %>%
-      dplyr::mutate(.model_fit = .model_fit[[1]])
+    fit <- fit[, c(outer_names, ".model_fit")] %>%
+      tidyr::chop(.data$.model_fit) %>%
+      dplyr::mutate(.model_fit = .data$.model_fit[[1]])
   }
-  
+
   data_nest <- nest_data(new_data, inner_names, outer_names)
   nested_data <- data_nest$nested_data
-  unnested_data <- data_nest$unnested_data
   nested_column <- data_nest$column
   order <- data_nest$order
-  
+
   model_map <- dplyr::left_join(nested_data, fit, by = outer_names)
-  
-  pred <- purrr::map2(model_map$.model_fit, model_map$data, 
-                             multi_predict_nested, ...)
-  
-  predictions <- fix_predictions(pred)
-  
-  dplyr::bind_rows(predictions)[order,]
+
+  pred <- purrr::map2(
+    model_map$.model_fit, model_map[[nested_column]],
+    multi_predict_nested, ...
+  )
+
+  predictions <- fix_predictions(pred, model_map$data)
+
+  dplyr::bind_rows(predictions)[order, ]
 }
 
 multi_predict_nested <- function(model, data, ...) {
-  if(is.null(model)) {
+  if (is.null(model)) {
     NULL
   } else {
     multi_predict(model, data, ...)
   }
 }
 
-safe_multi_predict <- function() {}
+safe_multi_predict <- function() "" # nocov

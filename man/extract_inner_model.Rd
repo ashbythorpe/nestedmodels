@@ -33,7 +33,7 @@ object, or a workflow containing a nested model.
 model <- parsnip::linear_reg() \%>\%
   parsnip::set_engine("lm") \%>\%
   nested()
-  
+
 extract_inner_model(model)
 
 }
