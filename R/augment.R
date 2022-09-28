@@ -1,20 +1,20 @@
 #' Augment data with predictions
-#' 
-#' [generics::augment()] method for nested models. `augment()` will add 
+#'
+#' [generics::augment()] method for nested models. `augment()` will add
 #' column(s) for predictions to the given data.
-#' 
+#'
 #' @param x A `nested_model_fit` object produced by
 #'  [fit.nested_model_spec()].
 #' @param new_data A data frame - can be nested or non-nested.
 #' @param ... Passed onto [parsnip::augment.model_fit()].
-#' 
+#'
 #' @returns A data frame with one or more added columns for predictions.
-#' 
+#'
 #' @seealso [parsnip::augment.model_fit()]
-#' 
-#' @examples 
+#'
+#' @examples
 #' data("example_nested_data")
-#' 
+#'
 #' model <- parsnip::linear_reg() %>%
 #'   parsnip::set_engine("lm") %>%
 #'   nested()
@@ -24,85 +24,84 @@
 #' fitted <- fit(model, nested_data)
 #'
 #' augment(fitted, example_nested_data)
-#' 
+#'
 #' @importFrom generics augment
-#' 
+#'
 #' @export
 augment.nested_model_fit <- function(x, new_data, ...) {
   fit <- x$fit
   
-  order_name <- get_name(".order", colnames(new_data))
-  pred_name <- get_name(".pred", colnames(new_data))
-  
   outer_names <- colnames(fit)[colnames(fit) != ".model_fit"]
   inner_names <- x$inner_names
-  
-  if(all(!outer_names %in% colnames(new_data))) {
+
+  if (all(!outer_names %in% colnames(new_data))) {
     cli::cli_abort(c(
-      "None of the columns used to nest the training set exist in 
+      "None of the columns used to nest the training set exist in
         {.arg new_data}."
     ))
-  } else if(any(!outer_names %in% colnames(new_data))) {
+  } else if (any(!outer_names %in% colnames(new_data))) {
     cli::cli_warn(c(
       "Some of the columns used to nest the training set don't exist in
         {.arg new_data}."
     ))
     outer_names <- outer_names[outer_names %in% colnames(new_data)]
-    fit <- fit[,c(outer_names, ".model_fit")] %>%
-      tidyr::chop(.model_fit) %>%
-      dplyr::mutate(.model_fit = .model_fit[[1]])
+    fit <- fit[, c(outer_names, ".model_fit")] %>%
+      tidyr::chop(.data$.model_fit) %>%
+      dplyr::mutate(.model_fit = .data$.model_fit[[1]])
   }
-  
+
   data_nest <- nest_data(new_data, inner_names, outer_names)
   nested_data <- data_nest$nested_data
   unnested_data <- data_nest$unnested_data
   nested_column <- data_nest$column
   order <- data_nest$order
-  
+
   model_map <- dplyr::left_join(nested_data, fit, by = outer_names)
-  
-  pred <- purrr::map2(model_map$.model_fit, model_map$data, 
+
+  pred <- purrr::map2(model_map$.model_fit, model_map[[nested_column]],
                              augment_nested, ...,
                              .inner_names = inner_names)
-  
-  predictions <- fix_augmented_predictions(pred)
-  
-  dplyr::bind_rows(predictions)[order,]
+
+  predictions <- fix_augmented_predictions(pred, model_map[[nested_column]])
+
+  dplyr::bind_rows(predictions)[order, ]
 }
 
 augment_nested <- function(model, data, ..., .inner_names) {
-  if(is.null(model)) {
+  if (is.null(model)) {
     NULL
   } else {
     safe_augment(model, data, ...)
   }
 }
 
-safe_augment <- function() {}
+safe_augment <- function() ""
 
-fix_augmented_predictions <- function(predictions) {
+fix_augmented_predictions <- function(predictions, data) {
   invalid_predictions <- purrr::map_lgl(predictions, is.null)
   predictions_format <- predictions[[which(!invalid_predictions)[1]]]
   format_names <- colnames(predictions_format)
-  
-  if(all(invalid_predictions)) {
+
+  if (all(invalid_predictions)) {
     cli::cli_warn(c(
       "All of the predictions failed."
     ))
     return(NULL)
-  } else if(any(invalid_predictions)) {
+  } else if (any(invalid_predictions)) {
     cli::cli_warn(c(
       "Some predictions failed."
     ))
-    predictions[invalid_predictions] <- 
-      purrr::map(model_map$data[invalid_predictions],
+    predictions[invalid_predictions] <-
+      purrr::map(data[invalid_predictions],
                  fix_augmented_df_predictions, names = format_names)
   }
   predictions
 }
 
 fix_augmented_df_predictions <- function(data, names) {
-  purrr::map(names, ~ {rep(NA, nrow(data))}) %>%
+  purrr::map(names, ~ {
+    rep(NA, nrow(data))
+  }) %>%
     rlang::set_names(names) %>%
-    dplyr::bind_rows(data, .)
+    dplyr::bind_rows(data, .env$.)
 }

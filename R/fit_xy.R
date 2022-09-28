@@ -1,9 +1,9 @@
 #' Fit a nested model to a dataset using an xy interface.
 #'
 #' [generics::fit_xy()] method for nested models. This should not be
-#' called directly and instead should be called by 
+#' called directly and instead should be called by
 #' [workflows::fit.workflow()].
-#' 
+#'
 #' @param object An object of class `nested_model`.
 #' @param x A data frame of predictors.
 #' @param y A data frame of outcome data.

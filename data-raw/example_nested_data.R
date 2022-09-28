@@ -10,9 +10,9 @@ example_nested_data <- tibble::tibble(
   x = purrr::map(sample.int(1000L, 20L), ~ seq(., . + 49L)) %>%
     purrr::flatten_int(),
   y = 1L:1000L,
-  z = weights[1]*rep(sample(1L:50L), each = 20) + 
-    weights[2]*rep(sample(1L:75L), each = 13, length.out = 1000) + 
-    weights[3]*y + weights[4]*x/100,
+  z = weights[1] * rep(sample(1L:50L), each = 20) +
+    weights[2] * rep(sample(1L:75L), each = 13, length.out = 1000) +
+    weights[3] * y + weights[4] * x / 100,
   a = runif(1000, 0, 100),
   b = rnorm(1000, 50, 25)
 )

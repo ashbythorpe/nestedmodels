@@ -1,6 +1,6 @@
 #' Example nested data
 #'
-#' A dataset containing example data that can be nested. Mainly used for 
+#' A dataset containing example data that can be nested. Mainly used for
 #' examples and testing.
 #'
 #' @format
@@ -14,8 +14,8 @@
 #'    \item{a}{A randomly generated numeric column, ranging from 1 to 100.}
 #'    \item{b}{A randomly generated numeric column, centred around 50.}
 #' }
-#' 
-#' @examples 
-#' 
+#'
+#' @examples
+#'
 #' example_nested_data
 "example_nested_data"
