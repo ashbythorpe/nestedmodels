@@ -17,7 +17,8 @@
 \item{object}{An object of class \code{nested_model}.}
 
 \item{formula}{An object of class \code{formula}. Passed into
-\code{\link[parsnip:fit]{parsnip::fit.model_spec()}}.}
+\code{\link[parsnip:fit]{parsnip::fit.model_spec()}}. This should \emph{not contain} the variable to
+nest by.}
 
 \item{data}{A data frame. If used with a 'nested_model' object, the data
 frame must already be nested.}
@@ -53,7 +54,7 @@ model <- parsnip::linear_reg() \%>\%
 
 nested_data <- tidyr::nest(example_nested_data, data = -id)
 
-fit(model, z ~ ., nested_data)
+fit(model, z ~ x + y + a + b, nested_data)
 
 }
 \seealso{

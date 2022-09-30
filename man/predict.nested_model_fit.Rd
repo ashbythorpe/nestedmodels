@@ -42,7 +42,7 @@ model <- parsnip::linear_reg() \%>\%
 
 nested_data <- tidyr::nest(example_nested_data, data = -id)
 
-fitted <- fit(model, nested_data)
+fitted <- fit(model, z ~ x + y + a + b, nested_data)
 
 predict(fitted, example_nested_data)
 
