@@ -26,8 +26,8 @@ step_nest(
 sequence of operations for this recipe.}
 
 \item{...}{One or more selector functions to choose variables.
-For \code{step_nest}, this indicates the variables which will \emph{not} be nested.
-See \code{\link[recipes:selections]{recipes::selections()}} for more details.}
+For \code{step_nest}, this indicates the variables which will \emph{not} be
+nested. See \code{\link[recipes:selections]{recipes::selections()}} for more details.}
 
 \item{role}{Not used by this step since the new variables are assigned a
 custom role.}
@@ -49,27 +49,37 @@ An updated version of recipe with the new step added to the
 sequence of any existing operations.
 }
 \description{
-\code{step_nest} creates a \emph{specification} of a recipe step that will transform
-data using \code{\link[tidyr:nest]{tidyr::nest()}}
+\code{step_nest} creates a \emph{specification} of a recipe step that will
+convert specified data into a single model term, specifying the 'nest'
+that each row of the dataset corresponds to.
 }
 \details{
-Both the columns to nest and the outer columns must be included in the
-recipe spec.
-\code{step_nest} will give the non-nested columns a new role: 'nested_id'.
-This should not be altered.
-The actual transformation applied to the data resembles the following:
-\code{tidyr::nest(data, data = c(...))}
-This means that you can specify columns to nest in the traditional \code{c(cols)}
-way, or by not wrapping the columns in c(), since the function does it
-automatically.
+\code{step_nest()} will create a single nominal variable (named 'nest_id')
+from a set of variables (of any type). Every unique combination
+of the specified columns will recieve a single nest id.
 
-If you nest the data yourself, the resulting nested column must be named
-'data'.
-For this reason, you must not have a column named 'data' in your inputted
-data.
-If you plan to use \code{\link[recipes:prep]{recipes::prep()}} and \code{\link[recipes:bake]{recipes::bake()}} on your recipe,
-make sure your \code{step_nest} step is last, since other recipe steps will not
-be able to evaluate on nested data.
+This recipe step is designed for use with nested models, since a model
+will be fitted on the data corresponding to each nest id. Using a recipe
+is often easier and more reliable than nesting the data manually.
+
+The nest id corresponding to each unique combination of column values is
+decided when the recipe is prepped (if this recipe is contained in a
+workflow, this happens when the workflow is fitted). This means that
+when using a prepped recipe on new data (using \code{\link[recipes:prep]{recipes::prep()}} or
+\code{\link[workflows:predict-workflow]{workflows::predict.workflow()}}), all unique combinations of nesting
+columns must also exist in the training data. You will be warned if
+this is not the case. If you are using the 'rsample' package to create
+splits and this presents an issue, you may want to consider using
+\code{\link[=nested_resamples]{nested_resamples()}}.
+
+\code{step_nest()} is designed so that nesting the transformed data by its
+'nest_id' column is equivalent to the following action on the
+non-transformed data:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{data \%>\%
+  dplyr::group_by(...) \%>\% # ... represents your specified terms
+  tidyr::nest()
+}\if{html}{\out{</div>}}
 }
 \examples{
 data("example_nested_data")

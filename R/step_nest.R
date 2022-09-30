@@ -1,42 +1,52 @@
 #' Nest transformation
 #'
-#' `step_nest` creates a *specification* of a recipe step that will transform
-#' data using [tidyr::nest()]
+#' `step_nest` creates a *specification* of a recipe step that will 
+#' convert specified data into a single model term, specifying the 'nest'
+#' that each row of the dataset corresponds to.
 #'
 #' @param recipe A recipe object. The step will be added to the
-#'  sequence of operations for this recipe.
+#'   sequence of operations for this recipe.
 #' @param ... One or more selector functions to choose variables.
-#'  For `step_nest`, this indicates the variables which will *not* be nested.
-#'  See [recipes::selections()] for more details.
+#'   For `step_nest`, this indicates the variables which will *not* be 
+#'   nested. See [recipes::selections()] for more details.
 #' @param role Not used by this step since the new variables are assigned a
-#'  custom role.
+#'   custom role.
 #' @param trained A logical to indicate if the quantities for
-#'  preprocessing have been estimated.
+#'   preprocessing have been estimated.
 #' @param skip A logical. Should the step be skipped when the
-#'  recipe is baked by [bake()]? While all operations are baked
-#'  when [prep()] is run, some operations may not be able to be
-#'  conducted on new data (e.g. processing the outcome variable(s)).
-#'  Care should be taken when using `skip = TRUE` as it may affect
-#'  the computations for subsequent operations.
+#'   recipe is baked by [bake()]? While all operations are baked
+#'   when [prep()] is run, some operations may not be able to be
+#'   conducted on new data (e.g. processing the outcome variable(s)).
+#'   Care should be taken when using `skip = TRUE` as it may affect
+#'   the computations for subsequent operations.
 #' @param id A character string that is unique to this step to identify it.
 #' @details
-#' Both the columns to nest and the outer columns must be included in the
-#' recipe spec.
-#' `step_nest` will give the non-nested columns a new role: 'nested_id'.
-#' This should not be altered.
-#' The actual transformation applied to the data resembles the following:
-#' `tidyr::nest(data, data = c(...))`
-#' This means that you can specify columns to nest in the traditional `c(cols)`
-#' way, or by not wrapping the columns in c(), since the function does it
-#' automatically.
-#'
-#' If you nest the data yourself, the resulting nested column must be named
-#' 'data'.
-#' For this reason, you must not have a column named 'data' in your inputted
-#' data.
-#' If you plan to use [recipes::prep()] and [recipes::bake()] on your recipe,
-#' make sure your `step_nest` step is last, since other recipe steps will not
-#' be able to evaluate on nested data.
+#' `step_nest()` will create a single nominal variable (named 'nest_id')
+#' from a set of variables (of any type). Every unique combination
+#' of the specified columns will recieve a single nest id. 
+#' 
+#' This recipe step is designed for use with nested models, since a model
+#' will be fitted on the data corresponding to each nest id. Using a recipe
+#' is often easier and more reliable than nesting the data manually.
+#' 
+#' The nest id corresponding to each unique combination of column values is
+#' decided when the recipe is prepped (if this recipe is contained in a
+#' workflow, this happens when the workflow is fitted). This means that
+#' when using a prepped recipe on new data (using [recipes::prep()] or
+#' [workflows::predict.workflow()]), all unique combinations of nesting
+#' columns must also exist in the training data. You will be warned if
+#' this is not the case. If you are using the 'rsample' package to create
+#' splits and this presents an issue, you may want to consider using
+#' [nested_resamples()].
+#' 
+#' `step_nest()` is designed so that nesting the transformed data by its
+#' 'nest_id' column is equivalent to the following action on the
+#' non-transformed data:
+#' ```
+#' data %>%
+#'   dplyr::group_by(...) %>% # ... represents your specified terms
+#'   tidyr::nest()
+#' ```
 #'
 #' @returns An updated version of recipe with the new step added to the
 #' sequence of any existing operations.
@@ -132,7 +142,7 @@ bake.step_nest <- function(object, new_data, ...) {
     new_data$nest_id <- NA_character_
     return(new_data)
   }
-
+  
   res <- dplyr::left_join(new_data, lookup_table, by = names) %>%
     dplyr::select(-dplyr::all_of(names)) %>%
     tibble::as_tibble()

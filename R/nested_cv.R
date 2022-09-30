@@ -1,3 +1,17 @@
+#' Combine multiple nested_cv objects
+#' 
+#' This function takes the results of multiple [rsample::nested_cv()] calls
+#' and combines them into one `nested_cv` object.
+#' 
+#' @param resamples A list of `nested_cv` objects.
+#' @param data The unnested data frame.
+#' @param x A list of data frames which each item of `data` was created using.
+#' @param action A 'size_action' option (a string), used to match the sizes
+#'   of inner and outer resamples.
+#'   
+#' @returns A `nested_cv` object.
+#' 
+#' @noRd
 combine_nested_cv <- function(resamples, data, x, action) {
   res <- match_sizes(resamples, "truncate")
   format <- res$rset[[res$index]]
@@ -29,6 +43,7 @@ combine_nested_cv <- function(resamples, data, x, action) {
   new_nested_rset(splits, format = format, inner_resamples = final_inner)
 }
 
+#' @noRd
 combine_nested_cvs <- function(splits, format, index, data) {
   x <- purrr::map(splits, list("splits", 1, "data"))
   purrr::map(splits, "splits") %>%

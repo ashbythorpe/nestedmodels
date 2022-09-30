@@ -18,7 +18,8 @@ required_pkgs.nested_model_fit <- function(x, ...) {
 
 #' @export
 print.nested_model_fit <- function(x, ...) {
-  cat("Nested model fit\n")
+  des <- paste("Nested model fit, with", nrow(x$fit), "inner models\n")
+  cat(des)
   print(x$fit, ...)
   invisible(x)
 }

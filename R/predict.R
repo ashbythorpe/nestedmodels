@@ -4,18 +4,18 @@
 #' [stats::predict()] methods for nested model fits.
 #'
 #' @param object A `nested_model_fit` object produced by
-#'  [fit.nested_model_spec()].
+#'   [fit.nested_model_spec()].
 #' @param new_data A data frame to make predictions on. Can be nested or
-#'  non-nested.
+#'   non-nested.
 #' @param type A singular character vector or NULL. Passed on to
-#'  [parsnip::predict.model_fit()].
+#'   [parsnip::predict.model_fit()].
 #' @param opts A list of optional arguments. Passed on to
-#'  [parsnip::predict.model_fit()].
+#'   [parsnip::predict.model_fit()].
 #' @param ... Arguments for the underlying model's predict function. Passed on
-#'  to [parsnip::predict.model_fit()].
+#'   to [parsnip::predict.model_fit()].
 #'
 #' @returns A data frame of model predictions. For `predict_raw()`, a
-#' matrix, data frame, vector or list.
+#'   matrix, data frame, vector or list.
 #'
 #' @seealso [parsnip::predict.model_fit()]
 #'
@@ -28,7 +28,7 @@
 #'
 #' nested_data <- tidyr::nest(example_nested_data, data = -id)
 #'
-#' fitted <- fit(model, nested_data)
+#' fitted <- fit(model, z ~ x + y + a + b, nested_data)
 #'
 #' predict(fitted, example_nested_data)
 #'
@@ -57,7 +57,7 @@ predict.nested_model_fit <- function(object, new_data, type = NULL,
     outer_names <- outer_names[outer_names %in% colnames(new_data)]
     fit <- fit[, c(outer_names, ".model_fit")] %>%
       tidyr::chop(.data$.model_fit) %>%
-      dplyr::mutate(.model_fit = .data$.model_fit[[1]])
+      dplyr::mutate(.model_fit = purrr::map(.data$.model_fit, 1))
   }
 
   data_nest <- nest_data(new_data, inner_names, outer_names)
@@ -97,6 +97,7 @@ predict_raw.nested_model_fit <- function(object, new_data, opts = list(), ...) {
   predict(object, new_data = new_data, type = "raw", opts = opts, ...)
 }
 
+#' @noRd
 predict_nested <- function(model, data, ...) {
   if (is.null(model)) {
     NULL
@@ -105,6 +106,7 @@ predict_nested <- function(model, data, ...) {
   }
 }
 
+#' @noRd
 fix_predictions <- function(pred, data) {
   invalid_predictions <- purrr::map_lgl(pred, is.null)
   predictions_format <- pred[[which(!invalid_predictions)[1]]]
@@ -135,13 +137,15 @@ fix_predictions <- function(pred, data) {
       pred[invalid_predictions] <-
         purrr::map(data[invalid_predictions],
           fix_matrix_predictions,
-          names = format_names
+          names = format_names,
+          ncol = ncol(predictions_format)
         )
     }
   }
   pred
 }
 
+#' @noRd
 fix_df_predictions <- function(data, names) {
   purrr::map(names, ~ {
     rep(NA, nrow(data))
@@ -150,27 +154,21 @@ fix_df_predictions <- function(data, names) {
     tibble::as_tibble()
 }
 
+#' @noRd
 fix_vector_predictions <- function(data) {
   rep(NA, nrow(data))
 }
 
-fix_matrix_predictions <- function(data, names) {
-  if (is.null(names)) {
-    purrr::map(seq_len(ncol(data)), ~ {
-      rep(NA, nrow(data))
-    }) %>%
-      as.data.frame() %>%
-      as.matrix()
+#' @noRd
+fix_matrix_predictions <- function(data, names, ncol) {
+  if(is.null(names)) {
+    dimnames <- NULL
   } else {
-    purrr::map(names, ~ {
-      rep(NA, nrow(data))
-    }) %>%
-      purrr::set_names(names) %>%
-      as.data.frame() %>%
-      as.matrix()
+    dimnames <- list(NULL, names)
   }
+  matrix(nrow = nrow(data), ncol = ncol, 
+         dimnames = dimnames)
 }
 
-ncol(matrix(c(1, 2, 3)))
-
+#' @noRd
 safe_predict <- function() "" # nocov

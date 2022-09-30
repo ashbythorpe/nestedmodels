@@ -3,32 +3,40 @@
 \name{tidy.nested_model_fit}
 \alias{tidy.nested_model_fit}
 \alias{glance.nested_model_fit}
+\alias{glance_nested}
 \title{Turn a nested model into a tidy tibble}
 \usage{
 \method{tidy}{nested_model_fit}(x, ...)
 
 \method{glance}{nested_model_fit}(x, ...)
+
+glance_nested(x, ...)
 }
 \arguments{
 \item{x}{The object to be converted into a tidy \code{\link[tibble:tibble]{tibble::tibble()}}.}
 
 \item{...}{Additional arguments passed into their respective functions.
-(e.g. for \code{tidy.nested_model_fit()}, \code{\link[parsnip:tidy.model_fit]{parsnip::tidy.model_fit()}}).}
+(e.g. for \code{tidy.nested_model_fit}, \code{\link[parsnip:tidy.model_fit]{parsnip::tidy.model_fit()}}).}
 }
 \value{
-A \code{\link[tibble:tibble]{tibble::tibble()}}. With \code{glance()}, the tibble will have
-1 row.
+A \code{\link[tibble:tibble]{tibble::tibble()}}. With \code{glance.nested_model_fit()}, the
+tibble will have 1 row.
 }
 \description{
-These methods allow the usage of \code{broom} functions on fitted nested models.
+Use \code{broom} functions on fitted nested models.
+
+\code{tidy.nested_model_fit} summarises components of each model within a
+nested model fit, indicating which nested data frame each row corresponds
+to.
+
+\code{glance.nested_model_fit} summarises a nested model, returning a
+\code{\link[tibble:tibble]{tibble::tibble()}} with 1 row.
+
+\code{glance_nested} summarises each model within a nested model fit,
+returning a \code{\link[tibble:tibble]{tibble::tibble()}} with the same number of rows as the number
+of inner models.
 }
 \details{
-Tidying a nested object generally involves applying an already defined
-\code{broom} method to a set of nested data frames or a set of objects produced
-from nested data frames, and then combining the result back into a tibble.
-}
-\section{Glance}{
-
 \code{\link[generics:glance]{generics::glance()}} states that \code{glance} methods should always return 1
 row outputs for non-empty inputs. The 'nestedmodels' package is no
 exception: \code{glance} methods will combine rows to produce a result with a
@@ -38,17 +46,20 @@ single row. Specifically:
 \item If a column is numeric, the mean will be calculated.
 \item Otherwise, the results will be combined into a list.
 }
-
-This may not give you the most useful of results.
-If you want to generate non-combined glances about every nested data frame,
-use:
-\code{purrr::map(x, glance)}, \code{lapply(x, glance)}
-or similar.
 }
-
 \examples{
-data("example_nested_data")
-resamples <- nested_resamples(id, rsample::vfold_cv, example_nested_data)
-tidy(resamples)
 
+model <- parsnip::linear_reg() \%>\%
+  parsnip::set_engine("lm") \%>\%
+  nested()
+  
+fit <- fit(model, z ~ ., tidyr::group_by(example_nested_data, .data$id))
+
+tidy(fit)
+glance(fit)
+glance_nested(fit)
+
+}
+\seealso{
+\code{\link[generics:tidy]{generics::tidy()}} \code{\link[generics:glance]{generics::glance()}}
 }

@@ -1,9 +1,9 @@
-#' Create splits on nested data
+#' Create splits with nested data
 #'
-#' `nested_resamples` allows you to use any rsample split function on
-#' nested data, where nests act as strata. This almost guarantees that
-#' every split will contain data from every nest.
-#'
+#' Use any 'rsample' split function on nested data, where nests act as 
+#' strata. This almost guarantees that every split will contain data from 
+#' every nest.
+#' 
 #' @param data A data frame.
 #' @param resamples An expression, function, formula or string that can
 #'  be evaluated to produce an `rset` or `rsplit` object.

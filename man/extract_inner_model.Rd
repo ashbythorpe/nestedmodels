@@ -25,8 +25,8 @@ extract_inner_model(x, ...)
 A \code{model_spec} object
 }
 \description{
-This function allows you to extract the inner model of a \code{nested_model}
-object, or a workflow containing a nested model.
+Extract the inner model of a \code{nested_model} object, or a workflow
+containing a nested model.
 }
 \examples{
 

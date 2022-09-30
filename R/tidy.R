@@ -1,17 +1,24 @@
 #' Turn a nested model into a tidy tibble
 #'
-#' These methods allow the usage of `broom` functions on fitted nested models.
+#' @description 
+#' Use `broom` functions on fitted nested models.
+#'
+#' `tidy.nested_model_fit` summarises components of each model within a
+#' nested model fit, indicating which nested data frame each row corresponds
+#' to.
+#' 
+#' `glance.nested_model_fit` summarises a nested model, returning a
+#' [tibble::tibble()] with 1 row.
+#' 
+#' `glance_nested` summarises each model within a nested model fit, 
+#' returning a [tibble::tibble()] with the same number of rows as the number
+#' of inner models.
 #'
 #' @param x The object to be converted into a tidy [tibble::tibble()].
 #' @param ... Additional arguments passed into their respective functions.
-#' (e.g. for `tidy.nested_model_fit()`, [parsnip::tidy.model_fit()]).
+#'   (e.g. for `tidy.nested_model_fit`, [parsnip::tidy.model_fit()]).
 #'
 #' @details
-#' Tidying a nested object generally involves applying an already defined
-#' `broom` method to a set of nested data frames or a set of objects produced
-#' from nested data frames, and then combining the result back into a tibble.
-#'
-#' @section Glance:
 #' [generics::glance()] states that `glance` methods should always return 1
 #' row outputs for non-empty inputs. The 'nestedmodels' package is no
 #' exception: `glance` methods will combine rows to produce a result with a
@@ -20,19 +27,22 @@
 #' * If a column is numeric, the mean will be calculated.
 #' * Otherwise, the results will be combined into a list.
 #'
-#' This may not give you the most useful of results.
-#' If you want to generate non-combined glances about every nested data frame,
-#' use:
-#' `purrr::map(x, glance)`, `lapply(x, glance)`
-#' or similar.
+#' @returns A [tibble::tibble()]. With `glance.nested_model_fit()`, the 
+#' tibble will have 1 row.
 #'
-#' @returns A [tibble::tibble()]. With `glance()`, the tibble will have
-#' 1 row.
+#' @seealso [generics::tidy()] [generics::glance()]
 #'
 #' @examples
-#' data("example_nested_data")
-#' resamples <- nested_resamples(id, rsample::vfold_cv, example_nested_data)
-#' tidy(resamples)
+#' 
+#' model <- parsnip::linear_reg() %>%
+#'   parsnip::set_engine("lm") %>%
+#'   nested()
+#'   
+#' fit <- fit(model, z ~ ., tidyr::group_by(example_nested_data, .data$id))
+#' 
+#' tidy(fit)
+#' glance(fit)
+#' glance_nested(fit)
 #'
 #' @importFrom generics tidy
 #' @importFrom generics glance
@@ -41,7 +51,7 @@
 tidy.nested_model_fit <- function(x, ...) {
   fit <- x$fit
   tidy_name <- get_name(".tidied", colnames(fit))
-  fit[[tidy_name]] <- purrr::map(fit$.model_fit, broom::tidy, ...)
+  fit[[tidy_name]] <- purrr::map(fit$.model_fit, tidy, ...)
   fit %>%
     dplyr::select(-.data$.model_fit) %>%
     tidyr::unnest(.data[[tidy_name]])
@@ -51,17 +61,32 @@ tidy.nested_model_fit <- function(x, ...) {
 #' @export
 glance.nested_model_fit <- function(x, ...) {
   purrr::map(x$fit$.model_fit, glance) %>%
-    purrr::pmap(combine_nested_rows) %>%
+    dplyr::bind_rows() %>%
+    purrr::map(combine_nested_rows) %>%
     tibble::as_tibble()
 }
 
-combine_nested_rows <- function(...) {
-  x <- c(...)
-  if (is.numeric(x)) {
+#' @rdname tidy.nested_model_fit
+#' @export
+glance_nested <- function(x, ...) {
+  if(!inherits(x, "nested_model_fit")) {
+    stop_bad_class("x", "nested_model_fit", class(x))
+  }
+  
+  fit <- x$fit
+  tidy_name <- get_name(".tidied", colnames(fit))
+  fit[[tidy_name]] <- purrr::map(fit$.model_fit, glance, ...)
+  fit %>%
+    dplyr::select(-.data$.model_fit) %>%
+    tidyr::unnest(.data[[tidy_name]])
+}
+
+combine_nested_rows <- function(x) {
+  if (length(unique(x)) == 1) {
+    x[1]
+  } else if (is.numeric(x)) {
     mean(x, na.rm = TRUE)
-  } else if (length(unique(x)) == 1) {
-    x
   } else {
-    rlang::list2(!!!x)
+    list(x)
   }
 }

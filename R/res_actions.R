@@ -1,7 +1,13 @@
-#' A set of actions to a pply to an 'rset' object
+#' A set of actions to a apply to an rset object
+#' 
+#' Apply a series of operations to an `rset` object, to change its size to
+#' a specified value.
+#' 
+#' @param res An object with class `rset` (or `rsplit`).
+#' @param len An integer. The length that the final object should be.
 #'
-#' @param res An object with class 'rset' (or 'rsplit').
-#' @param len The length that the final object should be.
+#' @returns A tibble. This may not have the same attributes as the input,
+#' since some modifications may remove the class of the `rset`
 #'
 #' @noRd
 res_truncate <- function(res, len) {
@@ -11,6 +17,7 @@ res_truncate <- function(res, len) {
   res[1:len, ]
 }
 
+#' @noRd
 res_combine <- function(res, len) {
   if (nrow(res) == len) {
     return(res)
@@ -30,6 +37,7 @@ res_combine <- function(res, len) {
   lres
 }
 
+#' @noRd
 res_combine_end <- function(res, len) {
   if (nrow(res) == len) {
     return(res)
@@ -44,6 +52,7 @@ res_combine_end <- function(res, len) {
   lres
 }
 
+#' @noRd
 res_combine_random <- function(res, len) {
   if (nrow(res) == len) {
     return(res)
@@ -67,6 +76,7 @@ res_combine_random <- function(res, len) {
   lres
 }
 
+#' @noRd
 res_recycle <- function(res, len) {
   if (nrow(res) == len) {
     return(res)
@@ -81,6 +91,7 @@ res_recycle <- function(res, len) {
   lres
 }
 
+#' @noRd
 res_recycle_random <- function(res, len) {
   if (nrow(res) == len) {
     return(res)
@@ -98,6 +109,7 @@ res_recycle_random <- function(res, len) {
   lres
 }
 
+#' @noRd
 res_extend <- function(res, len) {
   extended_res <- tibble::add_row(res, splits = rep(NA, len - nrow(res)))
   id_prefix <- stringr::str_extract(res$id[1], "^[:alpha:]+")
@@ -105,6 +117,7 @@ res_extend <- function(res, len) {
   extended_res
 }
 
+#' @noRd
 safe_sample <- function(x, ...) {
   if (length(x == 1)) {
     x
@@ -113,6 +126,7 @@ safe_sample <- function(x, ...) {
   }
 }
 
+#' @noRd
 combine_same_rsets <- function(splits) {
   full_splits <- purrr::map(splits, rsample::populate)
 
@@ -129,6 +143,7 @@ combine_same_rsets <- function(splits) {
     rsample::make_splits(data = data)
 }
 
+#' @noRd
 combine_indices <- function(l1, l2) {
   list(
     unique(c(l1[[1]], l2[[1]][!l2[[1]] %in% l1[[2]]])),

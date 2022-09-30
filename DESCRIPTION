@@ -15,32 +15,24 @@ URL: https://github.com/ashbythorpe/nestedmodels,
 BugReports: https://github.com/ashbythorpe/nestedmodels/issues
 Imports: 
     broom,
-    butcher,
     cli,
     dplyr,
-    finetune,
     forcats,
-    foreach,
     generics,
-    ggplot2,
     glue,
-    gridExtra,
     lifecycle,
     magrittr,
     methods,
-    pillar,
     purrr,
     rlang (>= 0.4.11),
     tibble,
     tidyr,
     withr,
-    workflowsets
 Suggests: 
     glmnet,
     knitr,
     rmarkdown,
     roxygen2,
-    stacks,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8

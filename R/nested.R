@@ -79,8 +79,8 @@ is_nested.workflow <- function(x, ...) {
 
 #' Get the inner model of a nested model object
 #'
-#' This function allows you to extract the inner model of a `nested_model`
-#' object, or a workflow containing a nested model.
+#' Extract the inner model of a `nested_model` object, or a workflow 
+#' containing a nested model.
 #'
 #' @param x A model spec or workflow
 #'

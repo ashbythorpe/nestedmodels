@@ -69,10 +69,10 @@ nested_model <- model %>%
 nested_model
 ```
 
-We can then fit this model in the usual way. Note that the data must be nested.
+We can then fit this model in the usual way. Note that the data must be nested, and formula cannot include the id column.
 
 ```{r fit_nested_model}
-model_fit <- fit(nested_model, z ~ ., nested_data)
+model_fit <- fit(nested_model, z ~ x + y + a + b, nested_data)
 ```
 
 Predicting can also be done in the usual way (the data to predict on can be both nested and non-nested). Since this is just a demonstration, we use the same data that the model was fitted on.
@@ -84,10 +84,10 @@ predict(model_fit, nested_data)
 
 This method is fine, but having to nest the data ourselves is a pain. We can solve this by using a workflow.
 
-We first define the recipe, and we define a step which is used to nest the data.
+We first define the recipe, and we define a step which is used to nest the data. This time, the formula can include the 'id' column, since the recipe needs to act on it.
 
 ```{r recipe}
-recipe <- recipe(data, z ~ .) %>%
+recipe <- recipe(data, z ~ z ~ x + y + a + b) %>%
   step_nest(id)
 ```
 

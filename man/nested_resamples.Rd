@@ -2,7 +2,7 @@
 % Please edit documentation in R/nested_resamples.R
 \name{nested_resamples}
 \alias{nested_resamples}
-\title{Create splits on nested data}
+\title{Create splits with nested data}
 \usage{
 nested_resamples(
   data,
@@ -32,9 +32,9 @@ Either an \code{rsplit} object or an \code{rset} object, depending on
 \code{resamples}.
 }
 \description{
-\code{nested_resamples} allows you to use any rsample split function on
-nested data, where nests act as strata. This almost guarantees that
-every split will contain data from every nest.
+Use any 'rsample' split function on nested data, where nests act as
+strata. This almost guarantees that every split will contain data from
+every nest.
 }
 \details{
 This function breaks down a data frame into smaller, nested data frames.

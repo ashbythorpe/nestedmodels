@@ -1,23 +1,25 @@
 #' Fit a nested model to a dataset
 #'
 #' [generics::fit()] method for nested models.
+#' 
 #' @param object An object of class `nested_model`.
 #' @param formula An object of class `formula`. Passed into
-#' [parsnip::fit.model_spec()].
+#'   [parsnip::fit.model_spec()]. This should *not contain* the variable to
+#'   nest by.
 #' @param data A data frame. If used with a 'nested_model' object, the data
-#' frame must already be nested.
+#'   frame must already be nested.
 #' @param case_weights An optional vector of case weights. Passed into
-#' [parsnip::fit.model_spec()].
+#'   [parsnip::fit.model_spec()].
 #' @param control A [parsnip::control_parsnip()] object. Passed into
-#' [parsnip::fit.model_spec()].
+#'   [parsnip::fit.model_spec()].
 #' @param ... Passed into [parsnip::fit.model_spec()]. Currently unused.
 #'
 #' @returns A `nested_model_fit` object with several elements:
-#'  * `spec`: The model specification object (the inner model of the
+#' * `spec`: The model specification object (the inner model of the
 #'   nested model object)
-#'  * `fit`: A tibble containing the model fits and the nests that they
+#' * `fit`: A tibble containing the model fits and the nests that they
 #'   correspond to.
-#'  * `inner_names`: A character vector of names, used to help with
+#' * `inner_names`: A character vector of names, used to help with
 #'   nesting the data during predictions.
 #'
 #' @seealso [parsnip::fit.model_spec()] [parsnip::model_fit]
@@ -31,16 +33,13 @@
 #'
 #' nested_data <- tidyr::nest(example_nested_data, data = -id)
 #'
-#' fit(model, z ~ ., nested_data)
+#' fit(model, z ~ x + y + a + b, nested_data)
 #'
 #' @importFrom generics fit
 #'
 #' @export
 fit.nested_model <- function(object, formula, data, case_weights = NULL,
                              control = parsnip::control_parsnip(), ...) {
-  if (!is.null(formula) && !rlang::is_formula(formula)) {
-    stop_bad_type("formula", "a formula or NULL", formula)
-  }
   data <- check_df(data, "data")
 
   model <- extract_inner_model(object)
@@ -67,6 +66,7 @@ fit.nested_model <- function(object, formula, data, case_weights = NULL,
   new_nested_model_fit(fit = fit, spec = model, inner_names = cols)
 }
 
+#' @noRd
 safe_fit <- function(...) {
   try(fit(...))
 }

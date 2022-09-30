@@ -45,22 +45,20 @@ called directly and instead should be called by
 \code{\link[workflows:fit-workflow]{workflows::fit.workflow()}}.
 }
 \examples{
-if (requireNamespace("workflows")) {
-  data("example_nested_data")
+data("example_nested_data")
 
-  model <- parsnip::linear_reg() \%>\%
-    parsnip::set_engine("lm") \%>\%
-    nested()
+model <- parsnip::linear_reg() \%>\%
+  parsnip::set_engine("lm") \%>\%
+  nested()
 
-  recipe <- recipes::recipe(example_nested_data, z ~ x + y + id) \%>\%
-    step_nest(id)
+recipe <- recipes::recipe(example_nested_data, z ~ x + y + id) \%>\%
+  step_nest(id)
 
-  wf <- workflows::workflow() \%>\%
-    workflows::add_recipe(recipe) \%>\%
-    workflows::add_model(model)
+wf <- workflows::workflow() \%>\%
+  workflows::add_recipe(recipe) \%>\%
+  workflows::add_model(model)
 
-  fit(wf, example_nested_data)
-}
+fit(wf, example_nested_data)
 
 }
 \seealso{

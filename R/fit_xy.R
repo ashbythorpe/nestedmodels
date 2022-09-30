@@ -8,38 +8,36 @@
 #' @param x A data frame of predictors.
 #' @param y A data frame of outcome data.
 #' @param case_weights An optional vector of case weights. Passed into
-#' [parsnip::fit.model_spec()].
+#'   [parsnip::fit.model_spec()].
 #' @param control A [parsnip::control_parsnip()] object. Passed into
-#' [parsnip::fit.model_spec()].
+#'   [parsnip::fit.model_spec()].
 #' @param ... Passed into [parsnip::fit.model_spec()]. Currently unused.
 #'
 #' @returns A `nested_model_fit` object with several elements:
-#'  * `spec`: The model specification object (the inner model of the
+#' * `spec`: The model specification object (the inner model of the
 #'   nested model object)
-#'  * `fit`: A tibble containing the model fits and the nests that they
+#' * `fit`: A tibble containing the model fits and the nests that they
 #'   correspond to.
-#'  * `inner_names`: A character vector of names, used to help with
+#' * `inner_names`: A character vector of names, used to help with
 #'   nesting the data during predictions.
 #'
 #' @seealso [parsnip::fit.model_spec()] [parsnip::model_fit]
 #'
 #' @examples
-#' if (requireNamespace("workflows")) {
-#'   data("example_nested_data")
+#' data("example_nested_data")
 #'
-#'   model <- parsnip::linear_reg() %>%
-#'     parsnip::set_engine("lm") %>%
-#'     nested()
+#' model <- parsnip::linear_reg() %>%
+#'   parsnip::set_engine("lm") %>%
+#'   nested()
 #'
-#'   recipe <- recipes::recipe(example_nested_data, z ~ x + y + id) %>%
-#'     step_nest(id)
+#' recipe <- recipes::recipe(example_nested_data, z ~ x + y + id) %>%
+#'   step_nest(id)
 #'
-#'   wf <- workflows::workflow() %>%
-#'     workflows::add_recipe(recipe) %>%
-#'     workflows::add_model(model)
+#' wf <- workflows::workflow() %>%
+#'   workflows::add_recipe(recipe) %>%
+#'   workflows::add_model(model)
 #'
-#'   fit(wf, example_nested_data)
-#' }
+#' fit(wf, example_nested_data)
 #'
 #' @importFrom generics fit_xy
 #'
@@ -94,15 +92,7 @@ fit_xy.nested_model <- function(object, x, y, case_weights = NULL,
   new_nested_model_fit(spec = model, fit = fit, inner_names = cols)
 }
 
-pass_down_args <- function(inner, outer) {
-  inner_args <- inner$args
-  outer_args <- outer$args
-  keep_inner_args <- inner_args[!names(inner_args) %in% names(outer_args)]
-  final_args <- c(keep_inner_args, outer_args)
-  inner$args <- final_args
-  inner
-}
-
+#' @noRd
 safe_fit_xy <- function(...) {
   try(fit_xy(...))
 }

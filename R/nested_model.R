@@ -1,3 +1,13 @@
+#' Constructor for 'nested_model' objects
+#' 
+#' Construct a 'nested_model' object.
+#' 
+#' @param mode The model mode (e.g. 'regression')
+#' @param model_spec A `model_spec` object.
+#' 
+#' @returns An object with classes `nested_model` and `model_spec`
+#' 
+#' @noRd
 nested_model <- function(mode, model_spec) {
   eng_args <- list(model_spec = list(model_spec))
 

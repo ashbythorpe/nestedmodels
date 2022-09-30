@@ -1,15 +1,21 @@
 
+#' @noRd
 get_name <- function(name, colnames) {
-  vctrs::vec_as_names(c(name, colnames), repair = "unique", quiet = TRUE)[1]
+  vctrs::vec_as_names(c(name, colnames), repair = "unique", 
+                      quiet = TRUE)[1]
 }
 
+#' @noRd
 get_nested_step <- function(recipe) {
   index <- get_nested_step_index(recipe)
   recipe$steps[[index]]
 }
 
+#' @noRd
 check_df <- function(x, name) {
-  if (!is.data.frame(x)) {
+  if(is.vector(x) || is.null(x)) {
+    stop_bad_type(name, "a data frame", x)
+  } else if (!is.data.frame(x)) {
     x <- tryCatch(
       as.data.frame(x),
       error = function(c) stop_bad_type(name, "a data frame", x)
@@ -18,6 +24,7 @@ check_df <- function(x, name) {
   x
 }
 
+#' @noRd
 nest_data_method <- function(data, nesting_method = NULL) {
   colname <- get_name(".data", colnames(data))
   if (is.null(nesting_method)) {
@@ -49,6 +56,7 @@ nest_data_method <- function(data, nesting_method = NULL) {
   )
 }
 
+#' @noRd
 find_nested_column <- function(data) {
   list_columns <- purrr::map_lgl(data, is.list)
 
@@ -74,6 +82,7 @@ find_nested_column <- function(data) {
   }
 }
 
+#' @noRd
 get_nested_step_index <- function(recipe) {
   recipe$steps %>%
     purrr::map(class) %>%
@@ -83,23 +92,18 @@ get_nested_step_index <- function(recipe) {
     which()
 }
 
-
-remove_class <- function(object, class) {
-  class(object) <-
-    setdiff(class(object), class)
-  object
-}
-
+#' @noRd
 as_ordered_factor <- function(x) {
   forcats::as_factor(x) %>%
     forcats::fct_inorder()
 }
 
-# copied from the rlang package
-# `%||%` <- function(x, y) {
-#   if (is.null(x)) {
-#     y
-#   } else {
-#     x
-#   }
-# }
+#' @noRd
+pass_down_args <- function(inner, outer) {
+  inner_args <- inner$args
+  outer_args <- outer$args
+  keep_inner_args <- inner_args[!names(inner_args) %in% names(outer_args)]
+  final_args <- c(keep_inner_args, outer_args)
+  inner$args <- final_args
+  inner
+}

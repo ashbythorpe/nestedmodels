@@ -31,7 +31,9 @@
 #' @export
 multi_predict.nested_model_fit <- function(object, new_data, ...) {
   fit <- object$fit
-
+  
+  new_data <- check_df(new_data, "new_data")
+  
   outer_names <- colnames(fit)[colnames(fit) != ".model_fit"]
   inner_names <- object$inner_names
 
@@ -48,7 +50,7 @@ multi_predict.nested_model_fit <- function(object, new_data, ...) {
     outer_names <- outer_names[outer_names %in% colnames(new_data)]
     fit <- fit[, c(outer_names, ".model_fit")] %>%
       tidyr::chop(.data$.model_fit) %>%
-      dplyr::mutate(.model_fit = .data$.model_fit[[1]])
+      dplyr::mutate(.model_fit = purrr::map(.data$.model_fit, 1))
   }
 
   data_nest <- nest_data(new_data, inner_names, outer_names)

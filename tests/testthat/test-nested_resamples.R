@@ -1,4 +1,11 @@
 test_that("nested_resamples works", {
+  expect_error(nested_resamples(NULL), class = "bad_type")
+  
+  expect_error(nested_resamples(tibble::tibble(x = 1), rsample::vfold_cv(),
+               nesting_method = 1), class = "bad_type")
+  
+  expect_error(nested_resamples(example_nested_data))
+  
   recipe <- recipes::recipe(example_nested_data, z ~ .) %>%
     step_nest(id)
 
@@ -35,10 +42,18 @@ test_that("nested_resamples works", {
     nesting_method = wf
   ) %>%
     expect_s3_class(class(rsample::bootstraps(example_nested_data)))
-
+  
+  nested_resamples(example_nested_data, "validation_split", 
+                   nesting_method = recipe) %>%
+    expect_s3_class(class(rsample::validation_split(example_nested_data)))
+  
   withr::with_seed(42, {
     nested_resamples(dplyr::group_by(example_nested_data, id), diff_lens,
       size_action = "recycle-random"
+    ) %>%
+      expect_s3_class(class(rsample::vfold_cv(example_nested_data)))
+    nested_resamples(dplyr::group_by(example_nested_data, id), "diff_lens",
+                     size_action = "combine-random"
     ) %>%
       expect_s3_class(class(rsample::vfold_cv(example_nested_data)))
   })

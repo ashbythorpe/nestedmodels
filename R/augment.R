@@ -4,7 +4,7 @@
 #' column(s) for predictions to the given data.
 #'
 #' @param x A `nested_model_fit` object produced by
-#'  [fit.nested_model_spec()].
+#'   [fit.nested_model_spec()].
 #' @param new_data A data frame - can be nested or non-nested.
 #' @param ... Passed onto [parsnip::augment.model_fit()].
 #'
@@ -30,7 +30,9 @@
 #' @export
 augment.nested_model_fit <- function(x, new_data, ...) {
   fit <- x$fit
-
+  
+  new_data <- check_df(new_data, "new_data")
+  
   outer_names <- colnames(fit)[colnames(fit) != ".model_fit"]
   inner_names <- x$inner_names
 
@@ -47,7 +49,7 @@ augment.nested_model_fit <- function(x, new_data, ...) {
     outer_names <- outer_names[outer_names %in% colnames(new_data)]
     fit <- fit[, c(outer_names, ".model_fit")] %>%
       tidyr::chop(.data$.model_fit) %>%
-      dplyr::mutate(.model_fit = .data$.model_fit[[1]])
+      dplyr::mutate(.model_fit = purrr::map(.data$.model_fit, 1))
   }
 
   data_nest <- nest_data(new_data, inner_names, outer_names)
@@ -63,10 +65,11 @@ augment.nested_model_fit <- function(x, new_data, ...) {
   )
 
   predictions <- fix_augmented_predictions(pred, model_map[[nested_column]])
-
+  
   dplyr::bind_rows(predictions)[order, ]
 }
 
+#' @noRd
 augment_nested <- function(model, data, ..., .inner_names) {
   if (is.null(model)) {
     NULL
@@ -75,18 +78,19 @@ augment_nested <- function(model, data, ..., .inner_names) {
   }
 }
 
+#' @noRd
 safe_augment <- function() "" # nocov
 
+#' @noRd
 fix_augmented_predictions <- function(predictions, data) {
   invalid_predictions <- purrr::map_lgl(predictions, is.null)
   predictions_format <- predictions[[which(!invalid_predictions)[1]]]
   format_names <- colnames(predictions_format)
 
   if (all(invalid_predictions)) {
-    cli::cli_warn(c(
+    cli::cli_abort(c(
       "All of the predictions failed."
     ))
-    return(NULL)
   } else if (any(invalid_predictions)) {
     cli::cli_warn(c(
       "Some predictions failed."
@@ -100,10 +104,12 @@ fix_augmented_predictions <- function(predictions, data) {
   predictions
 }
 
+#' @noRd
 fix_augmented_df_predictions <- function(data, names) {
-  purrr::map(names, ~ {
+  pred_names <- names[!names %in% colnames(data)]
+  pred <- purrr::map(pred_names, ~ {
     rep(NA, nrow(data))
   }) %>%
-    rlang::set_names(names) %>%
-    dplyr::bind_rows(data, .env$.)
+    rlang::set_names(pred_names)
+  dplyr::bind_cols(data, pred)
 }
