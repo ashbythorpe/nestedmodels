@@ -52,7 +52,7 @@ single row. Specifically:
 model <- parsnip::linear_reg() \%>\%
   parsnip::set_engine("lm") \%>\%
   nested()
-  
+
 fit <- fit(model, z ~ ., tidyr::group_by(example_nested_data, .data$id))
 
 tidy(fit)
