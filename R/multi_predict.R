@@ -31,9 +31,9 @@
 #' @export
 multi_predict.nested_model_fit <- function(object, new_data, ...) {
   fit <- object$fit
-  
+
   new_data <- check_df(new_data, "new_data")
-  
+
   outer_names <- colnames(fit)[colnames(fit) != ".model_fit"]
   inner_names <- object$inner_names
 

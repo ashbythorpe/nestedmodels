@@ -9,7 +9,7 @@
 #'    \item{id}{A column that can be nested, ranging from 1 to 20.}
 #'    \item{id2}{Another column that can be nested, ranging from 1 to 30.}
 #'    \item{x}{A numeric column that depends on 'id'.}
-#'    \item{y}{A sequential numeric column (with some added randomness), 
+#'    \item{y}{A sequential numeric column (with some added randomness),
 #'    independent of the other columns.}
 #'    \item{z}{A column dependent on id, id2, x and y.}
 #'    \item{a}{A randomly generated numeric column, ranging from 1 to 100.}

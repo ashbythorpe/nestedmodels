@@ -1,8 +1,10 @@
 
 #' @noRd
 get_name <- function(name, colnames) {
-  vctrs::vec_as_names(c(name, colnames), repair = "unique", 
-                      quiet = TRUE)[1]
+  vctrs::vec_as_names(c(name, colnames),
+    repair = "unique",
+    quiet = TRUE
+  )[1]
 }
 
 #' @noRd
@@ -13,7 +15,7 @@ get_nested_step <- function(recipe) {
 
 #' @noRd
 check_df <- function(x, name) {
-  if(is.vector(x) || is.null(x)) {
+  if (is.vector(x) || is.null(x)) {
     stop_bad_type(name, "a data frame", x)
   } else if (!is.data.frame(x)) {
     x <- tryCatch(
@@ -86,7 +88,7 @@ find_nested_column <- function(data) {
 get_nested_step_index <- function(recipe) {
   recipe$steps %>%
     purrr::map(class) %>%
-    purrr::map_lgl( ~ {
+    purrr::map_lgl(~ {
       "step_nest" %in% .
     }) %>%
     which()

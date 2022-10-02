@@ -40,7 +40,7 @@
 #' fit(wf, example_nested_data)
 #'
 #' @importFrom generics fit_xy
-#' 
+#'
 #' @export fit_xy.nested_model
 #' @export
 fit_xy.nested_model <- function(object, x, y, case_weights = NULL,

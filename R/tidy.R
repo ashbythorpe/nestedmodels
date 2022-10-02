@@ -1,16 +1,16 @@
 #' Turn a nested model into a tidy tibble
 #'
-#' @description 
+#' @description
 #' Use `broom` functions on fitted nested models.
 #'
 #' `tidy.nested_model_fit` summarises components of each model within a
 #' nested model fit, indicating which nested data frame each row corresponds
 #' to.
-#' 
+#'
 #' `glance.nested_model_fit` summarises a nested model, returning a
 #' [tibble::tibble()] with 1 row.
-#' 
-#' `glance_nested` summarises each model within a nested model fit, 
+#'
+#' `glance_nested` summarises each model within a nested model fit,
 #' returning a [tibble::tibble()] with the same number of rows as the number
 #' of inner models.
 #'
@@ -27,19 +27,19 @@
 #' * If a column is numeric, the mean will be calculated.
 #' * Otherwise, the results will be combined into a list.
 #'
-#' @returns A [tibble::tibble()]. With `glance.nested_model_fit()`, the 
+#' @returns A [tibble::tibble()]. With `glance.nested_model_fit()`, the
 #' tibble will have 1 row.
 #'
 #' @seealso [generics::tidy()] [generics::glance()]
 #'
 #' @examples
-#' 
+#'
 #' model <- parsnip::linear_reg() %>%
 #'   parsnip::set_engine("lm") %>%
 #'   nested()
-#'   
+#'
 #' fit <- fit(model, z ~ ., tidyr::group_by(example_nested_data, .data$id))
-#' 
+#'
 #' tidy(fit)
 #' glance(fit)
 #' glance_nested(fit)
@@ -69,10 +69,10 @@ glance.nested_model_fit <- function(x, ...) {
 #' @rdname tidy.nested_model_fit
 #' @export
 glance_nested <- function(x, ...) {
-  if(!inherits(x, "nested_model_fit")) {
+  if (!inherits(x, "nested_model_fit")) {
     stop_bad_class("x", "nested_model_fit", class(x))
   }
-  
+
   fit <- x$fit
   tidy_name <- get_name(".tidied", colnames(fit))
   fit[[tidy_name]] <- purrr::map(fit$.model_fit, glance, ...)

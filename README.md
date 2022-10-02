@@ -8,14 +8,15 @@
 [![R-CMD-check](https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/nestedmodels)](https://CRAN.R-project.org/package=nestedmodels)
-[![coverage](https://github.com/ashbythorpe/nestedmodels/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/ashbythorpe/nestedmodels/actions/workflows/test-coverage.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/ashbythorpe/nestedmodels/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ashbythorpe/nestedmodels?branch=master)
 <!-- badges: end -->
 
 The goal of nestedmodels is to allow the modelling of nested data. Some
 models only accept certain predictors. For panel data, it is often
 desirable to create a model for each panel. nestedmodels enhances the
-‘tidymodels’ set of packages by allowing the user to classify a model as
-‘nested’.
+‘[tidymodels](https://www.tidymodels.org/)’ set of packages by allowing
+the user to classify a model as ‘nested’.
 
 ## Installation
 
@@ -52,15 +53,15 @@ predict(fit, data_tst)
 #> # A tibble: 260 × 1
 #>    .pred
 #>    <dbl>
-#>  1  20.3
-#>  2  49.2
-#>  3  37.1
-#>  4  27.6
-#>  5  42.5
-#>  6  43.3
-#>  7  40.8
-#>  8  29.7
-#>  9  22.9
-#> 10  45.2
+#>  1  13.7
+#>  2  56.4
+#>  3  57.1
+#>  4  50.1
+#>  5  57.9
+#>  6  35.6
+#>  7  28.1
+#>  8  21.1
+#>  9  49.8
+#> 10  20.6
 #> # … with 250 more rows
 ```

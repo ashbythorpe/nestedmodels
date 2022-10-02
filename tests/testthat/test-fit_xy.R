@@ -19,15 +19,15 @@ test_that("workflows work", {
     nrow(predict(fit, example_nested_data)),
     nrow(example_nested_data)
   )
-  
+
   baked_data <- hardhat::extract_recipe(fit) %>%
     recipes::bake(example_nested_data)
-  
+
   baked_data$nest_id <- NULL
-  
+
   x <- baked_data[, names(baked_data) != "z"]
   y <- baked_data$z
-  
+
   expect_error(fit_xy(model, x, y))
 })
 
@@ -36,7 +36,7 @@ test_that("Nested models can be tuned", {
   skip_if_not_installed("glmnet")
   skip_if_not_installed("tune")
   withr::local_options(warnPartialMatchArgs = FALSE)
-  
+
   model <- parsnip::linear_reg(
     penalty = hardhat::tune()
   ) %>%
@@ -68,7 +68,9 @@ test_that("Nested models can be tuned", {
   fit <- fit(final_wf, example_nested_data)
 
   suppressWarnings(
-    expect_equal(nrow(predict(fit, example_nested_data)),
-                 nrow(example_nested_data))
+    expect_equal(
+      nrow(predict(fit, example_nested_data)),
+      nrow(example_nested_data)
+    )
   )
 })

@@ -1,9 +1,9 @@
 #' Create splits with nested data
 #'
-#' Use any 'rsample' split function on nested data, where nests act as 
-#' strata. This almost guarantees that every split will contain data from 
+#' Use any 'rsample' split function on nested data, where nests act as
+#' strata. This almost guarantees that every split will contain data from
 #' every nest.
-#' 
+#'
 #' @param data A data frame.
 #' @param resamples An expression, function, formula or string that can
 #'  be evaluated to produce an `rset` or `rsplit` object.
@@ -264,9 +264,9 @@ eval_resamples <- function(data, resamples, .env, ...) {
   } else if (is.function(resamples)) {
     rlang::exec(resamples, data = data, ..., .env = .env)
   } else if (is.vector(resamples) && is.character(resamples)) {
-    if (rlang::is_installed("rsample")  && 
-        resamples %in% ls(rlang::ns_env("rsample")) &&
-        !rlang::is_attached("rsample")) {
+    if (rlang::is_installed("rsample") &&
+      resamples %in% ls(rlang::ns_env("rsample")) &&
+      !rlang::is_attached("rsample")) {
       rlang::exec(resamples, data = data, ..., .env = rlang::ns_env("rsample"))
     } else {
       rlang::exec(resamples, data = data, ..., .env = .env)

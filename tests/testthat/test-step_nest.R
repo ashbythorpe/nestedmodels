@@ -109,11 +109,11 @@ test_that("step_nest works with multiple columns", {
 test_that("recipe works with no selections", {
   null_recipe <- recipes::recipe(example_nested_data, z ~ .) %>%
     step_nest()
-  
+
   baked_data <- null_recipe %>%
     recipes::prep() %>%
     recipes::bake(NULL)
-  
+
   expect_equal(
     baked_data,
     dplyr::select(example_nested_data, dplyr::any_of(colnames(baked_data))) %>%

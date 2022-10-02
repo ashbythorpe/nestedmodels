@@ -30,9 +30,9 @@
 #' @export
 augment.nested_model_fit <- function(x, new_data, ...) {
   fit <- x$fit
-  
+
   new_data <- check_df(new_data, "new_data")
-  
+
   outer_names <- colnames(fit)[colnames(fit) != ".model_fit"]
   inner_names <- x$inner_names
 
@@ -65,7 +65,7 @@ augment.nested_model_fit <- function(x, new_data, ...) {
   )
 
   predictions <- fix_augmented_predictions(pred, model_map[[nested_column]])
-  
+
   dplyr::bind_rows(predictions)[order, ]
 }
 

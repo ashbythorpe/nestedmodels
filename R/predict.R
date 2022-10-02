@@ -161,13 +161,15 @@ fix_vector_predictions <- function(data) {
 
 #' @noRd
 fix_matrix_predictions <- function(data, names, ncol) {
-  if(is.null(names)) {
+  if (is.null(names)) {
     dimnames <- NULL
   } else {
     dimnames <- list(NULL, names)
   }
-  matrix(nrow = nrow(data), ncol = ncol, 
-         dimnames = dimnames)
+  matrix(
+    nrow = nrow(data), ncol = ncol,
+    dimnames = dimnames
+  )
 }
 
 #' @noRd

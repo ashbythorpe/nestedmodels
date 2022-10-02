@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 The goal of nestedmodels is to allow the modelling of nested data.
-Some models only accept certain predictors. For panel data, it is often desirable to create a model for each panel. nestedmodels enhances the 'tidymodels' set of packages by allowing the user to  classify a model as 'nested'.
+Some models only accept certain predictors. For panel data, it is often desirable to create a model for each panel. nestedmodels enhances the '[tidymodels](https://www.tidymodels.org/)' set of packages by allowing the user to classify a model as 'nested'.
 
 ## Installation
 

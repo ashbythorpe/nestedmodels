@@ -2,10 +2,12 @@ test_that("res_truncate works", {
   resamples <- rsample::vfold_cv(example_nested_data, 10)
 
   expect_equal(res_truncate(resamples, 10L), resamples)
-  expect_equal(res_truncate(resamples, 5L), resamples[1:5, ], 
-               ignore_attr = TRUE)
-  expect_equal(res_truncate(resamples, 1L), resamples[1, ], 
-               ignore_attr = TRUE)
+  expect_equal(res_truncate(resamples, 5L), resamples[1:5, ],
+    ignore_attr = TRUE
+  )
+  expect_equal(res_truncate(resamples, 1L), resamples[1, ],
+    ignore_attr = TRUE
+  )
 })
 
 test_that("res_combine works", {

@@ -1,13 +1,13 @@
 #' Nest transformation
 #'
-#' `step_nest` creates a *specification* of a recipe step that will 
+#' `step_nest` creates a *specification* of a recipe step that will
 #' convert specified data into a single model term, specifying the 'nest'
 #' that each row of the dataset corresponds to.
 #'
 #' @param recipe A recipe object. The step will be added to the
 #'   sequence of operations for this recipe.
 #' @param ... One or more selector functions to choose variables.
-#'   For `step_nest`, this indicates the variables which will *not* be 
+#'   For `step_nest`, this indicates the variables which will *not* be
 #'   nested. See [recipes::selections()] for more details.
 #' @param role Not used by this step since the new variables are assigned a
 #'   custom role.
@@ -23,12 +23,12 @@
 #' @details
 #' `step_nest()` will create a single nominal variable (named 'nest_id')
 #' from a set of variables (of any type). Every unique combination
-#' of the specified columns will recieve a single nest id. 
-#' 
+#' of the specified columns will recieve a single nest id.
+#'
 #' This recipe step is designed for use with nested models, since a model
 #' will be fitted on the data corresponding to each nest id. Using a recipe
 #' is often easier and more reliable than nesting the data manually.
-#' 
+#'
 #' The nest id corresponding to each unique combination of column values is
 #' decided when the recipe is prepped (if this recipe is contained in a
 #' workflow, this happens when the workflow is fitted). This means that
@@ -38,7 +38,7 @@
 #' this is not the case. If you are using the 'rsample' package to create
 #' splits and this presents an issue, you may want to consider using
 #' [nested_resamples()].
-#' 
+#'
 #' `step_nest()` is designed so that nesting the transformed data by its
 #' 'nest_id' column is equivalent to the following action on the
 #' non-transformed data:
@@ -142,7 +142,7 @@ bake.step_nest <- function(object, new_data, ...) {
     new_data$nest_id <- NA_character_
     return(new_data)
   }
-  
+
   res <- dplyr::left_join(new_data, lookup_table, by = names) %>%
     dplyr::select(-dplyr::all_of(names)) %>%
     tibble::as_tibble()

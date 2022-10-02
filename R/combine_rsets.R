@@ -1,8 +1,8 @@
 #' Combine a list of rsplit objects
-#' 
+#'
 #' This function combines a list of `rsplit` objects into a single `rsplit`
 #' object.
-#' 
+#'
 #' @param splits A list of `rsplit` objects.
 #' @param x A list of data frames, where each item of `splits` corresponds
 #'   to each data frame (meaning that each rsplit was created using its
@@ -12,9 +12,9 @@
 #' @param format_index The index of the item of `splits` that acts as the
 #'   split 'format'. The final result will inherit its class and 'id' from
 #'   this object.
-#'   
+#'
 #' @returns A single `rsplit` object.
-#' 
+#'
 #' @noRd
 combine_rsets <- function(splits, x, data, format_index) {
   full_splits <- purrr::map(splits, rsample::populate)

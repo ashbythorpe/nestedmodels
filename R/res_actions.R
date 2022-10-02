@@ -1,8 +1,8 @@
 #' A set of actions to a apply to an rset object
-#' 
+#'
 #' Apply a series of operations to an `rset` object, to change its size to
 #' a specified value.
-#' 
+#'
 #' @param res An object with class `rset` (or `rsplit`).
 #' @param len An integer. The length that the final object should be.
 #'
@@ -24,10 +24,9 @@ res_combine <- function(res, len) {
   }
   res_len <- nrow(res)
   combine_with <- rep(seq_len(len), length.out = res_len - len)
-  combine_indexes <- purrr::map(
-    seq_len(len),
-    ~ which(combine_with == .) + len
-  )
+  combine_indexes <- purrr::map(seq_len(len), combine_indexes,
+                                combine_with = combine_with,
+                                len = len)
   to_combine <- purrr::map2(seq_len(len), combine_indexes, ~ {
     res$splits[c(.x, .y)]
   })
@@ -63,10 +62,9 @@ res_combine_random <- function(res, len) {
     safe_sample(rep(seq_len(len), (res_len %/% len) - 1L)),
     safe_sample(seq_len(len)[seq_len(res_len %% len)])
   )
-  combine_indexes <- purrr::map(
-    seq_len(len),
-    ~ which(combine_with == .) + len
-  )
+  combine_indexes <- purrr::map(seq_len(len), combine_indexes,
+                                combine_with = combine_with,
+                                len = len)
   to_combine <- purrr::map2(seq_len(len), combine_indexes, ~ {
     res$splits[c(.x, .y)]
   })
@@ -107,6 +105,10 @@ res_recycle_random <- function(res, len) {
   lres <- res_extend(res, len)
   lres$splits[(res_len + 1):len] <- to_copy
   lres
+}
+
+combine_indexes <- function(x, combine_with, len) {
+  which(combine_with == x) + len
 }
 
 #' @noRd

@@ -1,7 +1,7 @@
 #' Fit a nested model to a dataset
 #'
 #' [generics::fit()] method for nested models.
-#' 
+#'
 #' @param object An object of class `nested_model`.
 #' @param formula An object of class `formula`. Passed into
 #'   [parsnip::fit.model_spec()]. This should *not contain* the variable to
@@ -34,7 +34,7 @@
 #' nested_data <- tidyr::nest(example_nested_data, data = -id)
 #'
 #' fit(model, z ~ x + y + a + b, nested_data)
-#' 
+#'
 #' @export
 fit.nested_model <- function(object, formula, data, case_weights = NULL,
                              control = parsnip::control_parsnip(), ...) {

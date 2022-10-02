@@ -13,6 +13,8 @@ License: MIT + file LICENSE
 URL: https://github.com/ashbythorpe/nestedmodels,
     https://ashbythorpe.github.io/nestedmodels/
 BugReports: https://github.com/ashbythorpe/nestedmodels/issues
+Depends: 
+    R (>= 2.10)
 Imports: 
     broom,
     cli,
@@ -35,11 +37,10 @@ Suggests:
     roxygen2,
     testthat (>= 3.0.0),
     withr
+VignetteBuilder: 
+    knitr
 Config/testthat/edition: 3
 Encoding: UTF-8
+LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
-Depends: 
-    R (>= 2.10)
-LazyData: true
-VignetteBuilder: knitr
