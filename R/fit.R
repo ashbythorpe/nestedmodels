@@ -34,9 +34,7 @@
 #' nested_data <- tidyr::nest(example_nested_data, data = -id)
 #'
 #' fit(model, z ~ x + y + a + b, nested_data)
-#'
-#' @importFrom generics fit
-#'
+#' 
 #' @export
 fit.nested_model <- function(object, formula, data, case_weights = NULL,
                              control = parsnip::control_parsnip(), ...) {

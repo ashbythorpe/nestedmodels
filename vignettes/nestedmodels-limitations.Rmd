@@ -18,10 +18,11 @@ This vignette outlines the limitations of nested modelling, and introduces some 
 
 ```{r setup}
 library(nestedmodels)
+library(parsnip)
 ```
 
 A nested model is already an unlikely candidate for most modelling problems.
-Yet even within its one most obvious use case, nested models have further limitations.
+Yet even within its limited use cases, nested models have further limitations.
 
 The first of these is a more theoretical one. Nested models fit a model within each nested data frame of the data that they are given. This raises the issue that these models do not communicate with each other; each model exists only in the isolation of its corresponding nested data frame. These models therefore find it harder to recognise patterns that exist irrespective of, or outside of the nests. This is not necessarily an issue, provided that you remember that the model is identifying patterns within each nest.
 
@@ -29,7 +30,7 @@ However, this negatively affects the performance of the model. In a more extreme
 
 The second problem is more related to physical performance. Even when fitting an uncomplicated model to a fairly small dataset, the fitting process takes a few seconds to complete.
 
-```{r}
+```{r time}
 model <- linear_reg() %>%
   set_engine("lm") %>%
   nested()
@@ -41,7 +42,7 @@ system.time({
 
 This is because a model is fit to `r length(unique(example_nested_data$id))` nests. More computationally expensive models take more time to complete, and the time taken increases in direct proportion to the number of nested data frames. Furthermore, storing a nested model means storing a model for every nest. For more complex model objects, this can result in a monstrously sized fit object.
 
-```{r}
+```{r size}
 utils::object.size(model)
 ```
 

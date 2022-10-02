@@ -49,21 +49,28 @@ data
 
 The data can be nested in the following way:
 
-```{r nested_data}
+```{r nested-data}
 nested_data <- nest(data, data = -id)
 nested_data
+```
+Lets split this data up into a training and testing set using the `nested_resamples()` function. This ensures that the training and testing set all contain data with every 'id' value.
+
+```{r}
+split <- nested_resamples(nested_data, rsample::initial_split())
+data_tr <- rsample::training(split)
+data_tst <- rsample::testing(split)
 ```
 
 Now let's define our model:
 
-```{r create_model}
+```{r create-model}
 model <- linear_reg(penalty = 0.1) %>%
   set_engine("glmnet")
 ```
 
 Since we're fitting this model to nested data, we need some way to make the model 'nested'. This is very simple with the `nested()` function.
 
-```{r nested_model}
+```{r nested-model}
 nested_model <- model %>%
   nested()
 nested_model
@@ -71,15 +78,16 @@ nested_model
 
 We can then fit this model in the usual way. Note that the data must be nested, and formula cannot include the id column.
 
-```{r fit_nested_model}
-model_fit <- fit(nested_model, z ~ x + y + a + b, nested_data)
+```{r fit-model}
+nested_tr <- tidyr::nest(data_tr, data = -id)
+model_fit <- fit(nested_model, z ~ x + y + a + b, nested_tr)
+model_fit
 ```
 
 Predicting can also be done in the usual way (the data to predict on can be both nested and non-nested). Since this is just a demonstration, we use the same data that the model was fitted on.
 
-```{r predict_nested_model}
-predict(model_fit, data)
-predict(model_fit, nested_data)
+```{r predict-model, R.options = list(warnPartialMatchArgs = FALSE)}
+predict(model_fit, data_tst)
 ```
 
 This method is fine, but having to nest the data ourselves is a pain. We can solve this by using a workflow.
@@ -87,7 +95,7 @@ This method is fine, but having to nest the data ourselves is a pain. We can sol
 We first define the recipe, and we define a step which is used to nest the data. This time, the formula can include the 'id' column, since the recipe needs to act on it.
 
 ```{r recipe}
-recipe <- recipe(data, z ~ z ~ x + y + a + b) %>%
+recipe <- recipe(data_tr, z ~ x + y + a + b + id) %>%
   step_nest(id)
 ```
 
@@ -109,22 +117,21 @@ wf <- workflow() %>%
 
 A workflow can be fitted in the same way as a model, but note that since we used `step_nest()` the data does not have to be nested.
 
-```{r workflow_fit}
-wf_fit <- fit(wf, data)
+```{r workflow-fit}
+wf_fit <- fit(wf, data_tr)
 ```
 
 This fit object can then be used to make predictions.
 
-```{r}
-predict(wf_fit, data)
+```{r workflow-predict, R.options = list(warnPartialMatchArgs = FALSE)}
+predict(wf_fit, data_tst)
 ```
 
 Other common parsnip functions can also be used on fitted nested models:
 
-```{r}
-augment(wf_fit, data)
+```{r tidy, R.options = list(warnPartialMatchArgs = FALSE)}
+augment(wf_fit, data_tst)
 tidy(wf_fit)
-glance(wf_fit)
 ```
 
 This is all you really need to know to use the nestedmodels package. These models and workflows can be compared, fitted and tuned in much the same way as normal models and workflows - you can even combine them with normal models using the 'workflowsets' and 'stacks' packages.
