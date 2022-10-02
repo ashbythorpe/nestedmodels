@@ -80,10 +80,42 @@
 
     
     
-<p>This vignette outlines the limitations of nested modelling, and introduces some alternatives.</p>
+<p>This vignette outlines the limitations of nested modelling, and introduces some alternatives. It also gives an idea as to the properties of data that are most suited to nested modelling.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ashbythorpe/nestedmodels" class="external-link">nestedmodels</a></span><span class="op">)</span></span></code></pre></div>
-  </main>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ashbythorpe/nestedmodels" class="external-link">nestedmodels</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/parsnip" class="external-link">parsnip</a></span><span class="op">)</span></span></code></pre></div>
+<p>A nested model is already an unlikely candidate for most modelling problems. Yet even within its limited use cases, nested models have further limitations.</p>
+<p>The first of these is a more theoretical one. Nested models fit a model within each nested data frame of the data that they are given. This raises the issue that these models do not communicate with each other; each model exists only in the isolation of its corresponding nested data frame. These models therefore find it harder to recognise patterns that exist irrespective of, or outside of the nests. This is not necessarily an issue, provided that you remember that the model is identifying patterns within each nest.</p>
+<p>However, this negatively affects the performance of the model. In a more extreme example, if you were to fit a nested model to some data containing 200 nested data frames, each with 10 rows; each model would only be fit on 10 observations, likely resulting in wildly inaccurate predictions, despite the size of the overall data being fairly adequate. It is often useful to ponder whether a nested model is likely to be as useful as another approach.</p>
+<p>The second problem is more related to physical performance. Even when fitting an uncomplicated model to a fairly small dataset, the fitting process takes a few seconds to complete.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/nested.html">nested</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">z</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">nest</a></span><span class="op">(</span><span class="va">example_nested_data</span>, data <span class="op">=</span> <span class="op">-</span><span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    user  system elapsed </span></span>
+<span><span class="co">#&gt;   0.736   0.036   0.773</span></span></code></pre></div>
+<p>This is because a model is fit to 20 nests. More computationally expensive models take more time to complete, and the time taken increases in direct proportion to the number of nested data frames. Furthermore, storing a nested model means storing a model for every nest. For more complex model objects, this can result in a monstrously sized fit object.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 4712 bytes</span></span></code></pre></div>
+<p>This makes the nested model approach <em>non-scalable</em>, since it would take an unreasonable amount of computational power and time to fit a complex model to large datasets with thousands of nested data frames.</p>
+<p>These two limitations are important to consider, but note that they matter most for data with a large number of nests and/or not very much data in each nest.</p>
+<div class="section level2">
+<h2 id="what-is-the-alternative">What is the alternative?<a class="anchor" aria-label="anchor" href="#what-is-the-alternative"></a>
+</h2>
+<p>For some datasets, these issues will be too problematic to ignore. In most cases, the alternative approach is obvious: just use a non-nested model. The ‘recipes’ package has many methods for dealing with categorical data, and these models are likely to give you more promising results.</p>
+<p>However, for some models, most notably forecasting algorithms, nestedmodels can seem like the only solution for forecasting panel data. In this specific case, a global forecasting method would be recommended (e.g. ‘<a href="https://facebook.github.io/prophet/" class="external-link">Prophet</a>’ or a gradient boosting model), since this can deal with categorical data. More generally, this means that if a nested and normal approach do not work for some model, this often means that the best route of action is to abandon said model, and find one that will suit your needs more effectively.</p>
+</div>
+<div class="section level2">
+<h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
+</h2>
+<p>In this vignette, we discussed the conditions and reasons why nested modelling is not the best approach for every situation, and how to respond if this is the case.</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
