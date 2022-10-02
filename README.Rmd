@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/nestedmodels)](https://CRAN.R-project.org/package=nestedmodels)
-[![coverage](https://github.com/ashbythorpe/nestedmodels/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/ashbythorpe/nestedmodels/actions/workflows/test-coverage.yaml)
+[![Codecov test coverage](https://codecov.io/gh/ashbythorpe/nestedmodels/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ashbythorpe/nestedmodels?branch=master)
 <!-- badges: end -->
 
 The goal of nestedmodels is to allow the modelling of nested data.
