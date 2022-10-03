@@ -9,10 +9,16 @@
 #' @param ... One or more selector functions to choose variables.
 #'   For `step_nest`, this indicates the variables which will *not* be
 #'   nested. See [recipes::selections()] for more details.
-#' @param role Not used by this step since the new variables are assigned a
-#'   custom role.
+#' @param role For model terms created by this step, what analysis role should
+#'   they be assigned? By default, the new columns created by this step from
+#'   the original variables will be used as _predictors_ in a model.
 #' @param trained A logical to indicate if the quantities for
 #'   preprocessing have been estimated.
+#' @param names The names of the variables selected by `...` are stored here
+#'   once this preprocessing step has been trained by [recipes::prep()].
+#' @param lookup_table The table describing which values of your selected
+#'   columns correspond to which 'nest_id' are stored here once this 
+#'   preprocessing step has been trained by [recipes::prep()].
 #' @param skip A logical. Should the step be skipped when the
 #'   recipe is baked by [bake()]? While all operations are baked
 #'   when [prep()] is run, some operations may not be able to be
@@ -20,6 +26,7 @@
 #'   Care should be taken when using `skip = TRUE` as it may affect
 #'   the computations for subsequent operations.
 #' @param id A character string that is unique to this step to identify it.
+#' 
 #' @details
 #' `step_nest()` will create a single nominal variable (named 'nest_id')
 #' from a set of variables (of any type). Every unique combination
@@ -55,21 +62,18 @@
 #' data("example_nested_data")
 #'
 #' recipe <- recipes::recipe(example_nested_data, z ~ x + id) %>%
-#'   step_nest(-id) # equivalent to tidyr::nest(example_nested_data, data = -id)
+#'   step_nest(id)
 #'
-#' data <- recipe %>%
+#' recipe %>%
 #'   recipes::prep() %>%
 #'   recipes::bake(NULL)
 #'
 #' recipe2 <- recipes::recipe(example_nested_data, z ~ x + id) %>%
-#'   step_nest(x, z)
-#' # equivalent to tidyr::nest(example_nested_data, data = c(x,z))
+#'   step_nest(- c(x, z))
 #'
-#' data2 <- recipe %>%
+#' recipe %>%
 #'   recipes::prep() %>%
 #'   recipes::bake(NULL)
-#'
-#' identical(data1, data2) # TRUE
 #'
 #' @importFrom recipes prep bake
 #'
@@ -106,7 +110,6 @@ step_nest_new <- function(terms, role, trained, names, lookup_table, skip,
   )
 }
 
-#' @rdname step_nest
 #' @export
 prep.step_nest <- function(x, training, info = NULL) {
   names <- recipes::recipes_eval_select(x$terms, training, info)
@@ -132,7 +135,6 @@ prep.step_nest <- function(x, training, info = NULL) {
   )
 }
 
-#' @rdname step_nest
 #' @export
 bake.step_nest <- function(object, new_data, ...) {
   names <- object$names

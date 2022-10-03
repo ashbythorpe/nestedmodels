@@ -82,8 +82,9 @@ is_nested.workflow <- function(x, ...) {
 #' Extract the inner model of a `nested_model` object, or a workflow
 #' containing a nested model.
 #'
-#' @param x A model spec or workflow
-#'
+#' @param x A model spec or workflow.
+#' @param ... Not used.
+#' 
 #' @returns A `model_spec` object
 #'
 #' @examples
@@ -94,6 +95,7 @@ is_nested.workflow <- function(x, ...) {
 #'
 #' extract_inner_model(model)
 #'
+#' @export
 extract_inner_model <- function(x, ...) UseMethod("extract_inner_model")
 
 #' @rdname extract_inner_model

@@ -4,7 +4,7 @@
 #' column(s) for predictions to the given data.
 #'
 #' @param x A `nested_model_fit` object produced by
-#'   [fit.nested_model_spec()].
+#'   [fit.nested_model()].
 #' @param new_data A data frame - can be nested or non-nested.
 #' @param ... Passed onto [parsnip::augment.model_fit()].
 #'
@@ -21,7 +21,7 @@
 #'
 #' nested_data <- tidyr::nest(example_nested_data, data = -c(id, id2))
 #'
-#' fitted <- fit(model, nested_data)
+#' fitted <- fit(model, z ~ x + y + a + b, nested_data)
 #'
 #' augment(fitted, example_nested_data)
 #'

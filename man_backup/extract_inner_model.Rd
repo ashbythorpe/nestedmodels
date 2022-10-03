@@ -19,7 +19,9 @@ extract_inner_model(x, ...)
 \method{extract_inner_model}{model_spec}(x, ...)
 }
 \arguments{
-\item{x}{A model spec or workflow}
+\item{x}{A model spec or workflow.}
+
+\item{...}{Not used.}
 }
 \value{
 A \code{model_spec} object

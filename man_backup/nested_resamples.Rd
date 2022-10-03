@@ -129,7 +129,7 @@ grouped_data <- example_nested_data \%>\%
   dplyr::group_by(id)
 
 recipe <- recipes::recipe(example_nested_data, z ~ .) \%>\%
-  step_nest(-id)
+  step_nest(id)
 
 wf <- workflows::workflow() \%>\%
   workflows::add_recipe(recipe)
@@ -143,12 +143,10 @@ nested_resamples(
 
 nested_resamples(example_nested_data, ~ {
   rsample::validation_split(.)
-},
-nesting_method = recipe
-)
+}, nesting_method = recipe)
 
 nested_resamples(example_nested_data, rsample::bootstraps,
-  times = 25, nesting_method = workflow
+  times = 25, nesting_method = wf
 )
 
 # nested nested resamples

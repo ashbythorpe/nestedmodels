@@ -1,4 +1,6 @@
 test_that("broom methods work", {
+  withr::local_package("broom")
+  
   model <- parsnip::linear_reg() %>%
     parsnip::set_engine("lm") %>%
     nested()

@@ -11,7 +11,7 @@
 }
 \arguments{
 \item{object}{A \code{nested_model_fit} object produced by
-\code{\link[=fit.nested_model_spec]{fit.nested_model_spec()}}.}
+\code{\link[=fit.nested_model]{fit.nested_model()}}.}
 
 \item{new_data}{A data frame to make predictions on. Can be nested or
 non-nested.}
@@ -46,7 +46,7 @@ fitted <- fit(model, z ~ x + y + a + b, nested_data)
 
 predict(fitted, example_nested_data)
 
-predict_raw(fitted, example_nested_data)
+parsnip::predict_raw(fitted, example_nested_data)
 
 }
 \seealso{

@@ -48,7 +48,7 @@ test_that("predict_raw.nested_model_spec works", {
   fit <- fit(model, z ~ x + y + a + b, nested_data)
 
   expect_equal(
-    length(predict_raw(fit, example_nested_data)),
+    length(parsnip::predict_raw(fit, example_nested_data)),
     nrow(example_nested_data)
   )
 })
@@ -80,7 +80,7 @@ test_that("multivariate predictions work", {
   fit <- fit(model, cbind(z, y) ~ x + a + b, nested_data)
 
   expect_equal(ncol(predict(fit, example_nested_data)), 2)
-  predict_raw(fit, example_nested_data)
+  parsnip::predict_raw(fit, example_nested_data)
   augment(fit, example_nested_data)
 })
 

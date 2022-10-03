@@ -2,8 +2,6 @@
 % Please edit documentation in R/step_nest.R
 \name{step_nest}
 \alias{step_nest}
-\alias{prep.step_nest}
-\alias{bake.step_nest}
 \title{Nest transformation}
 \usage{
 step_nest(
@@ -16,10 +14,6 @@ step_nest(
   skip = FALSE,
   id = recipes::rand_id("nest")
 )
-
-\method{prep}{step_nest}(x, training, info = NULL)
-
-\method{bake}{step_nest}(object, new_data, ...)
 }
 \arguments{
 \item{recipe}{A recipe object. The step will be added to the
@@ -29,11 +23,19 @@ sequence of operations for this recipe.}
 For \code{step_nest}, this indicates the variables which will \emph{not} be
 nested. See \code{\link[recipes:selections]{recipes::selections()}} for more details.}
 
-\item{role}{Not used by this step since the new variables are assigned a
-custom role.}
+\item{role}{For model terms created by this step, what analysis role should
+they be assigned? By default, the new columns created by this step from
+the original variables will be used as \emph{predictors} in a model.}
 
 \item{trained}{A logical to indicate if the quantities for
 preprocessing have been estimated.}
+
+\item{names}{The names of the variables selected by \code{...} are stored here
+once this preprocessing step has been trained by \code{\link[recipes:prep]{recipes::prep()}}.}
+
+\item{lookup_table}{The table describing which values of your selected
+columns correspond to which 'nest_id' are stored here once this
+preprocessing step has been trained by \code{\link[recipes:prep]{recipes::prep()}}.}
 
 \item{skip}{A logical. Should the step be skipped when the
 recipe is baked by \code{\link[=bake]{bake()}}? While all operations are baked
@@ -85,20 +87,17 @@ non-transformed data:
 data("example_nested_data")
 
 recipe <- recipes::recipe(example_nested_data, z ~ x + id) \%>\%
-  step_nest(-id) # equivalent to tidyr::nest(example_nested_data, data = -id)
+  step_nest(id)
 
-data <- recipe \%>\%
+recipe \%>\%
   recipes::prep() \%>\%
   recipes::bake(NULL)
 
 recipe2 <- recipes::recipe(example_nested_data, z ~ x + id) \%>\%
-  step_nest(x, z)
-# equivalent to tidyr::nest(example_nested_data, data = c(x,z))
+  step_nest(- c(x, z))
 
-data2 <- recipe \%>\%
+recipe \%>\%
   recipes::prep() \%>\%
   recipes::bake(NULL)
-
-identical(data1, data2) # TRUE
 
 }

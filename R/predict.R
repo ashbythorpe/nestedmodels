@@ -4,7 +4,7 @@
 #' [stats::predict()] methods for nested model fits.
 #'
 #' @param object A `nested_model_fit` object produced by
-#'   [fit.nested_model_spec()].
+#'   [fit.nested_model()].
 #' @param new_data A data frame to make predictions on. Can be nested or
 #'   non-nested.
 #' @param type A singular character vector or NULL. Passed on to
@@ -32,7 +32,7 @@
 #'
 #' predict(fitted, example_nested_data)
 #'
-#' predict_raw(fitted, example_nested_data)
+#' parsnip::predict_raw(fitted, example_nested_data)
 #'
 #' @importFrom stats predict
 #'

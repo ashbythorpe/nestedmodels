@@ -4,7 +4,7 @@
 #' to be made on sub-models in a model object.
 #'
 #' @param object A `nested_model_fit` object produced by
-#'  [fit.nested_model_spec()].
+#'  [fit.nested_model()].
 #' @param new_data A data frame - can be nested or non-nested.
 #' @param ... Passed onto [parsnip::multi_predict()]
 #'
@@ -22,9 +22,9 @@
 #'
 #' nested_data <- tidyr::nest(example_nested_data, data = -id2)
 #'
-#' fitted <- fit(model, nested_data)
+#' fitted <- fit(model, z ~ x + y + a + b, nested_data)
 #'
-#' multi_predict(fitted, example_nested_data, penalty = c(0.1, 0.2, 0.3))
+#' parsnip::multi_predict(fitted, example_nested_data, penalty = c(0.1, 0.2, 0.3))
 #'
 #' @importFrom parsnip multi_predict
 #'

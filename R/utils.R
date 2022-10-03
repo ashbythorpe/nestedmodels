@@ -42,13 +42,13 @@ nest_data_method <- function(data, nesting_method = NULL) {
   } else if (inherits(nesting_method, "recipe")) {
     nested_step <- get_nested_step(nesting_method)
     nested_data <- tidyr::nest(
-      example_nested_data,
+      data,
       !!colname := -c(!!!nested_step$terms)
     )
   } else if (inherits(nesting_method, "workflow")) {
     nested_step <- get_nested_step(nesting_method$pre$actions$recipe$recipe)
     nested_data <- tidyr::nest(
-      example_nested_data,
+      data,
       !!colname := -c(!!!nested_step$terms)
     )
   }

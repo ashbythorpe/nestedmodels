@@ -8,7 +8,7 @@
 }
 \arguments{
 \item{object}{A \code{nested_model_fit} object produced by
-\code{\link[=fit.nested_model_spec]{fit.nested_model_spec()}}.}
+\code{\link[=fit.nested_model]{fit.nested_model()}}.}
 
 \item{new_data}{A data frame - can be nested or non-nested.}
 
@@ -31,9 +31,9 @@ model <- parsnip::linear_reg(penalty = 1) \%>\%
 
 nested_data <- tidyr::nest(example_nested_data, data = -id2)
 
-fitted <- fit(model, nested_data)
+fitted <- fit(model, z ~ x + y + a + b, nested_data)
 
-multi_predict(fitted, example_nested_data, penalty = c(0.1, 0.2, 0.3))
+parsnip::multi_predict(fitted, example_nested_data, penalty = c(0.1, 0.2, 0.3))
 
 }
 \seealso{

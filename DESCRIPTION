@@ -16,7 +16,6 @@ BugReports: https://github.com/ashbythorpe/nestedmodels/issues
 Depends: 
     R (>= 2.10)
 Imports: 
-    broom,
     cli,
     dplyr,
     forcats,
@@ -24,19 +23,30 @@ Imports:
     glue,
     lifecycle,
     magrittr,
-    methods,
+    parsnip,
     purrr,
+    recipes,
     rlang (>= 0.4.11),
+    rsample,
+    stats,
+    stringr,
     tibble,
-    tidyr
+    tidyr,
+    vctrs
 Suggests: 
+    broom,
     covr,
     glmnet,
+    hardhat,
     knitr,
     rmarkdown,
     roxygen2,
     testthat (>= 3.0.0),
-    withr
+    tidyselect,
+    tune,
+    utils,
+    withr,
+    workflows
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3
