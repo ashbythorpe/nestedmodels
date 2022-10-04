@@ -1,13 +1,13 @@
 #' Create a Nested Model
 #'
-#' `nested` turns a model or workflow into a nested model/workflow.
-#' `is_nested` checks if a model or workflow is nested.
+#' `nested()` turns a model or workflow into a nested model/workflow.
+#' `is_nested()` checks if a model or workflow is nested.
 #'
 #' @param x A model specification or workflow.
 #' @param ... Not currently used.
 #'
 #' @return A nested model object, or a workflow containing a nested model.
-#' For `is_nested`, a logical vector of length 1.
+#' For `is_nested()`, a logical vector of length 1.
 #'
 #' @examples
 #' model <-

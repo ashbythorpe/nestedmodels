@@ -34,7 +34,7 @@ Either an \code{rsplit} object or an \code{rset} object, depending on
 \description{
 Use any 'rsample' split function on nested data, where nests act as
 strata. This almost guarantees that every split will contain data from
-every nest.
+every nested data frame.
 }
 \details{
 This function breaks down a data frame into smaller, nested data frames.

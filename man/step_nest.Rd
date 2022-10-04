@@ -38,8 +38,8 @@ columns correspond to which 'nest_id' are stored here once this
 preprocessing step has been trained by \code{\link[recipes:prep]{recipes::prep()}}.}
 
 \item{skip}{A logical. Should the step be skipped when the
-recipe is baked by \code{\link[=bake]{bake()}}? While all operations are baked
-when \code{\link[=prep]{prep()}} is run, some operations may not be able to be
+recipe is baked by \code{\link[recipes:bake]{recipes::bake()}}? While all operations are baked
+when \code{\link[recipes:prep]{recipes::prep()}} is run, some operations may not be able to be
 conducted on new data (e.g. processing the outcome variable(s)).
 Care should be taken when using \code{skip = TRUE} as it may affect
 the computations for subsequent operations.}
@@ -51,14 +51,14 @@ An updated version of recipe with the new step added to the
 sequence of any existing operations.
 }
 \description{
-\code{step_nest} creates a \emph{specification} of a recipe step that will
+\code{step_nest()} creates a \emph{specification} of a recipe step that will
 convert specified data into a single model term, specifying the 'nest'
 that each row of the dataset corresponds to.
 }
 \details{
 \code{step_nest()} will create a single nominal variable (named 'nest_id')
 from a set of variables (of any type). Every unique combination
-of the specified columns will recieve a single nest id.
+of the specified columns will receive a single nest id.
 
 This recipe step is designed for use with nested models, since a model
 will be fitted on the data corresponding to each nest id. Using a recipe
@@ -79,13 +79,11 @@ splits and this presents an issue, you may want to consider using
 non-transformed data:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{data \%>\%
-  dplyr::group_by(...) \%>\% # ... represents your specified terms
+  dplyr::group_by(...) \%>\% # '...' represents your specified terms
   tidyr::nest()
 }\if{html}{\out{</div>}}
 }
 \examples{
-data("example_nested_data")
-
 recipe <- recipes::recipe(example_nested_data, z ~ x + id) \%>\%
   step_nest(id)
 

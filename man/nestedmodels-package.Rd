@@ -4,7 +4,7 @@
 \name{nestedmodels-package}
 \alias{nestedmodels}
 \alias{nestedmodels-package}
-\title{nestedmodels: Tidymodels for Nested/Panel Data}
+\title{nestedmodels: Tidy Modelling for Nested/Panel Data}
 \description{
 The goal of 'nestedmodels' is to allow the modelling of nested data. Some models only accept certain predictors. For panel data, it is often desirable to create a model for each panel. 'nestedmodels' enhances the 'tidymodels' set of packages by allowing the user to classify a model or workflow as 'nested'.
 }

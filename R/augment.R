@@ -1,7 +1,7 @@
 #' Augment data with predictions
 #'
-#' [generics::augment()] method for nested models. `augment()` will add
-#' column(s) for predictions to the given data.
+#' [generics::augment()] method for nested models. `augment.nested_model_fit()`
+#' will add column(s) for predictions to the given data.
 #'
 #' @param x A `nested_model_fit` object produced by
 #'   [fit.nested_model()].
@@ -13,13 +13,13 @@
 #' @seealso [parsnip::augment.model_fit()]
 #'
 #' @examples
-#' data("example_nested_data")
+#' data <- dplyr::filter(example_nested_data, id %in% 1:5)
+#'
+#' nested_data <- tidyr::nest(data, data = -c(id, id2))
 #'
 #' model <- parsnip::linear_reg() %>%
 #'   parsnip::set_engine("lm") %>%
 #'   nested()
-#'
-#' nested_data <- tidyr::nest(example_nested_data, data = -c(id, id2))
 #'
 #' fitted <- fit(model, z ~ x + y + a + b, nested_data)
 #'
@@ -68,6 +68,8 @@ augment.nested_model_fit <- function(x, new_data, ...) {
 
   dplyr::bind_rows(predictions)[order, ]
 }
+
+?parsnip::fit.model_spec
 
 #' @noRd
 augment_nested <- function(model, data, ..., .inner_names) {

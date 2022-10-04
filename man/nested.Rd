@@ -37,11 +37,11 @@ is_nested(x, ...)
 }
 \value{
 A nested model object, or a workflow containing a nested model.
-For \code{is_nested}, a logical vector of length 1.
+For \code{is_nested()}, a logical vector of length 1.
 }
 \description{
-\code{nested} turns a model or workflow into a nested model/workflow.
-\code{is_nested} checks if a model or workflow is nested.
+\code{nested()} turns a model or workflow into a nested model/workflow.
+\code{is_nested()} checks if a model or workflow is nested.
 }
 \examples{
 model <-

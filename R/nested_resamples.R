@@ -2,15 +2,15 @@
 #'
 #' Use any 'rsample' split function on nested data, where nests act as
 #' strata. This almost guarantees that every split will contain data from
-#' every nest.
+#' every nested data frame.
 #'
 #' @param data A data frame.
 #' @param resamples An expression, function, formula or string that can
-#'  be evaluated to produce an `rset` or `rsplit` object.
+#'   be evaluated to produce an `rset` or `rsplit` object.
 #' @param nesting_method A recipe, workflow or NULL, used to nest `data`
-#'  if `data` is not already nested (see Details).
+#'   if `data` is not already nested (see Details).
 #' @param size_action If different numbers of splits are produced in each
-#'  nest, how should sizes be matched (see Details)?
+#'   nest, how should sizes be matched (see Details)?
 #' @param ... Extra arguments to pass into `resamples`.
 #'
 #' @details

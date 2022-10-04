@@ -1,27 +1,27 @@
 #' Turn a nested model into a tidy tibble
 #'
 #' @description
-#' Use `broom` functions on fitted nested models.
+#' Use 'broom' functions on fitted nested models.
 #'
-#' `tidy.nested_model_fit` summarises components of each model within a
+#' `tidy.nested_model_fit()` summarises components of each model within a
 #' nested model fit, indicating which nested data frame each row corresponds
 #' to.
 #'
-#' `glance.nested_model_fit` summarises a nested model, returning a
+#' `glance.nested_model_fit()` summarises a nested model, returning a
 #' [tibble::tibble()] with 1 row.
 #'
-#' `glance_nested` summarises each model within a nested model fit,
+#' `glance_nested()` summarises each model within a nested model fit,
 #' returning a [tibble::tibble()] with the same number of rows as the number
 #' of inner models.
 #'
 #' @param x The object to be converted into a tidy [tibble::tibble()].
 #' @param ... Additional arguments passed into their respective functions.
-#'   (e.g. for `tidy.nested_model_fit`, [parsnip::tidy.model_fit()]).
+#'   (e.g. for `tidy.nested_model_fit()`, [parsnip::tidy.model_fit()]).
 #'
 #' @details
-#' [generics::glance()] states that `glance` methods should always return 1
+#' [generics::glance()] states that `glance()` methods should always return 1
 #' row outputs for non-empty inputs. The 'nestedmodels' package is no
-#' exception: `glance` methods will combine rows to produce a result with a
+#' exception: `glance()` methods will combine rows to produce a result with a
 #' single row. Specifically:
 #' * If a column contains 1 unique value, that value is used.
 #' * If a column is numeric, the mean will be calculated.
@@ -35,12 +35,14 @@
 #' @examples
 #' 
 #' if (require("broom")) {
+#'   data <- dplyr::filter(example_nested_data, id %in% 1:5)
+#' 
 #'   model <- parsnip::linear_reg() %>%
 #'     parsnip::set_engine("lm") %>%
 #'     nested()
 #'
 #'   fit <- fit(model, z ~ x + y + a + b, 
-#'              dplyr::group_by(example_nested_data, id))
+#'              dplyr::group_by(data, id))
 #'
 #'   tidy(fit)
 #'   glance(fit)

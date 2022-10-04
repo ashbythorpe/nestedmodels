@@ -18,17 +18,17 @@
 A data frame with one or more added columns for predictions.
 }
 \description{
-\code{\link[generics:augment]{generics::augment()}} method for nested models. \code{augment()} will add
-column(s) for predictions to the given data.
+\code{\link[generics:augment]{generics::augment()}} method for nested models. \code{augment.nested_model_fit()}
+will add column(s) for predictions to the given data.
 }
 \examples{
-data("example_nested_data")
+data <- dplyr::filter(example_nested_data, id \%in\% 1:5)
+
+nested_data <- tidyr::nest(data, data = -c(id, id2))
 
 model <- parsnip::linear_reg() \%>\%
   parsnip::set_engine("lm") \%>\%
   nested()
-
-nested_data <- tidyr::nest(example_nested_data, data = -c(id, id2))
 
 fitted <- fit(model, z ~ x + y + a + b, nested_data)
 

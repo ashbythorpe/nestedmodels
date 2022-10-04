@@ -24,20 +24,20 @@
 #' @seealso [parsnip::fit.model_spec()] [parsnip::model_fit]
 #'
 #' @examples
-#' data("example_nested_data")
+#' data <- dplyr::filter(example_nested_data, id %in% 11:20)
 #'
 #' model <- parsnip::linear_reg() %>%
 #'   parsnip::set_engine("lm") %>%
 #'   nested()
 #'
-#' recipe <- recipes::recipe(example_nested_data, z ~ x + y + id) %>%
+#' recipe <- recipes::recipe(data, z ~ x + y + id) %>%
 #'   step_nest(id)
 #'
 #' wf <- workflows::workflow() %>%
 #'   workflows::add_recipe(recipe) %>%
 #'   workflows::add_model(model)
 #'
-#' fit(wf, example_nested_data)
+#' fit(wf, data)
 #'
 #' @importFrom generics fit_xy
 #'

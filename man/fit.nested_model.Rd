@@ -43,7 +43,8 @@ nesting the data during predictions.
 }
 }
 \description{
-\code{\link[generics:fit]{generics::fit()}} method for nested models.
+\code{fit.model_spec()} takes a nested model specification and fits the inner
+model specification to each nested data frame in the given dataset.
 }
 \examples{
 data("example_nested_data")

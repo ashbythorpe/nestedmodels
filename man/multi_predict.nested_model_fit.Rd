@@ -19,17 +19,17 @@ A tibble with the same number of rows as \code{new_data}, after it
 has been unnested.
 }
 \description{
-\code{\link[parsnip:multi_predict]{parsnip::multi_predict()}} methods for nested models. Allows predictions
+\code{\link[parsnip:multi_predict]{parsnip::multi_predict()}} method for nested models. Allows predictions
 to be made on sub-models in a model object.
 }
 \examples{
-data("example_nested_data")
+data <- dplyr::filter(example_nested_data, id \%in\% 16:20)
+
+nested_data <- tidyr::nest(data, data = -id2)
 
 model <- parsnip::linear_reg(penalty = 1) \%>\%
   parsnip::set_engine("glmnet") \%>\%
   nested()
-
-nested_data <- tidyr::nest(example_nested_data, data = -id2)
 
 fitted <- fit(model, z ~ x + y + a + b, nested_data)
 

@@ -16,30 +16,30 @@ glance_nested(x, ...)
 \item{x}{The object to be converted into a tidy \code{\link[tibble:tibble]{tibble::tibble()}}.}
 
 \item{...}{Additional arguments passed into their respective functions.
-(e.g. for \code{tidy.nested_model_fit}, \code{\link[parsnip:tidy.model_fit]{parsnip::tidy.model_fit()}}).}
+(e.g. for \code{tidy.nested_model_fit()}, \code{\link[parsnip:tidy.model_fit]{parsnip::tidy.model_fit()}}).}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble::tibble()}}. With \code{glance.nested_model_fit()}, the
 tibble will have 1 row.
 }
 \description{
-Use \code{broom} functions on fitted nested models.
+Use 'broom' functions on fitted nested models.
 
-\code{tidy.nested_model_fit} summarises components of each model within a
+\code{tidy.nested_model_fit()} summarises components of each model within a
 nested model fit, indicating which nested data frame each row corresponds
 to.
 
-\code{glance.nested_model_fit} summarises a nested model, returning a
+\code{glance.nested_model_fit()} summarises a nested model, returning a
 \code{\link[tibble:tibble]{tibble::tibble()}} with 1 row.
 
-\code{glance_nested} summarises each model within a nested model fit,
+\code{glance_nested()} summarises each model within a nested model fit,
 returning a \code{\link[tibble:tibble]{tibble::tibble()}} with the same number of rows as the number
 of inner models.
 }
 \details{
-\code{\link[generics:glance]{generics::glance()}} states that \code{glance} methods should always return 1
+\code{\link[generics:glance]{generics::glance()}} states that \code{glance()} methods should always return 1
 row outputs for non-empty inputs. The 'nestedmodels' package is no
-exception: \code{glance} methods will combine rows to produce a result with a
+exception: \code{glance()} methods will combine rows to produce a result with a
 single row. Specifically:
 \itemize{
 \item If a column contains 1 unique value, that value is used.
@@ -50,12 +50,14 @@ single row. Specifically:
 \examples{
 
 if (require("broom")) {
+  data <- dplyr::filter(example_nested_data, id \%in\% 1:5)
+
   model <- parsnip::linear_reg() \%>\%
     parsnip::set_engine("lm") \%>\%
     nested()
 
   fit <- fit(model, z ~ x + y + a + b, 
-             dplyr::group_by(example_nested_data, id))
+             dplyr::group_by(data, id))
 
   tidy(fit)
   glance(fit)

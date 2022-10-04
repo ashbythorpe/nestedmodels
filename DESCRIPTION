@@ -1,5 +1,5 @@
 Package: nestedmodels
-Title: Tidymodels for Nested/Panel Data
+Title: Tidy Modelling for Nested/Panel Data
 Version: 0.0.0.9000
 Authors@R: 
     person("Ashby", "Thorpe", , "ashbythorpe@gmail.com", role = c("aut", "cre"),
@@ -51,6 +51,7 @@ VignetteBuilder:
     knitr
 Config/testthat/edition: 3
 Encoding: UTF-8
+Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1

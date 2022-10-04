@@ -1,7 +1,7 @@
 #' Nested Model Predictions
 #'
-#' Apply a fitted nested models to generate different types of predictions.
-#' [stats::predict()] methods for nested model fits.
+#' Apply a fitted nested model to generate different types of predictions.
+#' [stats::predict()]/[parsnip::predict_raw()] methods for nested model fits.
 #'
 #' @param object A `nested_model_fit` object produced by
 #'   [fit.nested_model()].
@@ -20,13 +20,13 @@
 #' @seealso [parsnip::predict.model_fit()]
 #'
 #' @examples
-#' data("example_nested_data")
+#' data <- dplyr::filter(example_nested_data, id %in% 5:15)
+#'
+#' nested_data <- tidyr::nest(data, data = -id)
 #'
 #' model <- parsnip::linear_reg() %>%
 #'   parsnip::set_engine("lm") %>%
 #'   nested()
-#'
-#' nested_data <- tidyr::nest(example_nested_data, data = -id)
 #'
 #' fitted <- fit(model, z ~ x + y + a + b, nested_data)
 #'

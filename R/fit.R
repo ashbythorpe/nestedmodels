@@ -1,6 +1,7 @@
 #' Fit a nested model to a dataset
 #'
-#' [generics::fit()] method for nested models.
+#' `fit.model_spec()` takes a nested model specification and fits the inner
+#' model specification to each nested data frame in the given dataset.
 #'
 #' @param object An object of class `nested_model`.
 #' @param formula An object of class `formula`. Passed into

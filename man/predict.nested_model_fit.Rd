@@ -30,17 +30,17 @@ A data frame of model predictions. For \code{predict_raw()}, a
 matrix, data frame, vector or list.
 }
 \description{
-Apply a fitted nested models to generate different types of predictions.
-\code{\link[stats:predict]{stats::predict()}} methods for nested model fits.
+Apply a fitted nested model to generate different types of predictions.
+\code{\link[stats:predict]{stats::predict()}}/\code{\link[parsnip:predict.model_fit]{parsnip::predict_raw()}} methods for nested model fits.
 }
 \examples{
-data("example_nested_data")
+data <- dplyr::filter(example_nested_data, id \%in\% 5:15)
+
+nested_data <- tidyr::nest(data, data = -id)
 
 model <- parsnip::linear_reg() \%>\%
   parsnip::set_engine("lm") \%>\%
   nested()
-
-nested_data <- tidyr::nest(example_nested_data, data = -id)
 
 fitted <- fit(model, z ~ x + y + a + b, nested_data)
 
