@@ -72,13 +72,7 @@ that each row of the dataset corresponds to.</p>
 <span>  lookup_table <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  skip <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  id <span class="op">=</span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/rand_id.html" class="external-link">rand_id</a></span><span class="op">(</span><span class="st">"nest"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for step_nest</span></span>
-<span><span class="fu">prep</span><span class="op">(</span><span class="va">x</span>, <span class="va">training</span>, info <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for step_nest</span></span>
-<span><span class="fu">bake</span><span class="op">(</span><span class="va">object</span>, <span class="va">new_data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -95,13 +89,25 @@ nested. See <code><a href="https://recipes.tidymodels.org/reference/selections.h
 
 
 <dt>role</dt>
-<dd><p>Not used by this step since the new variables are assigned a
-custom role.</p></dd>
+<dd><p>For model terms created by this step, what analysis role should
+they be assigned? By default, the new columns created by this step from
+the original variables will be used as <em>predictors</em> in a model.</p></dd>
 
 
 <dt>trained</dt>
 <dd><p>A logical to indicate if the quantities for
 preprocessing have been estimated.</p></dd>
+
+
+<dt>names</dt>
+<dd><p>The names of the variables selected by <code>...</code> are stored here
+once this preprocessing step has been trained by <code><a href="https://recipes.tidymodels.org/reference/prep.html" class="external-link">recipes::prep()</a></code>.</p></dd>
+
+
+<dt>lookup_table</dt>
+<dd><p>The table describing which values of your selected
+columns correspond to which 'nest_id' are stored here once this
+preprocessing step has been trained by <code><a href="https://recipes.tidymodels.org/reference/prep.html" class="external-link">recipes::prep()</a></code>.</p></dd>
 
 
 <dt>skip</dt>
@@ -154,22 +160,46 @@ non-transformed data:</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_nested_data"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">recipe</span> <span class="op">&lt;-</span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">example_nested_data</span>, <span class="va">z</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">id</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">step_nest</span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span> <span class="co"># equivalent to tidyr::nest(example_nested_data, data = -id)</span></span></span>
+<span class="r-in"><span>  <span class="fu">step_nest</span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">recipe</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">recipe</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html" class="external-link">prep</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,000 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        x     z nest_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>    49 36.0  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>    50 38.7  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>    51 23.4  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>    52 34.2  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>    53  9.51 Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>    54 39.7  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>    55  9.72 Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>    56 17.0  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    57 42.5  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    58 31.8  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 990 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">recipe2</span> <span class="op">&lt;-</span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">example_nested_data</span>, <span class="va">z</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">id</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">step_nest</span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># equivalent to tidyr::nest(example_nested_data, data = c(x,z))</span></span></span>
+<span class="r-in"><span>  <span class="fu">step_nest</span><span class="op">(</span><span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">recipe</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="va">recipe</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html" class="external-link">prep</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">data1</span>, <span class="va">data2</span><span class="op">)</span> <span class="co"># TRUE</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in identical(data1, data2):</span> object 'data1' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,000 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        x     z nest_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>    49 36.0  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>    50 38.7  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>    51 23.4  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>    52 34.2  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>    53  9.51 Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>    54 39.7  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>    55  9.72 Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>    56 17.0  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    57 42.5  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    58 31.8  Nest 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 990 more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

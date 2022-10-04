@@ -54,21 +54,21 @@ column(s) for predictions to the given data."><!-- mathjax --><script src="https
     </div>
 
     <div class="ref-description section level2">
-    <p><code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">generics::augment()</a></code> method for nested models. <code>augment()</code> will add
+    <p><code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">generics::augment()</a></code> method for nested models. <code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code> will add
 column(s) for predictions to the given data.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for nested_model_fit</span></span>
-<span><span class="fu">augment</span><span class="op">(</span><span class="va">x</span>, <span class="va">new_data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">new_data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>A <code>nested_model_fit</code> object produced by
-<code>fit.nested_model()</code>.</p></dd>
+<code><a href="fit.nested_model.html">fit.nested_model()</a></code>.</p></dd>
 
 
 <dt>new_data</dt>
@@ -94,15 +94,15 @@ column(s) for predictions to the given data.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_nested_data"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
-<span class="r-in"><span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
-<span class="r-in"><span>  <span class="fu">nested</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html" class="external-link">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="nested.html">nested</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">nested_data</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">nest</a></span><span class="op">(</span><span class="va">example_nested_data</span>, data <span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">id2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">fitted</span> <span class="op">&lt;-</span> <span class="fu">fit</span><span class="op">(</span><span class="va">model</span>, <span class="va">z</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span> <span class="op">+</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span>, <span class="va">nested_data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fitted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">z</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span> <span class="op">+</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span>, <span class="va">nested_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">augment</span><span class="op">(</span><span class="va">fitted</span>, <span class="va">example_nested_data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="va">fitted</span>, <span class="va">example_nested_data</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,000 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        x     y     z     a     b .pred .resid</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>

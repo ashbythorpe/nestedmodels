@@ -195,7 +195,7 @@ argument.</p></div>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">recipe</span> <span class="op">&lt;-</span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">example_nested_data</span>, <span class="va">z</span> <span class="op">~</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="step_nest.html">step_nest</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="step_nest.html">step_nest</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">wf</span> <span class="op">&lt;-</span> <span class="fu">workflows</span><span class="fu">::</span><span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">workflows</span><span class="fu">::</span><span class="fu"><a href="https://workflows.tidymodels.org/reference/add_recipe.html" class="external-link">add_recipe</a></span><span class="op">(</span><span class="va">recipe</span><span class="op">)</span></span></span>
@@ -225,15 +225,31 @@ argument.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">nested_resamples</span><span class="op">(</span><span class="va">example_nested_data</span>, <span class="op">~</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu">rsample</span><span class="fu">::</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/validation_split.html" class="external-link">validation_split</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span>,</span></span>
-<span class="r-in"><span>nesting_method <span class="op">=</span> <span class="va">recipe</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in rsplit(data, x$analysis, x$assessment):</span> At least one row should be selected for the analysis set.</span>
+<span class="r-in"><span><span class="op">}</span>, nesting_method <span class="op">=</span> <span class="va">recipe</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Validation Set Split (0.75/0.25)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   splits            id        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #949494;">&lt;split [740/260]&gt;</span> validation</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">nested_resamples</span><span class="op">(</span><span class="va">example_nested_data</span>, <span class="fu">rsample</span><span class="fu">::</span><span class="va"><a href="https://rsample.tidymodels.org/reference/bootstraps.html" class="external-link">bootstraps</a></span>,</span></span>
-<span class="r-in"><span>  times <span class="op">=</span> <span class="fl">25</span>, nesting_method <span class="op">=</span> <span class="va">workflow</span></span></span>
+<span class="r-in"><span>  times <span class="op">=</span> <span class="fl">25</span>, nesting_method <span class="op">=</span> <span class="va">wf</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in nested_resamples(example_nested_data, rsample::bootstraps, times = 25,     nesting_method = workflow):</span> object 'workflow' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Bootstrap sampling </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 25 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    splits             id         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">&lt;split [1000/376]&gt;</span> Bootstrap01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">&lt;split [1000/355]&gt;</span> Bootstrap02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">&lt;split [1000/356]&gt;</span> Bootstrap03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">&lt;split [1000/366]&gt;</span> Bootstrap04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">&lt;split [1000/360]&gt;</span> Bootstrap05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">&lt;split [1000/370]&gt;</span> Bootstrap06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">&lt;split [1000/354]&gt;</span> Bootstrap07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">&lt;split [1000/360]&gt;</span> Bootstrap08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">&lt;split [1000/357]&gt;</span> Bootstrap09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">&lt;split [1000/376]&gt;</span> Bootstrap10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 15 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># nested nested resamples</span></span></span>
 <span class="r-in"><span></span></span>
