@@ -6,6 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/nestedmodels)](https://CRAN.R-project.org/package=nestedmodels)
 [![Codecov test
 coverage](https://codecov.io/gh/ashbythorpe/nestedmodels/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ashbythorpe/nestedmodels?branch=master)
 <!-- badges: end -->
@@ -51,15 +53,15 @@ predict(fit, data_tst)
 #> # A tibble: 260 × 1
 #>    .pred
 #>    <dbl>
-#>  1  8.55
-#>  2 14.3 
-#>  3 28.8 
-#>  4 18.5 
-#>  5 48.0 
-#>  6 55.1 
-#>  7 15.3 
-#>  8 17.7 
-#>  9 18.3 
-#> 10 17.3 
+#>  1 38.9 
+#>  2 11.5 
+#>  3 34.0 
+#>  4 33.2 
+#>  5 25.3 
+#>  6 26.2 
+#>  7 42.5 
+#>  8  8.57
+#>  9 34.7 
+#> 10 49.0 
 #> # … with 250 more rows
 ```

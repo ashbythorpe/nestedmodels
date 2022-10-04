@@ -15,16 +15,17 @@
 #'
 #' @examples
 #' data <- dplyr::filter(example_nested_data, id %in% 16:20)
-#' 
+#'
 #' nested_data <- tidyr::nest(data, data = -id2)
-#' 
+#'
 #' model <- parsnip::linear_reg(penalty = 1) %>%
 #'   parsnip::set_engine("glmnet") %>%
 #'   nested()
 #'
 #' fitted <- fit(model, z ~ x + y + a + b, nested_data)
 #'
-#' parsnip::multi_predict(fitted, example_nested_data, penalty = c(0.1, 0.2, 0.3))
+#' parsnip::multi_predict(fitted, example_nested_data,
+#'                        penalty = c(0.1, 0.2, 0.3))
 #'
 #' @importFrom parsnip multi_predict
 #'

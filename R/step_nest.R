@@ -17,7 +17,7 @@
 #' @param names The names of the variables selected by `...` are stored here
 #'   once this preprocessing step has been trained by [recipes::prep()].
 #' @param lookup_table The table describing which values of your selected
-#'   columns correspond to which 'nest_id' are stored here once this 
+#'   columns correspond to which 'nest_id' are stored here once this
 #'   preprocessing step has been trained by [recipes::prep()].
 #' @param skip A logical. Should the step be skipped when the
 #'   recipe is baked by [recipes::bake()]? While all operations are baked
@@ -26,7 +26,7 @@
 #'   Care should be taken when using `skip = TRUE` as it may affect
 #'   the computations for subsequent operations.
 #' @param id A character string that is unique to this step to identify it.
-#' 
+#'
 #' @details
 #' `step_nest()` will create a single nominal variable (named 'nest_id')
 #' from a set of variables (of any type). Every unique combination
@@ -67,7 +67,7 @@
 #'   recipes::bake(NULL)
 #'
 #' recipe2 <- recipes::recipe(example_nested_data, z ~ x + id) %>%
-#'   step_nest(- c(x, z))
+#'   step_nest(-c(x, z))
 #'
 #' recipe %>%
 #'   recipes::prep() %>%

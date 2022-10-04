@@ -7,10 +7,14 @@
     quiet = FALSE
   )
 
-  safe_predict <<- purrr::possibly(stats::predict, otherwise = NULL, 
-                                   quiet = FALSE)
+  safe_predict <<- purrr::possibly(stats::predict,
+    otherwise = NULL,
+    quiet = FALSE
+  )
 
-  safe_augment <<- purrr::possibly(generics::augment, otherwise = NULL, 
-                                   quiet = FALSE)
+  safe_augment <<- purrr::possibly(generics::augment,
+    otherwise = NULL,
+    quiet = FALSE
+  )
 }
 # nocov end

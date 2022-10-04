@@ -33,16 +33,18 @@
 #' @seealso [generics::tidy()] [generics::glance()]
 #'
 #' @examples
-#' 
+#'
 #' if (require("broom")) {
 #'   data <- dplyr::filter(example_nested_data, id %in% 1:5)
-#' 
+#'
 #'   model <- parsnip::linear_reg() %>%
 #'     parsnip::set_engine("lm") %>%
 #'     nested()
 #'
-#'   fit <- fit(model, z ~ x + y + a + b, 
-#'              dplyr::group_by(data, id))
+#'   fit <- fit(
+#'     model, z ~ x + y + a + b,
+#'     dplyr::group_by(data, id)
+#'   )
 #'
 #'   tidy(fit)
 #'   glance(fit)

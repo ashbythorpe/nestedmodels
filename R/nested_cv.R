@@ -47,8 +47,10 @@ combine_nested_cv <- function(resamples, data, x, action) {
 combine_nested_cvs <- function(splits, format, index, data) {
   x <- purrr::map(splits, list("splits", 1, "data"))
   purrr::map(splits, "splits") %>%
-    purrr::pmap(combine_rsets_dots, x = x, data = data,
-                format_index = index) %>%
+    purrr::pmap(combine_rsets_dots,
+      x = x, data = data,
+      format_index = index
+    ) %>%
     new_nested_rset(format = format)
 }
 

@@ -92,7 +92,7 @@ recipe \%>\%
   recipes::bake(NULL)
 
 recipe2 <- recipes::recipe(example_nested_data, z ~ x + id) \%>\%
-  step_nest(- c(x, z))
+  step_nest(-c(x, z))
 
 recipe \%>\%
   recipes::prep() \%>\%

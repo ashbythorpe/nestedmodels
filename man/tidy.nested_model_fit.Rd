@@ -56,8 +56,10 @@ if (require("broom")) {
     parsnip::set_engine("lm") \%>\%
     nested()
 
-  fit <- fit(model, z ~ x + y + a + b, 
-             dplyr::group_by(data, id))
+  fit <- fit(
+    model, z ~ x + y + a + b,
+    dplyr::group_by(data, id)
+  )
 
   tidy(fit)
   glance(fit)

@@ -8,8 +8,9 @@ test_that("multi_predict.nested_model_fit works", {
   fit <- fit(model, z ~ ., tidyr::nest(example_nested_data, data = -.data$id))
 
   suppressWarnings(
-    pred <- parsnip::multi_predict(fit, example_nested_data, 
-                                   penalty = c(1, 0.5, 0.2))
+    pred <- parsnip::multi_predict(fit, example_nested_data,
+      penalty = c(1, 0.5, 0.2)
+    )
   )
 
   purrr::map_int(pred$.pred, nrow) %>%
@@ -19,8 +20,9 @@ test_that("multi_predict.nested_model_fit works", {
   invalid_data <- example_nested_data
   invalid_data$id <- NULL
 
-  expect_error(parsnip::multi_predict(fit, invalid_data, 
-                                      penalty = c(1, 0.5, 0.2)))
+  expect_error(parsnip::multi_predict(fit, invalid_data,
+    penalty = c(1, 0.5, 0.2)
+  ))
 
   invalid_data$id <- c(rep(5L, 500), rep(11L, 500))
 
@@ -29,10 +31,11 @@ test_that("multi_predict.nested_model_fit works", {
   fit$fit$.model_fit[3] <- list(NULL)
 
   expect_warning(parsnip::multi_predict(fit, example_nested_data,
-                                        penalty = c(1, 0.5, 0.2)))
+    penalty = c(1, 0.5, 0.2)
+  ))
   expect_equal(
     nrow(suppressWarnings(parsnip::multi_predict(fit, example_nested_data,
-                                                 penalty = c(1, 0.5, 0.2)
+      penalty = c(1, 0.5, 0.2)
     ))),
     nrow(example_nested_data)
   )

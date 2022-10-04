@@ -196,8 +196,10 @@ test_that("fix_predictions works", {
     1
   ))), list(
     matrix(logical(), ncol = 2, dimnames = list(NULL, c(".pred", ".pred2"))),
-    matrix(NA, nrow = 100, ncol = 2, dimnames =
-             list(NULL, c(".pred", ".pred2"))),
+    matrix(NA,
+      nrow = 100, ncol = 2, dimnames =
+        list(NULL, c(".pred", ".pred2"))
+    ),
     matrix(ncol = 2, dimnames = list(NULL, c(".pred", ".pred2")))
   ))
 

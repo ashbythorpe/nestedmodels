@@ -1,12 +1,14 @@
 test_that("broom methods work", {
   withr::local_package("broom")
-  
+
   model <- parsnip::linear_reg() %>%
     parsnip::set_engine("lm") %>%
     nested()
 
-  fit <- fit(model, z ~ x + y + a + b,
-             tidyr::nest(example_nested_data, data = -.data$id))
+  fit <- fit(
+    model, z ~ x + y + a + b,
+    tidyr::nest(example_nested_data, data = -.data$id)
+  )
   withr::with_package("broom", {
     tidy(fit)
     expect_equal(nrow(glance(fit)), 1)

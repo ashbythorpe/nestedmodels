@@ -84,7 +84,7 @@ is_nested.workflow <- function(x, ...) {
 #'
 #' @param x A model spec or workflow.
 #' @param ... Not used.
-#' 
+#'
 #' @returns A `model_spec` object
 #'
 #' @examples

@@ -25,8 +25,9 @@ res_combine <- function(res, len) {
   res_len <- nrow(res)
   combine_with <- rep(seq_len(len), length.out = res_len - len)
   combine_indexes <- purrr::map(seq_len(len), combine_indexes,
-                                combine_with = combine_with,
-                                len = len)
+    combine_with = combine_with,
+    len = len
+  )
   to_combine <- purrr::map2(seq_len(len), combine_indexes, ~ {
     res$splits[c(.x, .y)]
   })
@@ -63,8 +64,9 @@ res_combine_random <- function(res, len) {
     safe_sample(seq_len(len)[seq_len(res_len %% len)])
   )
   combine_indexes <- purrr::map(seq_len(len), combine_indexes,
-                                combine_with = combine_with,
-                                len = len)
+    combine_with = combine_with,
+    len = len
+  )
   to_combine <- purrr::map2(seq_len(len), combine_indexes, ~ {
     res$splits[c(.x, .y)]
   })
