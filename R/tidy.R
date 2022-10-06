@@ -1,7 +1,7 @@
 #' Turn a nested model into a tidy tibble
 #'
 #' @description
-#' Use 'broom' functions on fitted nested models.
+#' Use broom functions on fitted nested models.
 #'
 #' `tidy.nested_model_fit()` summarises components of each model within a
 #' nested model fit, indicating which nested data frame each row corresponds
@@ -14,7 +14,7 @@
 #' returning a [tibble::tibble()] with the same number of rows as the number
 #' of inner models.
 #'
-#' @param x The object to be converted into a tidy [tibble::tibble()].
+#' @param x A `nested_model_fit` object produced by [fit.nested_model()].
 #' @param ... Additional arguments passed into their respective functions.
 #'   (e.g. for `tidy.nested_model_fit()`, [parsnip::tidy.model_fit()]).
 #'
@@ -33,7 +33,6 @@
 #' @seealso [generics::tidy()] [generics::glance()]
 #'
 #' @examples
-#'
 #' if (require("broom")) {
 #'   data <- dplyr::filter(example_nested_data, id %in% 1:5)
 #'

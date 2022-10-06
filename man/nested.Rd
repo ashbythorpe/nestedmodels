@@ -2,17 +2,19 @@
 % Please edit documentation in R/nested.R
 \name{nested}
 \alias{nested}
+\alias{is_nested}
 \alias{nested.default}
 \alias{nested.model_spec}
 \alias{nested.nested_model}
 \alias{nested.workflow}
-\alias{is_nested}
 \alias{is_nested.default}
 \alias{is_nested.model_spec}
 \alias{is_nested.workflow}
 \title{Create a Nested Model}
 \usage{
 nested(x, ...)
+
+is_nested(x, ...)
 
 \method{nested}{default}(x, ...)
 
@@ -21,8 +23,6 @@ nested(x, ...)
 \method{nested}{nested_model}(x, ...)
 
 \method{nested}{workflow}(x, ...)
-
-is_nested(x, ...)
 
 \method{is_nested}{default}(x, ...)
 
@@ -44,8 +44,7 @@ For \code{is_nested()}, a logical vector of length 1.
 \code{is_nested()} checks if a model or workflow is nested.
 }
 \examples{
-model <-
-  parsnip::linear_reg() \%>\%
+model <- parsnip::linear_reg() \%>\%
   parsnip::set_engine("lm") \%>\%
   nested()
 

@@ -23,7 +23,7 @@ be evaluated to produce an \code{rset} or \code{rsplit} object.}
 if \code{data} is not already nested (see Details).}
 
 \item{size_action}{If different numbers of splits are produced in each
-nest, how should sizes be matched (see Details)?}
+nest, how should sizes be matched? (see Details)}
 
 \item{...}{Extra arguments to pass into \code{resamples}.}
 }
@@ -32,7 +32,7 @@ Either an \code{rsplit} object or an \code{rset} object, depending on
 \code{resamples}.
 }
 \description{
-Use any 'rsample' split function on nested data, where nests act as
+Use any rsample split function on nested data, where nests act as
 strata. This almost guarantees that every split will contain data from
 every nested data frame.
 }
@@ -47,7 +47,7 @@ if a nest is too small.
 \section{Nesting Data}{
 \code{data} can be nested in several ways:
 If \code{nesting_method} is NULL and \code{data} is grouped (using
-\code{\link[dplyr:group_by]{dplyr::group_by()}}), the data will be nested (see \code{\link[tidyr:nest]{tidyr::nest()}})
+\code{\link[dplyr:group_by]{dplyr::group_by()}}), the data will be nested (see \code{\link[tidyr:nest]{tidyr::nest()}}
 for how this works).
 If \code{data} is not grouped, it is assumed to already be nested, and
 \code{nested_resamples} will try to find a column that contains nested data
@@ -67,25 +67,26 @@ format of \code{\link[rsample:nested_cv]{rsample::nested_cv()}}.
 \item A purrr-style anonymous function, which will be converted to a
 function using \code{\link[rlang:as_function]{rlang::as_function()}}.
 \item A string, which will be evaluated using \code{\link[rlang:exec]{rlang::exec()}}.
-Every method will be evaluated with \code{data} passed in as the first
-argument to the function (with name 'data').
 }
+
+Every method will be evaluated with \code{data} passed in as the first
+argument (with name 'data').
 }
 
 \section{Size Matching}{
 Before the set of resamples created in each nest can be combined, they
 must contain the same number of splits. For most resampling methods,
 this will not be an issue. \code{\link[rsample:vfold_cv]{rsample::vfold_cv()}}, for example, reliably
-creates the number of splits defined in its \code{v} argument. However,
+creates the number of splits defined in its 'v' argument. However,
 other resampling methods, like \code{\link[rsample:rolling_origin]{rsample::rolling_origin()}}, depend on
-the size of their \code{data} argument, and therefore may produce different
+the size of their 'data' argument, and therefore may produce different
 numbers of resamples when presented with differently sized nests.
 
 The \code{size_action} argument defines many ways of matching the sizes of
-rsets with different numbers of splits. These methods will either try
-to reduce the number of splits in each set until each set is the same
+resample sets with different numbers of splits. These methods will either try
+to reduce the number of splits in each set until each rset is the same
 length as the set with the lowest number of splits; or the opposite,
-where each set will have the same number of splits as the largest set.
+where each rset will have the same number of splits as the largest set.
 
 "truncate", the default, means that all splits beyond the required
 length will be removed.

@@ -1,7 +1,6 @@
 #' Combine a list of rsplit objects
 #'
-#' This function combines a list of `rsplit` objects into a single `rsplit`
-#' object.
+#' Combine a list of `rsplit` objects into a single `rsplit` object.
 #'
 #' @param splits A list of `rsplit` objects.
 #' @param x A list of data frames, where each item of `splits` corresponds

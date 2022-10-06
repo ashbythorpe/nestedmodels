@@ -83,6 +83,16 @@ non-transformed data:
   tidyr::nest()
 }\if{html}{\out{</div>}}
 }
+\section{Tidying}{
+When you \code{\link[=tidy.recipe]{tidy()}} this step, a tibble is returned showing
+how each unique value of the terms you have specified correspond to each
+nest id.
+}
+
+\section{Case weights}{
+The underlying operation does not allow for case weights.
+}
+
 \examples{
 recipe <- recipes::recipe(example_nested_data, z ~ x + id) \%>\%
   step_nest(id)
@@ -94,7 +104,7 @@ recipe \%>\%
 recipe2 <- recipes::recipe(example_nested_data, z ~ x + id) \%>\%
   step_nest(-c(x, z))
 
-recipe \%>\%
+recipe2 \%>\%
   recipes::prep() \%>\%
   recipes::bake(NULL)
 

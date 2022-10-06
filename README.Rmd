@@ -13,9 +13,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-# nestedmodels
+# nestedmodels <img src="man/figures/logo.png" align="right" height="139" />
 
 <!-- badges: start -->
+[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/nestedmodels)](https://CRAN.R-project.org/package=nestedmodels)
 [![Codecov test coverage](https://codecov.io/gh/ashbythorpe/nestedmodels/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ashbythorpe/nestedmodels?branch=master)
@@ -35,20 +36,33 @@ devtools::install_github("ashbythorpe/nestedmodels")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
+```{r setup}
 library(nestedmodels)
+```
 
-data("example_nested_data")
+Nested models are often best used on [panel data](https://en.wikipedia.org/wiki/Panel_data).
+
+```{r data}
+data <- example_nested_data
 
 nested_data <- tidyr::nest(example_nested_data, data = -id)
 
+nested_data
+```
+
+The `nested_resamples()` function makes sure that the testing and training data
+contain every unique value of 'id'.
+
+```{r}
 split <- nested_resamples(nested_data, rsample::initial_split())
 
 data_tr <- rsample::training(split)
 data_tst <- rsample::testing(split)
+```
 
+Fitting a nested model to this data is very simple.
+
+```{r}
 model <- parsnip::linear_reg() %>%
   nested()
 
@@ -57,3 +71,19 @@ fit <- fit(model, z ~ x + y + a + b,
 
 predict(fit, data_tst)
 ```
+
+If you don't want to nest your data manually, use `step_nest()` inside a workflow:
+
+```{r}
+recipe <- recipes::recipe(data_tr, z ~ x + y + a + b + id) %>%
+  step_nest(id)
+
+wf <- workflows::workflow() %>%
+  workflows::add_model(model) %>%
+  workflows::add_recipe(recipe)
+
+wf_fit <- fit(wf, data_tr)
+
+predict(wf_fit, data_tst)
+```
+

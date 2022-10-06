@@ -14,7 +14,7 @@
 )
 }
 \arguments{
-\item{object}{An object of class \code{nested_model}.}
+\item{object}{An \code{nested_model} object (see \code{\link[=nested]{nested()}}).}
 
 \item{x}{A data frame of predictors.}
 

@@ -55,6 +55,14 @@
 #'   tidyr::nest()
 #' ```
 #'
+#' # Tidying
+#' When you [`tidy()`][tidy.recipe()] this step, a tibble is returned showing
+#' how each unique value of the terms you have specified correspond to each
+#' nest id.
+#' 
+#' # Case weights
+#' The underlying operation does not allow for case weights.
+#'
 #' @returns An updated version of recipe with the new step added to the
 #' sequence of any existing operations.
 #'
@@ -69,7 +77,7 @@
 #' recipe2 <- recipes::recipe(example_nested_data, z ~ x + id) %>%
 #'   step_nest(-c(x, z))
 #'
-#' recipe %>%
+#' recipe2 %>%
 #'   recipes::prep() %>%
 #'   recipes::bake(NULL)
 #'
@@ -79,6 +87,8 @@
 step_nest <- function(recipe, ..., role = "predictor", trained = FALSE,
                       names = NULL, lookup_table = NULL,
                       skip = FALSE, id = recipes::rand_id("nest")) {
+  recipes::recipes_pkg_check(required_pkgs.step_nest())
+  
   recipes::add_step(
     recipe,
     step_nest_new(
@@ -158,4 +168,31 @@ bake.step_nest <- function(object, new_data, ...) {
     ))
   }
   res
+}
+
+#' @export
+print.step_nest <- function(x, width = max(20, options()$width - 29), ...) {
+  title <- "Nest transformation with "
+  recipes::print_step(x$names, x$terms, x$trained, title, width)
+  invisible(x)
+}
+
+#' @export
+required_pkgs.step_nest <- function(x, ...) {
+  c("nestedmodels", "tidyr", "dplyr")
+}
+
+#' @export
+tidy.step_nest <- function(x, ...) {
+  if(recipes::is_trained(x)) {
+    x$lookup_table
+  } else {
+    names <- recipes::sel2char(x$terms)
+    cols <- names %>%
+      purrr::map(~ {NA}) %>%
+      rlang::set_names(names)
+
+    tibble::as_tibble(cols) %>%
+      tibble::add_column(nest_id = NA_character_)
+  }
 }

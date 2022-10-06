@@ -4,7 +4,7 @@
 #' called directly and instead should be called by
 #' [workflows::fit.workflow()].
 #'
-#' @param object An object of class `nested_model`.
+#' @param object An `nested_model` object (see [nested()]).
 #' @param x A data frame of predictors.
 #' @param y A data frame of outcome data.
 #' @param case_weights An optional vector of case weights. Passed into

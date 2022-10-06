@@ -7,11 +7,10 @@ test_that("nest_data works", {
   )
   res <- nest_data(data, "x", "id")
   expect_equal(res$nested_data, tidyr::nest(data, data = -.data$id))
-  expect_equal(res$unnested_data, data)
   expect_equal(res$column, "data")
   expect_equal(
     tidyr::unnest(res$nested_data, .data$data)[res$order, ],
-    res$unnested_data
+    data
   )
 
   data2 <- tibble::tibble(
@@ -21,11 +20,10 @@ test_that("nest_data works", {
   )
   res2 <- nest_data(data2, c("x", "y"), "id")
   expect_equal(res2$nested_data, tidyr::nest(data2, data = -.data$id))
-  expect_equal(res2$unnested_data, data2)
   expect_equal(res2$column, "data")
   expect_equal(
     tidyr::unnest(res2$nested_data, .data$data)[res2$order, ],
-    res2$unnested_data
+    data2
   )
 
 
@@ -37,21 +35,19 @@ test_that("nest_data works", {
   )
   res3 <- nest_data(data3, c("a", "x", "y"), "nest_id")
   expect_equal(res3$nested_data, tidyr::nest(data3, data = -.data$nest_id))
-  expect_equal(res3$unnested_data, data3)
   expect_equal(res3$column, "data")
   expect_equal(
     tidyr::unnest(res3$nested_data, .data$data)[res3$order, ],
-    res3$unnested_data
+    data3
   )
 
   data4 <- tidyr::nest(data2, data = -.data$id)
   res4 <- nest_data(data4, c("x", "y"), "id")
   expect_equal(res4$nested_data, data4)
-  expect_equal(res4$unnested_data, tidyr::unnest(data4, .data$data))
   expect_equal(res4$column, "data")
   expect_equal(
     tidyr::unnest(res4$nested_data, .data$data)[res4$order, ],
-    res4$unnested_data
+    tidyr::unnest(data4, .data$data)
   )
 
   data5 <- dplyr::group_by(data2, .data$id)
@@ -59,11 +55,10 @@ test_that("nest_data works", {
   expect_equal(res5$nested_data, dplyr::ungroup(
     tidyr::nest(data5, data = -.data$id)
   ))
-  expect_equal(res5$unnested_data, dplyr::ungroup(data5))
   expect_equal(res5$column, "data")
   expect_equal(
     tidyr::unnest(res5$nested_data, .data$data)[res5$order, ],
-    res5$unnested_data
+    dplyr::ungroup(data5)
   )
 
   data6 <- dplyr::group_by(data2, .data$y, .data$id)
@@ -71,11 +66,10 @@ test_that("nest_data works", {
   expect_equal(res6$nested_data, tidyr::nest(dplyr::ungroup(data6),
     data = -.data$id
   ))
-  expect_equal(res6$unnested_data, dplyr::ungroup(data6))
   expect_equal(res6$column, "data")
   expect_equal(
     tidyr::unnest(res6$nested_data, .data$data)[res6$order, ],
-    res6$unnested_data
+    dplyr::ungroup(data6)
   )
 
   data7 <- dplyr::group_by(data2, .data$x, .data$y)
@@ -83,11 +77,10 @@ test_that("nest_data works", {
   expect_equal(res7$nested_data, tidyr::nest(dplyr::ungroup(data7),
     data = -.data$id
   ))
-  expect_equal(res7$unnested_data, dplyr::ungroup(data7))
   expect_equal(res7$column, "data")
   expect_equal(
     tidyr::unnest(res7$nested_data, .data$data)[res7$order, ],
-    res7$unnested_data
+    dplyr::ungroup(data7)
   )
 })
 

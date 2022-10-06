@@ -1,7 +1,7 @@
 #' A set of actions to a apply to an rset object
 #'
-#' Apply a series of operations to an `rset` object, to change its size to
-#' a specified value.
+#' Apply a series of operations to an `rset` object, to change its size (the
+#' number of `rsplit` objects) to a specified value.
 #'
 #' @param res An object with class `rset` (or `rsplit`).
 #' @param len An integer. The length that the final object should be.

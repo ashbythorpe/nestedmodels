@@ -14,7 +14,7 @@
 )
 }
 \arguments{
-\item{object}{An object of class \code{nested_model}.}
+\item{object}{An \code{nested_model} object (see \code{\link[=nested]{nested()}}).}
 
 \item{formula}{An object of class \code{formula}. Passed into
 \code{\link[parsnip:fit]{parsnip::fit.model_spec()}}. This should \emph{not contain} the variable to
@@ -47,8 +47,6 @@ nesting the data during predictions.
 model specification to each nested data frame in the given dataset.
 }
 \examples{
-data("example_nested_data")
-
 model <- parsnip::linear_reg() \%>\%
   parsnip::set_engine("lm") \%>\%
   nested()

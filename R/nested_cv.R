@@ -1,7 +1,7 @@
 #' Combine multiple nested_cv objects
 #'
-#' This function takes the results of multiple [rsample::nested_cv()] calls
-#' and combines them into one `nested_cv` object.
+#' Combine the results of multiple [rsample::nested_cv()] calls into one 
+#' `nested_cv` object.
 #'
 #' @param resamples A list of `nested_cv` objects.
 #' @param data The unnested data frame.

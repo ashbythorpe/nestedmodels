@@ -1,8 +1,8 @@
 ---
-title: "nestedmodels-limitations"
+title: "Nestedmodels Limitations"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{nestedmodels-limitations}
+  %\VignetteIndexEntry{Nestedmodels Limitations}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -34,10 +34,10 @@ The second problem is more related to physical performance. Even when fitting a 
 model <- linear_reg() %>%
   set_engine("lm") %>%
   nested()
+
 system.time({
   fit(model, z ~ ., tidyr::nest(example_nested_data, data = -id))
 })
-
 ```
 
 This is because a model is fit to `r length(unique(example_nested_data$id))` nests. More computationally expensive models take more time to complete, and the time taken increases in direct proportion to the number of nested data frames. Furthermore, storing a nested model means storing a model for every nest. For more complex model objects, this can result in a monstrously sized fit object.
@@ -51,9 +51,9 @@ This makes the nested model approach *non-scalable*, since it would take an unre
 These two limitations are important to consider, but note that they matter most for data with a large number of nests and/or not very much data in each nest.
 
 # What is the alternative?
-For some datasets, these issues will be too problematic to ignore. In most cases, the alternative approach is obvious: just use a non-nested model. The '[recipes](https://recipes.tidymodels.org/)' package has many methods for dealing with categorical data, and these models are likely to give you more promising results.
+For some datasets, these issues will be too problematic to ignore. In most cases, the alternative approach is obvious: just use a non-nested model. The [recipes](https://recipes.tidymodels.org/) package has many methods for dealing with categorical data, and these models are likely to give you more promising results.
 
-However, for some models, most notably forecasting algorithms, nestedmodels can seem like the only solution for forecasting panel data. In this specific case, a global forecasting method would be recommended (e.g. '[Prophet](https://facebook.github.io/prophet/)' or a gradient boosting model), since these models can deal with categorical data. In general, it is better to find a model that will suit all of your needs, rather than sticking with 
+However, for some models, most notably forecasting algorithms, nestedmodels can seem like the only solution for forecasting panel data. In this specific case, a global forecasting method would be recommended (e.g. [Prophet](https://facebook.github.io/prophet/) or a gradient boosting model), since these models can deal with categorical data. In general, it is better to find a model that will suit all of your needs, rather than sticking with the one you are the most comfortable with.
 
 # Conclusion
 In this vignette, we discussed the conditions and reasons why nested modelling is not the best approach for every situation, and how to respond if this is the case.

@@ -10,8 +10,7 @@
 #' For `is_nested()`, a logical vector of length 1.
 #'
 #' @examples
-#' model <-
-#'   parsnip::linear_reg() %>%
+#' model <- parsnip::linear_reg() %>%
 #'   parsnip::set_engine("lm") %>%
 #'   nested()
 #'
@@ -26,6 +25,10 @@
 #'
 #' @export
 nested <- function(x, ...) UseMethod("nested")
+
+#' @rdname nested
+#' @export
+is_nested <- function(x, ...) UseMethod("is_nested")
 
 #' @rdname nested
 #' @export
@@ -51,12 +54,6 @@ nested.workflow <- function(x, ...) {
     nested(x$fit$actions$model$spec)
   x
 }
-
-
-
-#' @rdname nested
-#' @export
-is_nested <- function(x, ...) UseMethod("is_nested")
 
 #' @rdname nested
 #' @export
@@ -88,7 +85,6 @@ is_nested.workflow <- function(x, ...) {
 #' @returns A `model_spec` object
 #'
 #' @examples
-#'
 #' model <- parsnip::linear_reg() %>%
 #'   parsnip::set_engine("lm") %>%
 #'   nested()

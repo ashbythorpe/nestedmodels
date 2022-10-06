@@ -1,7 +1,7 @@
 #' Create a nested or unnested data frame from a data frame.
 #'
-#' `nest_data` takes a data frame, along with the names that should be on
-#' the inside and outside of the nested data frame. It figures out whether
+#' `nest_data()` takes a data frame, along with the names that should be on
+#' the inside and outside of the nested data frames. It figures out whether
 #' the data is nested, and nests/unnests the data depending on this
 #' condition.
 #'
@@ -14,7 +14,6 @@
 #' @returns A names list, with 4 items:
 #' \describe {
 #'   \item{nested_data}{The nested data frame.}
-#'   \item{unnested_data}{The non nested data frame.}
 #'   \item{column}{The nested column (that contains the inner data frames.)}
 #'   \item{order}{A sequence of numbers, showing how the nested data can be
 #'    transformed after being unnested to match the unnested data.}
@@ -31,7 +30,6 @@ nest_data <- function(data, inner_names, outer_names) {
   if (identical(outer_names, "nest_id")) {
     return(list(
       nested_data = tidyr::nest(data, data = -.data$nest_id),
-      unnested_data = data,
       column = "data",
       order = order(order(as_ordered_factor(data$nest_id)))
     ))
@@ -92,7 +90,6 @@ nest_data <- function(data, inner_names, outer_names) {
 
   list(
     nested_data = nested_data,
-    unnested_data = unnested_data,
     column = nested_col,
     order = order
   )

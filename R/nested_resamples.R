@@ -1,6 +1,6 @@
 #' Create splits with nested data
 #'
-#' Use any 'rsample' split function on nested data, where nests act as
+#' Use any rsample split function on nested data, where nests act as
 #' strata. This almost guarantees that every split will contain data from
 #' every nested data frame.
 #'
@@ -10,7 +10,7 @@
 #' @param nesting_method A recipe, workflow or NULL, used to nest `data`
 #'   if `data` is not already nested (see Details).
 #' @param size_action If different numbers of splits are produced in each
-#'   nest, how should sizes be matched (see Details)?
+#'   nest, how should sizes be matched? (see Details)
 #' @param ... Extra arguments to pass into `resamples`.
 #'
 #' @details
@@ -25,7 +25,7 @@
 #'
 #' `data` can be nested in several ways:
 #' If `nesting_method` is NULL and `data` is grouped (using
-#' [dplyr::group_by()]), the data will be nested (see [tidyr::nest()])
+#' [dplyr::group_by()]), the data will be nested (see [tidyr::nest()]
 #' for how this works).
 #' If `data` is not grouped, it is assumed to already be nested, and
 #' `nested_resamples` will try to find a column that contains nested data
@@ -44,24 +44,25 @@
 #'  * A purrr-style anonymous function, which will be converted to a
 #'   function using [rlang::as_function()].
 #'  * A string, which will be evaluated using [rlang::exec()].
+#' 
 #' Every method will be evaluated with `data` passed in as the first
-#' argument to the function (with name 'data').
+#' argument (with name 'data').
 #'
 #' # Size Matching
 #'
 #' Before the set of resamples created in each nest can be combined, they
 #' must contain the same number of splits. For most resampling methods,
 #' this will not be an issue. [rsample::vfold_cv()], for example, reliably
-#' creates the number of splits defined in its `v` argument. However,
+#' creates the number of splits defined in its 'v' argument. However,
 #' other resampling methods, like [rsample::rolling_origin()], depend on
-#' the size of their `data` argument, and therefore may produce different
+#' the size of their 'data' argument, and therefore may produce different
 #' numbers of resamples when presented with differently sized nests.
 #'
 #' The `size_action` argument defines many ways of matching the sizes of
-#' rsets with different numbers of splits. These methods will either try
-#' to reduce the number of splits in each set until each set is the same
+#' resample sets with different numbers of splits. These methods will either try
+#' to reduce the number of splits in each set until each rset is the same
 #' length as the set with the lowest number of splits; or the opposite,
-#' where each set will have the same number of splits as the largest set.
+#' where each rset will have the same number of splits as the largest set.
 #'
 #' "truncate", the default, means that all splits beyond the required
 #' length will be removed.

@@ -3,7 +3,7 @@
 #' `fit.model_spec()` takes a nested model specification and fits the inner
 #' model specification to each nested data frame in the given dataset.
 #'
-#' @param object An object of class `nested_model`.
+#' @param object An `nested_model` object (see [nested()]).
 #' @param formula An object of class `formula`. Passed into
 #'   [parsnip::fit.model_spec()]. This should *not contain* the variable to
 #'   nest by.
@@ -26,8 +26,6 @@
 #' @seealso [parsnip::fit.model_spec()] [parsnip::model_fit]
 #'
 #' @examples
-#' data("example_nested_data")
-#'
 #' model <- parsnip::linear_reg() %>%
 #'   parsnip::set_engine("lm") %>%
 #'   nested()

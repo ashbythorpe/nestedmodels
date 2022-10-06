@@ -1,9 +1,9 @@
 ---
-title: "nestedmodels"
+title: "Getting started with nestedmodels"
 description: "An introduction to the nestedmodels package"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{nestedmodels}
+  %\VignetteIndexEntry{Getting started with nestedmodels}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -39,7 +39,7 @@ library(rsample)
 library(glmnet)
 ```
 
-We're going to use the example data included in the 'nestedmodels' package. The data is very simple, and only serves as an example of data that can be nested, rather than representing anything concrete.
+We're going to use the example data included in the nestedmodels package. The data is very simple, and only serves as an example of data that can be nested, rather than representing anything concrete.
 
 ```{r data}
 data("example_nested_data")
@@ -134,7 +134,7 @@ augment(wf_fit, data_tst)
 tidy(wf_fit)
 ```
 
-This is all you really need to know to use the nestedmodels package. These models and workflows can be compared, fitted and tuned in much the same way as normal models and workflows - you can even combine them with normal models using the 'workflowsets' and 'stacks' packages.
+This is all you really need to know to use the nestedmodels package. These models and workflows can be compared, fitted and tuned in much the same way as normal models and workflows - you can even combine them with normal models using the workflowsets and stacks packages.
 
 # Conclusion
 In this short vignette, a simple example of a nested model and workflow were created and used on dummy data, to demonstrate how nestedmodels is used.

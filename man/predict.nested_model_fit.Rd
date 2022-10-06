@@ -31,7 +31,7 @@ matrix, data frame, vector or list.
 }
 \description{
 Apply a fitted nested model to generate different types of predictions.
-\code{\link[stats:predict]{stats::predict()}}/\code{\link[parsnip:predict.model_fit]{parsnip::predict_raw()}} methods for nested model fits.
+\code{\link[stats:predict]{stats::predict()}} / \code{\link[parsnip:predict.model_fit]{parsnip::predict_raw()}} methods for nested model fits.
 }
 \examples{
 data <- dplyr::filter(example_nested_data, id \%in\% 5:15)

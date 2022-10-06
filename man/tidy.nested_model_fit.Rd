@@ -13,7 +13,7 @@
 glance_nested(x, ...)
 }
 \arguments{
-\item{x}{The object to be converted into a tidy \code{\link[tibble:tibble]{tibble::tibble()}}.}
+\item{x}{A \code{nested_model_fit} object produced by \code{\link[=fit.nested_model]{fit.nested_model()}}.}
 
 \item{...}{Additional arguments passed into their respective functions.
 (e.g. for \code{tidy.nested_model_fit()}, \code{\link[parsnip:tidy.model_fit]{parsnip::tidy.model_fit()}}).}
@@ -23,7 +23,7 @@ A \code{\link[tibble:tibble]{tibble::tibble()}}. With \code{glance.nested_model_
 tibble will have 1 row.
 }
 \description{
-Use 'broom' functions on fitted nested models.
+Use broom functions on fitted nested models.
 
 \code{tidy.nested_model_fit()} summarises components of each model within a
 nested model fit, indicating which nested data frame each row corresponds
@@ -48,7 +48,6 @@ single row. Specifically:
 }
 }
 \examples{
-
 if (require("broom")) {
   data <- dplyr::filter(example_nested_data, id \%in\% 1:5)
 

@@ -7,7 +7,7 @@
 #' A tibble with 1000 rows and 7 variables
 #' \describe{
 #'    \item{id}{A column that can be nested, ranging from 1 to 20.}
-#'    \item{id2}{Another column that can be nested, ranging from 1 to 30.}
+#'    \item{id2}{Another column that can be nested, ranging from 1 to 10.}
 #'    \item{x}{A numeric column that depends on 'id'.}
 #'    \item{y}{A sequential numeric column (with some added randomness),
 #'    independent of the other columns.}
@@ -17,6 +17,5 @@
 #' }
 #'
 #' @examples
-#'
 #' example_nested_data
 "example_nested_data"

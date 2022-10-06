@@ -1,10 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# nestedmodels
+# nestedmodels <img src="man/figures/logo.png" align="right" height="139" />
 
 <!-- badges: start -->
 
+[![Project Status:
+Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/nestedmodels)](https://CRAN.R-project.org/package=nestedmodels)
@@ -29,20 +31,57 @@ devtools::install_github("ashbythorpe/nestedmodels")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
 ``` r
 library(nestedmodels)
+```
 
-data("example_nested_data")
+Nested models are often best used on [panel
+data](https://en.wikipedia.org/wiki/Panel_data).
+
+``` r
+data <- example_nested_data
 
 nested_data <- tidyr::nest(example_nested_data, data = -id)
 
+nested_data
+#> # A tibble: 20 × 2
+#>       id data             
+#>    <int> <list>           
+#>  1     1 <tibble [50 × 6]>
+#>  2     2 <tibble [50 × 6]>
+#>  3     3 <tibble [50 × 6]>
+#>  4     4 <tibble [50 × 6]>
+#>  5     5 <tibble [50 × 6]>
+#>  6     6 <tibble [50 × 6]>
+#>  7     7 <tibble [50 × 6]>
+#>  8     8 <tibble [50 × 6]>
+#>  9     9 <tibble [50 × 6]>
+#> 10    10 <tibble [50 × 6]>
+#> 11    11 <tibble [50 × 6]>
+#> 12    12 <tibble [50 × 6]>
+#> 13    13 <tibble [50 × 6]>
+#> 14    14 <tibble [50 × 6]>
+#> 15    15 <tibble [50 × 6]>
+#> 16    16 <tibble [50 × 6]>
+#> 17    17 <tibble [50 × 6]>
+#> 18    18 <tibble [50 × 6]>
+#> 19    19 <tibble [50 × 6]>
+#> 20    20 <tibble [50 × 6]>
+```
+
+The `nested_resamples()` function makes sure that the testing and
+training data contain every unique value of ‘id’.
+
+``` r
 split <- nested_resamples(nested_data, rsample::initial_split())
 
 data_tr <- rsample::training(split)
 data_tst <- rsample::testing(split)
+```
 
+Fitting a nested model to this data is very simple.
+
+``` r
 model <- parsnip::linear_reg() %>%
   nested()
 
@@ -53,15 +92,45 @@ predict(fit, data_tst)
 #> # A tibble: 260 × 1
 #>    .pred
 #>    <dbl>
-#>  1 38.9 
-#>  2 11.5 
-#>  3 34.0 
-#>  4 33.2 
-#>  5 25.3 
-#>  6 26.2 
-#>  7 42.5 
-#>  8  8.57
-#>  9 34.7 
-#> 10 49.0 
+#>  1  32.7
+#>  2  29.2
+#>  3  39.4
+#>  4  28.8
+#>  5  29.7
+#>  6  30.6
+#>  7  42.4
+#>  8  30.6
+#>  9  27.8
+#> 10  27.5
+#> # … with 250 more rows
+```
+
+If you don’t want to nest your data manually, use `step_nest()` inside a
+workflow:
+
+``` r
+recipe <- recipes::recipe(data_tr, z ~ x + y + a + b + id) %>%
+  step_nest(id)
+
+wf <- workflows::workflow() %>%
+  workflows::add_model(model) %>%
+  workflows::add_recipe(recipe)
+
+wf_fit <- fit(wf, data_tr)
+
+predict(wf_fit, data_tst)
+#> # A tibble: 260 × 1
+#>    .pred
+#>    <dbl>
+#>  1  32.7
+#>  2  29.2
+#>  3  39.4
+#>  4  28.8
+#>  5  29.7
+#>  6  30.6
+#>  7  42.4
+#>  8  30.6
+#>  9  27.8
+#> 10  27.5
 #> # … with 250 more rows
 ```

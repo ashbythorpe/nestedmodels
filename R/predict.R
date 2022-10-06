@@ -1,7 +1,7 @@
 #' Nested Model Predictions
 #'
 #' Apply a fitted nested model to generate different types of predictions.
-#' [stats::predict()]/[parsnip::predict_raw()] methods for nested model fits.
+#' [stats::predict()] / [parsnip::predict_raw()] methods for nested model fits.
 #'
 #' @param object A `nested_model_fit` object produced by
 #'   [fit.nested_model()].

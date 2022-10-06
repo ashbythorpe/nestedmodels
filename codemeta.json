@@ -2,8 +2,9 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "nestedmodels",
-  "description": "The goal of 'nestedmodels' is to allow the modelling of nested data. Some models only accept certain predictors. For panel data, it is often desirable to create a model for each panel. 'nestedmodels' enhances the 'tidymodels' set of packages by allowing the user to classify a model or workflow as 'nested'.",
-  "name": "nestedmodels: Tidymodels for Nested/Panel Data",
+  "description": "The goal of 'nestedmodels' is to allow the modelling of nested data. Some models only accept certain predictors. For panel data, it is often desirable to fit a model to each panel. 'nestedmodels' enhances the 'tidymodels' set of packages by allowing the user to classify a model or workflow as 'nested'.",
+  "name": "nestedmodels: Tidy Modelling for Nested/Panel Data",
+  "relatedLink": "https://ashbythorpe.github.io/nestedmodels/",
   "codeRepository": "https://github.com/ashbythorpe/nestedmodels",
   "issueTracker": "https://github.com/ashbythorpe/nestedmodels/issues",
   "license": "https://spdx.org/licenses/MIT",
@@ -13,7 +14,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.1 (2022-06-23)",
+  "runtimePlatform": "R version 4.0.4 (2021-02-15)",
   "author": [
     {
       "@type": "Person",
@@ -35,6 +36,30 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
+      "identifier": "broom",
+      "name": "broom",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=broom"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "covr",
+      "name": "covr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=covr"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "glmnet",
       "name": "glmnet",
       "provider": {
@@ -44,6 +69,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=glmnet"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "hardhat",
+      "name": "hardhat",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=hardhat"
     },
     {
       "@type": "SoftwareApplication",
@@ -83,18 +120,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "stacks",
-      "name": "stacks",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=stacks"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "testthat",
       "name": "testthat",
       "version": ">= 3.0.0",
@@ -105,20 +130,67 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=testthat"
-    }
-  ],
-  "softwareRequirements": {
-    "1": {
+    },
+    {
       "@type": "SoftwareApplication",
-      "identifier": "butcher",
-      "name": "butcher",
+      "identifier": "tidyselect",
+      "name": "tidyselect",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=butcher"
+      "sameAs": "https://CRAN.R-project.org/package=tidyselect"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tune",
+      "name": "tune",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tune"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "utils",
+      "name": "utils"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "withr",
+      "name": "withr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=withr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "workflows",
+      "name": "workflows",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=workflows"
+    }
+  ],
+  "softwareRequirements": {
+    "1": {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 2.10"
     },
     "2": {
       "@type": "SoftwareApplication",
@@ -146,29 +218,17 @@
     },
     "4": {
       "@type": "SoftwareApplication",
-      "identifier": "finetune",
-      "name": "finetune",
+      "identifier": "forcats",
+      "name": "forcats",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=finetune"
+      "sameAs": "https://CRAN.R-project.org/package=forcats"
     },
     "5": {
-      "@type": "SoftwareApplication",
-      "identifier": "foreach",
-      "name": "foreach",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=foreach"
-    },
-    "6": {
       "@type": "SoftwareApplication",
       "identifier": "generics",
       "name": "generics",
@@ -180,19 +240,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=generics"
     },
-    "7": {
-      "@type": "SoftwareApplication",
-      "identifier": "ggplot2",
-      "name": "ggplot2",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
-    },
-    "8": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "glue",
       "name": "glue",
@@ -204,19 +252,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=glue"
     },
-    "9": {
-      "@type": "SoftwareApplication",
-      "identifier": "gridExtra",
-      "name": "gridExtra",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=gridExtra"
-    },
-    "10": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "lifecycle",
       "name": "lifecycle",
@@ -228,7 +264,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=lifecycle"
     },
-    "11": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "magrittr",
       "name": "magrittr",
@@ -240,24 +276,19 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=magrittr"
     },
-    "12": {
+    "9": {
       "@type": "SoftwareApplication",
-      "identifier": "methods",
-      "name": "methods"
-    },
-    "13": {
-      "@type": "SoftwareApplication",
-      "identifier": "pillar",
-      "name": "pillar",
+      "identifier": "parsnip",
+      "name": "parsnip",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=pillar"
+      "sameAs": "https://CRAN.R-project.org/package=parsnip"
     },
-    "14": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
@@ -269,7 +300,19 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    "15": {
+    "11": {
+      "@type": "SoftwareApplication",
+      "identifier": "recipes",
+      "name": "recipes",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=recipes"
+    },
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
@@ -281,6 +324,35 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=rlang"
+    },
+    "13": {
+      "@type": "SoftwareApplication",
+      "identifier": "rsample",
+      "name": "rsample",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rsample"
+    },
+    "14": {
+      "@type": "SoftwareApplication",
+      "identifier": "stats",
+      "name": "stats"
+    },
+    "15": {
+      "@type": "SoftwareApplication",
+      "identifier": "stringr",
+      "name": "stringr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=stringr"
     },
     "16": {
       "@type": "SoftwareApplication",
@@ -298,6 +370,7 @@
       "@type": "SoftwareApplication",
       "identifier": "tidyr",
       "name": "tidyr",
+      "version": "> 0.8.99",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -308,37 +381,20 @@
     },
     "18": {
       "@type": "SoftwareApplication",
-      "identifier": "withr",
-      "name": "withr",
+      "identifier": "vctrs",
+      "name": "vctrs",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=withr"
-    },
-    "19": {
-      "@type": "SoftwareApplication",
-      "identifier": "workflowsets",
-      "name": "workflowsets",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=workflowsets"
-    },
-    "20": {
-      "@type": "SoftwareApplication",
-      "identifier": "R",
-      "name": "R",
-      "version": ">= 2.10"
+      "sameAs": "https://CRAN.R-project.org/package=vctrs"
     },
     "SystemRequirements": null
   },
-  "fileSize": "147.814KB",
-  "readme": "https://github.com/ashbythorpe/nestedmodels/blob/master/README.Rmd",
-  "contIntegration": "https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml"
+  "fileSize": "192.447KB",
+  "readme": "https://github.com/ashbythorpe/nestedmodels/blob/master/README.md",
+  "contIntegration": ["https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/ashbythorpe/nestedmodels?branch=master"],
+  "developmentStatus": "https://www.repostatus.org/#active"
 }
