@@ -139,7 +139,7 @@
 <span><span class="va">data_tst</span> <span class="op">&lt;-</span> <span class="fu">rsample</span><span class="fu">::</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/initial_split.html" class="external-link">testing</a></span><span class="op">(</span><span class="va">split</span><span class="op">)</span></span></code></pre></div>
 <p>Fitting a nested model to this data is very simple.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html" class="external-link">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/nested.html">nested</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">z</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span> <span class="op">+</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span>, </span>
@@ -149,24 +149,24 @@
 <span><span class="co">#&gt; # A tibble: 260 × 1</span></span>
 <span><span class="co">#&gt;    .pred</span></span>
 <span><span class="co">#&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1  32.7</span></span>
-<span><span class="co">#&gt;  2  29.2</span></span>
-<span><span class="co">#&gt;  3  39.4</span></span>
-<span><span class="co">#&gt;  4  28.8</span></span>
-<span><span class="co">#&gt;  5  29.7</span></span>
-<span><span class="co">#&gt;  6  30.6</span></span>
-<span><span class="co">#&gt;  7  42.4</span></span>
-<span><span class="co">#&gt;  8  30.6</span></span>
-<span><span class="co">#&gt;  9  27.8</span></span>
-<span><span class="co">#&gt; 10  27.5</span></span>
+<span><span class="co">#&gt;  1  31.8</span></span>
+<span><span class="co">#&gt;  2  22.5</span></span>
+<span><span class="co">#&gt;  3  34.6</span></span>
+<span><span class="co">#&gt;  4  32.8</span></span>
+<span><span class="co">#&gt;  5  29.8</span></span>
+<span><span class="co">#&gt;  6  19.9</span></span>
+<span><span class="co">#&gt;  7  29.2</span></span>
+<span><span class="co">#&gt;  8  27.4</span></span>
+<span><span class="co">#&gt;  9  48.1</span></span>
+<span><span class="co">#&gt; 10  25.0</span></span>
 <span><span class="co">#&gt; # … with 250 more rows</span></span></code></pre></div>
 <p>If you don’t want to nest your data manually, use <code><a href="reference/step_nest.html">step_nest()</a></code> inside a workflow:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">recipe</span> <span class="op">&lt;-</span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">data_tr</span>, <span class="va">z</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span> <span class="op">+</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span> <span class="op">+</span> <span class="va">id</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<code class="sourceCode R"><span><span class="va">recipe</span> <span class="op">&lt;-</span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">data_tr</span>, <span class="va">z</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span> <span class="op">+</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span> <span class="op">+</span> <span class="va">id</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/step_nest.html">step_nest</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">wf</span> <span class="op">&lt;-</span> <span class="fu">workflows</span><span class="fu">::</span><span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">workflows</span><span class="fu">::</span><span class="fu"><a href="https://workflows.tidymodels.org/reference/add_model.html" class="external-link">add_model</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="va">wf</span> <span class="op">&lt;-</span> <span class="fu">workflows</span><span class="fu">::</span><span class="fu"><a href="https://workflows.tidymodels.org/reference/workflow.html" class="external-link">workflow</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">workflows</span><span class="fu">::</span><span class="fu"><a href="https://workflows.tidymodels.org/reference/add_model.html" class="external-link">add_model</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">workflows</span><span class="fu">::</span><span class="fu"><a href="https://workflows.tidymodels.org/reference/add_recipe.html" class="external-link">add_recipe</a></span><span class="op">(</span><span class="va">recipe</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">wf_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">wf</span>, <span class="va">data_tr</span><span class="op">)</span></span>
@@ -175,16 +175,16 @@
 <span><span class="co">#&gt; # A tibble: 260 × 1</span></span>
 <span><span class="co">#&gt;    .pred</span></span>
 <span><span class="co">#&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1  32.7</span></span>
-<span><span class="co">#&gt;  2  29.2</span></span>
-<span><span class="co">#&gt;  3  39.4</span></span>
-<span><span class="co">#&gt;  4  28.8</span></span>
-<span><span class="co">#&gt;  5  29.7</span></span>
-<span><span class="co">#&gt;  6  30.6</span></span>
-<span><span class="co">#&gt;  7  42.4</span></span>
-<span><span class="co">#&gt;  8  30.6</span></span>
-<span><span class="co">#&gt;  9  27.8</span></span>
-<span><span class="co">#&gt; 10  27.5</span></span>
+<span><span class="co">#&gt;  1  31.8</span></span>
+<span><span class="co">#&gt;  2  22.5</span></span>
+<span><span class="co">#&gt;  3  34.6</span></span>
+<span><span class="co">#&gt;  4  32.8</span></span>
+<span><span class="co">#&gt;  5  29.8</span></span>
+<span><span class="co">#&gt;  6  19.9</span></span>
+<span><span class="co">#&gt;  7  29.2</span></span>
+<span><span class="co">#&gt;  8  27.4</span></span>
+<span><span class="co">#&gt;  9  48.1</span></span>
+<span><span class="co">#&gt; 10  25.0</span></span>
 <span><span class="co">#&gt; # … with 250 more rows</span></span></code></pre></div>
 </div>
 </div>
