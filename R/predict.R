@@ -7,7 +7,7 @@
 #'   [fit.nested_model()].
 #' @param new_data A data frame to make predictions on. Can be nested or
 #'   non-nested.
-#' @param type A singular character vector or NULL. Passed on to
+#' @param type A singular character vector or `NULL`. Passed on to
 #'   [parsnip::predict.model_fit()].
 #' @param opts A list of optional arguments. Passed on to
 #'   [parsnip::predict.model_fit()].

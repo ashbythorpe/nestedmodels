@@ -7,7 +7,7 @@
 #' @param data A data frame.
 #' @param resamples An expression, function, formula or string that can
 #'   be evaluated to produce an `rset` or `rsplit` object.
-#' @param nesting_method A recipe, workflow or NULL, used to nest `data`
+#' @param nesting_method A recipe, workflow or `NULL`, used to nest `data`
 #'   if `data` is not already nested (see Details).
 #' @param size_action If different numbers of splits are produced in each
 #'   nest, how should sizes be matched? (see Details)
@@ -24,7 +24,7 @@
 #' # Nesting Data
 #'
 #' `data` can be nested in several ways:
-#' If `nesting_method` is NULL and `data` is grouped (using
+#' If `nesting_method` is `NULL` and `data` is grouped (using
 #' [dplyr::group_by()]), the data will be nested (see [tidyr::nest()]
 #' for how this works).
 #' If `data` is not grouped, it is assumed to already be nested, and
