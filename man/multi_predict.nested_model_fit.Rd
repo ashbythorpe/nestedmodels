@@ -34,7 +34,8 @@ model <- parsnip::linear_reg(penalty = 1) \%>\%
 fitted <- fit(model, z ~ x + y + a + b, nested_data)
 
 parsnip::multi_predict(fitted, example_nested_data,
-                       penalty = c(0.1, 0.2, 0.3))
+  penalty = c(0.1, 0.2, 0.3)
+)
 
 }
 \seealso{

@@ -1,23 +1,31 @@
 test_that("step_nest works", {
   recipe <- recipes::recipe(example_nested_data, z ~ .) %>%
     step_nest(.data$id)
-  
-  expect_equal(tidy(recipe, 1),
-               tibble::tibble(`.data$id` = NA, nest_id = NA_character_))
-  
-  expect_match(purrr::quietly(print)(recipe)$output, 
-               "Nest transformation")
-  
+
+  expect_equal(
+    tidy(recipe, 1),
+    tibble::tibble(`.data$id` = NA, nest_id = NA_character_)
+  )
+
+  expect_match(
+    purrr::quietly(print)(recipe)$output,
+    "Nest transformation"
+  )
+
   prepped_recipe <- recipes::prep(recipe)
-  
+
   expect_equal(tidy(prepped_recipe, 1), prepped_recipe$steps[[1]]$lookup_table)
-  
-  expect_match(purrr::quietly(print)(prepped_recipe)$output, 
-               "Nest transformation")
-  
-  expect_equal(required_pkgs(recipe), 
-               c("recipes", "nestedmodels", "tidyr", "dplyr"))
-  
+
+  expect_match(
+    purrr::quietly(print)(prepped_recipe)$output,
+    "Nest transformation"
+  )
+
+  expect_equal(
+    required_pkgs(recipe),
+    c("recipes", "nestedmodels", "tidyr", "dplyr")
+  )
+
   baked_data <- recipe %>%
     recipes::prep() %>%
     recipes::bake(NULL)

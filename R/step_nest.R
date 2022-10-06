@@ -59,7 +59,7 @@
 #' When you [`tidy()`][tidy.recipe()] this step, a tibble is returned showing
 #' how each unique value of the terms you have specified correspond to each
 #' nest id.
-#' 
+#'
 #' # Case weights
 #' The underlying operation does not allow for case weights.
 #'
@@ -88,7 +88,7 @@ step_nest <- function(recipe, ..., role = "predictor", trained = FALSE,
                       names = NULL, lookup_table = NULL,
                       skip = FALSE, id = recipes::rand_id("nest")) {
   recipes::recipes_pkg_check(required_pkgs.step_nest())
-  
+
   recipes::add_step(
     recipe,
     step_nest_new(
@@ -184,12 +184,14 @@ required_pkgs.step_nest <- function(x, ...) {
 
 #' @export
 tidy.step_nest <- function(x, ...) {
-  if(recipes::is_trained(x)) {
+  if (recipes::is_trained(x)) {
     x$lookup_table
   } else {
     names <- recipes::sel2char(x$terms)
     cols <- names %>%
-      purrr::map(~ {NA}) %>%
+      purrr::map(~ {
+        NA
+      }) %>%
       rlang::set_names(names)
 
     tibble::as_tibble(cols) %>%

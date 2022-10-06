@@ -44,7 +44,7 @@
 #'  * A purrr-style anonymous function, which will be converted to a
 #'   function using [rlang::as_function()].
 #'  * A string, which will be evaluated using [rlang::exec()].
-#' 
+#'
 #' Every method will be evaluated with `data` passed in as the first
 #' argument (with name 'data').
 #'

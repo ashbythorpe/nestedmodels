@@ -14,8 +14,10 @@ test_that("nested_model works", {
       dplyr::select(-.data$component)
   )
 
-  expect_equal(parsnip::translate(nested_model),
-               parsnip::translate(normal_model))
+  expect_equal(
+    parsnip::translate(nested_model),
+    parsnip::translate(normal_model)
+  )
 
   purrr::quietly(print)(nested_model)$output %>%
     expect_match("Nested Model Specification")
