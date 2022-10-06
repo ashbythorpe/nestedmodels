@@ -16,7 +16,7 @@
 \item{new_data}{A data frame to make predictions on. Can be nested or
 non-nested.}
 
-\item{type}{A singular character vector or NULL. Passed on to
+\item{type}{A singular character vector or \code{NULL}. Passed on to
 \code{\link[parsnip:predict.model_fit]{parsnip::predict.model_fit()}}.}
 
 \item{opts}{A list of optional arguments. Passed on to
