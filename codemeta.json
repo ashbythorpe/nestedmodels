@@ -2,7 +2,7 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "nestedmodels",
-  "description": "The goal of 'nestedmodels' is to allow the modelling of nested data. Some models only accept certain predictors. For panel data, it is often desirable to fit a model to each panel. 'nestedmodels' enhances the 'tidymodels' set of packages by allowing the user to classify a model or workflow as 'nested'.",
+  "description": "A modelling framework for nested data using the 'tidymodels' ecosystem. Specify how to nest data using the 'recipes' package, create testing and training splits using 'rsample', and fit models to this data using the 'parsnip' and 'workflows' packages. Allows any model to be fit to nested data.",
   "name": "nestedmodels: Tidy Modelling for Nested/Panel Data",
   "relatedLink": "https://ashbythorpe.github.io/nestedmodels/",
   "codeRepository": "https://github.com/ashbythorpe/nestedmodels",
@@ -393,7 +393,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "192.447KB",
+  "fileSize": "208.15KB",
   "readme": "https://github.com/ashbythorpe/nestedmodels/blob/master/README.md",
   "contIntegration": ["https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/ashbythorpe/nestedmodels?branch=master"],
   "developmentStatus": "https://www.repostatus.org/#active"
