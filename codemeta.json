@@ -3,12 +3,12 @@
   "@type": "SoftwareSourceCode",
   "identifier": "nestedmodels",
   "description": "A modelling framework for nested data using the 'tidymodels' ecosystem. Specify how to nest data using the 'recipes' package, create testing and training splits using 'rsample', and fit models to this data using the 'parsnip' and 'workflows' packages. Allows any model to be fit to nested data.",
-  "name": "nestedmodels: Tidy Modelling for Nested/Panel Data",
+  "name": "nestedmodels: Tidy Modelling for Nested Data",
   "relatedLink": "https://ashbythorpe.github.io/nestedmodels/",
   "codeRepository": "https://github.com/ashbythorpe/nestedmodels",
   "issueTracker": "https://github.com/ashbythorpe/nestedmodels/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.0.9000",
+  "version": "1.0.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -393,7 +393,8 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "208.15KB",
+  "fileSize": "208.239KB",
+  "releaseNotes": "https://github.com/ashbythorpe/nestedmodels/blob/master/NEWS.md",
   "readme": "https://github.com/ashbythorpe/nestedmodels/blob/master/README.md",
   "contIntegration": ["https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/ashbythorpe/nestedmodels?branch=master"],
   "developmentStatus": "https://www.repostatus.org/#active"
