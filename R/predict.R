@@ -102,7 +102,7 @@ predict_nested <- function(model, data, ...) {
   if (is.null(model)) {
     NULL
   } else {
-    safe_predict(model, data, ...)
+    purrr::possibly(predict, otherwise = NULL, quiet = F)(model, data, ...)
   }
 }
 
@@ -171,6 +171,3 @@ fix_matrix_predictions <- function(data, names, ncol) {
     dimnames = dimnames
   )
 }
-
-#' @noRd
-safe_predict <- function() "" # nocov

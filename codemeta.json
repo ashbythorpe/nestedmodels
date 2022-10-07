@@ -393,7 +393,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "208.239KB",
+  "fileSize": "207.848KB",
   "releaseNotes": "https://github.com/ashbythorpe/nestedmodels/blob/master/NEWS.md",
   "readme": "https://github.com/ashbythorpe/nestedmodels/blob/master/README.md",
   "contIntegration": ["https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/ashbythorpe/nestedmodels?branch=master"],

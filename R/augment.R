@@ -76,12 +76,9 @@ augment_nested <- function(model, data, ..., .inner_names) {
   if (is.null(model)) {
     NULL
   } else {
-    safe_augment(model, data, ...)
+    purrr::possibly(augment, otherwise = NULL, quiet = F)(model, data, ...)
   }
 }
-
-#' @noRd
-safe_augment <- function() "" # nocov
 
 #' @noRd
 fix_augmented_predictions <- function(predictions, data) {

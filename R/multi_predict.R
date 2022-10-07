@@ -76,8 +76,7 @@ multi_predict_nested <- function(model, data, ...) {
   if (is.null(model)) {
     NULL
   } else {
-    multi_predict(model, data, ...)
+    purrr::possibly(parsnip::multi_predict, 
+                    otherwise = NULL, quiet = F)(model, data, ...)
   }
 }
-
-safe_multi_predict <- function() "" # nocov

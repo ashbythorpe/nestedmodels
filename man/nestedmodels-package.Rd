@@ -4,11 +4,11 @@
 \name{nestedmodels-package}
 \alias{nestedmodels}
 \alias{nestedmodels-package}
-\title{nestedmodels: Tidy Modelling for Nested/Panel Data}
+\title{nestedmodels: Tidy Modelling for Nested Data}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-The goal of 'nestedmodels' is to allow the modelling of nested data. Some models only accept certain predictors. For panel data, it is often desirable to fit a model to each panel. 'nestedmodels' enhances the 'tidymodels' set of packages by allowing the user to classify a model or workflow as 'nested'.
+A modelling framework for nested data using the 'tidymodels' ecosystem. Specify how to nest data using the 'recipes' package, create testing and training splits using 'rsample', and fit models to this data using the 'parsnip' and 'workflows' packages. Allows any model to be fit to nested data.
 }
 \seealso{
 Useful links:

@@ -1,3 +1,13 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Removed all uses of '<<-'
+
+The response to the original submission stated:
+"If there are references describing the methods in your package, please add these in the description field of your DESCRIPTION file".
+
+The package does not reference academic publications.
+
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note

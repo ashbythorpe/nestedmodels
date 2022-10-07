@@ -40,7 +40,7 @@ devtools::install_github("ashbythorpe/nestedmodels")
 library(nestedmodels)
 ```
 
-Nested models are often best used on [panel data](https://en.wikipedia.org/wiki/Panel_data).
+Nested models are often best used on panel data.
 
 ```{r data}
 data <- example_nested_data

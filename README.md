@@ -35,8 +35,7 @@ devtools::install_github("ashbythorpe/nestedmodels")
 library(nestedmodels)
 ```
 
-Nested models are often best used on [panel
-data](https://en.wikipedia.org/wiki/Panel_data).
+Nested models are often best used on panel data.
 
 ``` r
 data <- example_nested_data
@@ -92,16 +91,16 @@ predict(fit, data_tst)
 #> # A tibble: 260 × 1
 #>    .pred
 #>    <dbl>
-#>  1  30.6
-#>  2  30.8
-#>  3  28.6
-#>  4  28.6
-#>  5  21.1
-#>  6  26.8
-#>  7  28.6
-#>  8  26.7
-#>  9  23.7
-#> 10  40.8
+#>  1  17.5
+#>  2  39.7
+#>  3  50.9
+#>  4  29.6
+#>  5  45.3
+#>  6  30.6
+#>  7  17.9
+#>  8  26.2
+#>  9  22.8
+#> 10  14.7
 #> # … with 250 more rows
 ```
 
@@ -122,15 +121,15 @@ predict(wf_fit, data_tst)
 #> # A tibble: 260 × 1
 #>    .pred
 #>    <dbl>
-#>  1  30.6
-#>  2  30.8
-#>  3  28.6
-#>  4  28.6
-#>  5  21.1
-#>  6  26.8
-#>  7  28.6
-#>  8  26.7
-#>  9  23.7
-#> 10  40.8
+#>  1  17.5
+#>  2  39.7
+#>  3  50.9
+#>  4  29.6
+#>  5  45.3
+#>  6  30.6
+#>  7  17.9
+#>  8  26.2
+#>  9  22.8
+#> 10  14.7
 #> # … with 250 more rows
 ```
