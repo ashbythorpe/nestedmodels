@@ -1,5 +1,5 @@
 Package: nestedmodels
-Title: Tidy Modelling for Nested/Panel Data
+Title: Tidy Modelling for Nested Data
 Version: 0.0.0.9000
 Authors@R: 
     person("Ashby", "Thorpe", , "ashbythorpe@gmail.com", role = c("aut", "cre"),
