@@ -104,7 +104,7 @@
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">z</span> <span class="op">~</span> <span class="va">.</span>, <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html" class="external-link">nest</a></span><span class="op">(</span><span class="va">example_nested_data</span>, data <span class="op">=</span> <span class="op">-</span><span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   1.250   0.040   1.289</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.966   0.036   1.003</span></span></code></pre></div>
 <p>This is because a model is fit to 20 nests. More computationally expensive models take more time to complete, and the time taken increases in direct proportion to the number of nested data frames. Furthermore, storing a nested model means storing a model for every nest. For more complex model objects, this can result in a monstrously sized fit object.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/object.size.html" class="external-link">object.size</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
