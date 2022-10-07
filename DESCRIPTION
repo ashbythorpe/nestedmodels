@@ -4,11 +4,11 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Ashby", "Thorpe", , "ashbythorpe@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3106-099X"))
-Description: The goal of 'nestedmodels' is to allow the modelling of
-    nested data. Some models only accept certain predictors. For panel
-    data, it is often desirable to fit a model to each panel.
-    'nestedmodels' enhances the 'tidymodels' set of packages by allowing
-    the user to classify a model or workflow as 'nested'.
+Description: A modelling framework for nested data using the 'tidymodels' 
+    ecosystem. Specify how to nest data using the 'recipes' package, create 
+    testing and training splits using 'rsample', and fit models to this data
+    using the 'parsnip' and 'workflows' packages. Allows any model to be fit
+    to nested data.
 License: MIT + file LICENSE
 URL: https://github.com/ashbythorpe/nestedmodels,
     https://ashbythorpe.github.io/nestedmodels/
