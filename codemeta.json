@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/ashbythorpe/nestedmodels",
   "issueTracker": "https://github.com/ashbythorpe/nestedmodels/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -393,7 +393,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "207.848KB",
+  "fileSize": "207.923KB",
   "releaseNotes": "https://github.com/ashbythorpe/nestedmodels/blob/master/NEWS.md",
   "readme": "https://github.com/ashbythorpe/nestedmodels/blob/master/README.md",
   "contIntegration": ["https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/ashbythorpe/nestedmodels?branch=master"],
