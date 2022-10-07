@@ -86,4 +86,3 @@ wf_fit <- fit(wf, data_tr)
 
 predict(wf_fit, data_tst)
 ```
-

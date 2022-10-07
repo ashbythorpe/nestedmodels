@@ -19,7 +19,7 @@ nested_resamples(
 \item{resamples}{An expression, function, formula or string that can
 be evaluated to produce an \code{rset} or \code{rsplit} object.}
 
-\item{nesting_method}{A recipe, workflow or NULL, used to nest \code{data}
+\item{nesting_method}{A recipe, workflow or \code{NULL}, used to nest \code{data}
 if \code{data} is not already nested (see Details).}
 
 \item{size_action}{If different numbers of splits are produced in each
@@ -46,7 +46,7 @@ if a nest is too small.
 }
 \section{Nesting Data}{
 \code{data} can be nested in several ways:
-If \code{nesting_method} is NULL and \code{data} is grouped (using
+If \code{nesting_method} is \code{NULL} and \code{data} is grouped (using
 \code{\link[dplyr:group_by]{dplyr::group_by()}}), the data will be nested (see \code{\link[tidyr:nest]{tidyr::nest()}}
 for how this works).
 If \code{data} is not grouped, it is assumed to already be nested, and
