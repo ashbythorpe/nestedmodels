@@ -1,3 +1,5 @@
+# nestedmodels 1.0.1
+
 # nestedmodels 1.0.0
 
 * Submitted to CRAN
