@@ -4,7 +4,7 @@
   "identifier": "nestedmodels",
   "description": "A modelling framework for nested data using the 'tidymodels' ecosystem. Specify how to nest data using the 'recipes' package, create testing and training splits using 'rsample', and fit models to this data using the 'parsnip' and 'workflows' packages. Allows any model to be fit to nested data.",
   "name": "nestedmodels: Tidy Modelling for Nested Data",
-  "relatedLink": "https://ashbythorpe.github.io/nestedmodels/",
+  "relatedLink": ["https://ashbythorpe.github.io/nestedmodels/", "https://CRAN.R-project.org/package=nestedmodels"],
   "codeRepository": "https://github.com/ashbythorpe/nestedmodels",
   "issueTracker": "https://github.com/ashbythorpe/nestedmodels/issues",
   "license": "https://spdx.org/licenses/MIT",
@@ -14,7 +14,13 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.4 (2021-02-15)",
+  "runtimePlatform": "R version 4.2.1 (2022-06-23)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
   "author": [
     {
       "@type": "Person",
@@ -393,7 +399,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "207.923KB",
+  "fileSize": "207.98KB",
   "releaseNotes": "https://github.com/ashbythorpe/nestedmodels/blob/master/NEWS.md",
   "readme": "https://github.com/ashbythorpe/nestedmodels/blob/master/README.md",
   "contIntegration": ["https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/ashbythorpe/nestedmodels?branch=master"],

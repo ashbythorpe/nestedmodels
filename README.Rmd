@@ -27,9 +27,11 @@ Some models only accept certain predictors. For panel data, it is often desirabl
 
 ## Installation
 
-You can install the development version of nestedmodels like so:
-
 ``` r
+# Install the released version on CRAN
+install.packages("nestedmodels")
+
+# Or install the development version from GitHub:
 # install.packages("devtools")
 devtools::install_github("ashbythorpe/nestedmodels")
 ```

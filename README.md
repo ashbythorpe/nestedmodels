@@ -22,9 +22,11 @@ the user to classify a model as ‘nested’.
 
 ## Installation
 
-You can install the development version of nestedmodels like so:
-
 ``` r
+# Install the released version on CRAN
+install.packages("nestedmodels")
+
+# Or install the development version from GitHub:
 # install.packages("devtools")
 devtools::install_github("ashbythorpe/nestedmodels")
 ```
@@ -91,16 +93,16 @@ predict(fit, data_tst)
 #> # A tibble: 260 × 1
 #>    .pred
 #>    <dbl>
-#>  1  17.5
-#>  2  39.7
-#>  3  50.9
-#>  4  29.6
-#>  5  45.3
-#>  6  30.6
-#>  7  17.9
-#>  8  26.2
-#>  9  22.8
-#> 10  14.7
+#>  1  34.0
+#>  2  28.8
+#>  3  42.7
+#>  4  36.9
+#>  5  30.6
+#>  6  27.5
+#>  7  36.5
+#>  8  39.5
+#>  9  23.9
+#> 10  26.6
 #> # … with 250 more rows
 ```
 
@@ -121,15 +123,15 @@ predict(wf_fit, data_tst)
 #> # A tibble: 260 × 1
 #>    .pred
 #>    <dbl>
-#>  1  17.5
-#>  2  39.7
-#>  3  50.9
-#>  4  29.6
-#>  5  45.3
-#>  6  30.6
-#>  7  17.9
-#>  8  26.2
-#>  9  22.8
-#> 10  14.7
+#>  1  34.0
+#>  2  28.8
+#>  3  42.7
+#>  4  36.9
+#>  5  30.6
+#>  6  27.5
+#>  7  36.5
+#>  8  39.5
+#>  9  23.9
+#> 10  26.6
 #> # … with 250 more rows
 ```
