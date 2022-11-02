@@ -2,7 +2,7 @@ test_that("nested_model_fit works", {
   model <- parsnip::linear_reg() %>%
     nested()
 
-  nested_data <- tidyr::nest(example_nested_data, data = -.data$id)
+  nested_data <- tidyr::nest(example_nested_data, data = -"id")
 
   fit <- fit(model, z ~ x + y + a + b, nested_data)
 

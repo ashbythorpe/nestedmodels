@@ -1,10 +1,10 @@
 test_that("step_nest works", {
   recipe <- recipes::recipe(example_nested_data, z ~ .) %>%
-    step_nest(.data$id)
+    step_nest(id)
 
   expect_equal(
     tidy(recipe, 1),
-    tibble::tibble(`.data$id` = NA, nest_id = NA_character_)
+    tibble::tibble(id = NA, nest_id = NA_character_)
   )
 
   expect_match(
@@ -31,7 +31,7 @@ test_that("step_nest works", {
     recipes::bake(NULL)
 
   data <- example_nested_data %>%
-    tidyr::nest(data = -.data$id) %>%
+    tidyr::nest(data = -"id") %>%
     dplyr::select(data) %>%
     dplyr::mutate(
       nest_id = factor(glue::glue("Nest {dplyr::row_number()}"))
@@ -49,7 +49,7 @@ test_that("step_nest works", {
     dplyr::mutate(nest_id = as.character(.data$nest_id))
 
   data2 <- nested_data2 %>%
-    dplyr::select(-.data$id) %>%
+    dplyr::select(-id) %>%
     dplyr::mutate(nest_id = "Nest 10") %>%
     dplyr::relocate(tidyselect::all_of(colnames(baked_data2)))
 
@@ -93,14 +93,14 @@ test_that("step_nest works", {
 
 test_that("step_nest works with multiple columns", {
   recipe <- recipes::recipe(example_nested_data, z ~ .) %>%
-    step_nest(.data$id, .data$id2)
+    step_nest(id, id2)
 
   baked_data <- recipe %>%
     recipes::prep() %>%
     recipes::bake(NULL)
 
   data <- example_nested_data %>%
-    tidyr::nest(data = -c(.data$id, .data$id2)) %>%
+    tidyr::nest(data = -c("id", "id2")) %>%
     dplyr::select(data) %>%
     dplyr::mutate(
       nest_id = factor(glue::glue("Nest {dplyr::row_number()}"))

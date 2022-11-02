@@ -48,7 +48,7 @@ augment.nested_model_fit <- function(x, new_data, ...) {
     ))
     outer_names <- outer_names[outer_names %in% colnames(new_data)]
     fit <- fit[, c(outer_names, ".model_fit")] %>%
-      tidyr::chop(.data$.model_fit) %>%
+      tidyr::chop(".model_fit") %>%
       dplyr::mutate(.model_fit = purrr::map(.data$.model_fit, 1))
   }
 

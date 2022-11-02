@@ -7,7 +7,7 @@ test_that("combine_rsets works", {
     id = c(rep(1, 5), rep(2, 5), rep(3, 5)),
     x = 1:15
   )
-  x <- tidyr::nest(data, data = -.data$id)$data
+  x <- tidyr::nest(data, data = -"id")$data
   splits <- purrr::map(x, rsample::initial_split, prop = 4 / 5)
   actual_splits <- rsample::make_splits(
     list(

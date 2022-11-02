@@ -4,14 +4,14 @@ test_that("nested_model works", {
   nested_model <- nested_model("regression", normal_model)
 
   expect_equal(
-    generics::tunable(normal_model) %>% dplyr::select(-.data$component),
-    generics::tunable(nested_model) %>% dplyr::select(-.data$component)
+    generics::tunable(normal_model) %>% dplyr::select(-"component"),
+    generics::tunable(nested_model) %>% dplyr::select(-"component")
   )
   expect_equal(
     generics::tune_args(normal_model) %>%
-      dplyr::select(-.data$component),
+      dplyr::select(-"component"),
     generics::tune_args(nested_model) %>%
-      dplyr::select(-.data$component)
+      dplyr::select(-"component")
   )
 
   expect_equal(
