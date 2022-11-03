@@ -1,3 +1,5 @@
+# nestedmodels 1.0.2
+
 # nestedmodels 1.0.1
 
 * Removed all uses of '<<-' for CRAN resubmission.
