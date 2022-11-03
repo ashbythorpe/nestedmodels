@@ -7,7 +7,7 @@ test_that("broom methods work", {
 
   fit <- fit(
     model, z ~ x + y + a + b,
-    tidyr::nest(example_nested_data, data = -.data$id)
+    tidyr::nest(example_nested_data, data = -"id")
   )
   withr::with_package("broom", {
     tidy(fit)

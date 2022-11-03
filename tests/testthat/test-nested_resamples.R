@@ -65,7 +65,7 @@ test_that("nested_resamples works", {
     x = 1:30
   )
   nested_resamples(
-    tidyr::nest(small_data, data = -.data$id),
+    tidyr::nest(small_data, data = -"id"),
     rsample::nested_cv(
       rsample::vfold_cv(),
       rsample::bootstraps()

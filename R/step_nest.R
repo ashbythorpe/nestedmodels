@@ -127,7 +127,7 @@ prep.step_nest <- function(x, training, info = NULL) {
       tidyr::nest(data = -c(!!!rlang::syms(names))) %>%
       dplyr::ungroup() %>%
       dplyr::mutate(nest_id = glue::glue("Nest {1:dplyr::n()}")) %>%
-      dplyr::select(-.data$data)
+      dplyr::select(-"data")
   } else {
     lookup_table <- NULL
   }

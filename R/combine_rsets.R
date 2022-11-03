@@ -53,7 +53,7 @@ add_to_splits <- function(split, x) {
 #' @noRd
 transpose_version <- function(x, ...) {
   if (exists("list_transpose", rlang::ns_env("purrr"))) {
-    rlang::ns_env("purrrr")$list_transpose(x, ..., simplify = FALSE)
+    rlang::ns_env("purrr")$list_transpose(x, ..., simplify = FALSE)
   } else {
     purrr::transpose(x, ...)
   }

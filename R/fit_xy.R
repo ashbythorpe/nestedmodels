@@ -70,11 +70,11 @@ fit_xy.nested_model <- function(object, x, y, case_weights = NULL,
   nested_colname <- get_name(".data", c(colnames(x), colnames(y)))
 
   nested_x <- x %>%
-    tidyr::nest(!!nested_colname := -.data$nest_id) %>%
+    tidyr::nest(!!nested_colname := -"nest_id") %>%
     dplyr::ungroup()
 
   nested_y <- y %>%
-    tidyr::nest(!!nested_colname := -.data$nest_id) %>%
+    tidyr::nest(!!nested_colname := -"nest_id") %>%
     dplyr::ungroup()
 
   fits <- purrr::map2(

@@ -5,7 +5,7 @@ test_that("multi_predict.nested_model_fit works", {
     parsnip::set_engine("glmnet") %>%
     nested()
 
-  fit <- fit(model, z ~ ., tidyr::nest(example_nested_data, data = -.data$id))
+  fit <- fit(model, z ~ ., tidyr::nest(example_nested_data, data = -"id"))
 
   suppressWarnings(
     pred <- parsnip::multi_predict(fit, example_nested_data,
