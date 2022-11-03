@@ -1,9 +1,11 @@
 Package: nestedmodels
 Title: Tidy Modelling for Nested Data
 Version: 1.0.1
-Authors@R: 
+Authors@R: c(
     person("Ashby", "Thorpe", , "ashbythorpe@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0003-3106-099X"))
+           comment = c(ORCID = "0000-0003-3106-099X")),
+    person("Hadley", "Wickham", , "hadley@rstudio.com", role = "ctb",
+           comment = c(ORCID = "0000-0003-4757-117X")))
 Description: A modelling framework for nested data using the 'tidymodels' 
     ecosystem. Specify how to nest data using the 'recipes' package, create 
     testing and training splits using 'rsample', and fit models to this data

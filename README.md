@@ -93,16 +93,16 @@ predict(fit, data_tst)
 #> # A tibble: 260 × 1
 #>    .pred
 #>    <dbl>
-#>  1  34.0
-#>  2  28.8
-#>  3  42.7
-#>  4  36.9
-#>  5  30.6
-#>  6  27.5
-#>  7  36.5
-#>  8  39.5
-#>  9  23.9
-#> 10  26.6
+#>  1  29.8
+#>  2  34.3
+#>  3  26.2
+#>  4  31.4
+#>  5  14.9
+#>  6  15.8
+#>  7  26.8
+#>  8  26.3
+#>  9  18.8
+#> 10  42.9
 #> # … with 250 more rows
 ```
 
@@ -123,15 +123,20 @@ predict(wf_fit, data_tst)
 #> # A tibble: 260 × 1
 #>    .pred
 #>    <dbl>
-#>  1  34.0
-#>  2  28.8
-#>  3  42.7
-#>  4  36.9
-#>  5  30.6
-#>  6  27.5
-#>  7  36.5
-#>  8  39.5
-#>  9  23.9
-#> 10  26.6
+#>  1  29.8
+#>  2  34.3
+#>  3  26.2
+#>  4  31.4
+#>  5  14.9
+#>  6  15.8
+#>  7  26.8
+#>  8  26.3
+#>  9  18.8
+#> 10  42.9
 #> # … with 250 more rows
 ```
+
+Please note that the nestedmodels project is released with a
+[Contributor Code of
+Conduct](https://ashbythorpe.github.io/nestedmodels/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.

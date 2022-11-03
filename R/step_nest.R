@@ -154,7 +154,7 @@ bake.step_nest <- function(object, new_data, ...) {
   }
 
   res <- dplyr::left_join(new_data, lookup_table, by = names) %>%
-    dplyr::select(-dplyr::all_of(names)) %>%
+    dplyr::select(-tidyselect::all_of(names)) %>%
     tibble::as_tibble()
 
   good_models <- purrr::discard(res$nest_id, is.na)

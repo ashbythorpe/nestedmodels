@@ -40,7 +40,7 @@ nest_data <- function(data, inner_names, outer_names) {
   if (nested) {
     nested_col <- find_nested_column_with_names(data, inner_names)
     nested_data <- data
-    unnested_data <- tidyr::unnest(data, all_of(nested_col))
+    unnested_data <- tidyr::unnest(data, tidyselect::all_of(nested_col))
     order <- seq_len(nrow(unnested_data))
   } else {
     if (dplyr::is_grouped_df(data)) {

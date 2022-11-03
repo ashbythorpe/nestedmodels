@@ -170,7 +170,7 @@ nested_resamples <- function(data, resamples, nesting_method = NULL,
   nested_data <- nest_data_res$data
   nested_colname <- nest_data_res$colname
 
-  unnested_data <- tidyr::unnest(nested_data, dplyr::all_of(nested_colname))
+  unnested_data <- tidyr::unnest(nested_data, tidyselect::all_of(nested_colname))
 
   create_resamples(
     nested_data[[nested_colname]],

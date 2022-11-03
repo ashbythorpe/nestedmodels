@@ -60,7 +60,7 @@ tidy.nested_model_fit <- function(x, ...) {
   fit[[tidy_name]] <- purrr::map(fit$.model_fit, tidy, ...)
   fit %>%
     dplyr::select(-".model_fit") %>%
-    tidyr::unnest(all_of(tidy_name))
+    tidyr::unnest(tidyselect::all_of(tidy_name))
 }
 
 #' @rdname tidy.nested_model_fit
@@ -84,7 +84,7 @@ glance_nested <- function(x, ...) {
   fit[[tidy_name]] <- purrr::map(fit$.model_fit, glance, ...)
   fit %>%
     dplyr::select(-".model_fit") %>%
-    tidyr::unnest(all_of(tidy_name))
+    tidyr::unnest(tidyselect::all_of(tidy_name))
 }
 
 combine_nested_rows <- function(x) {

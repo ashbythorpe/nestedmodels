@@ -88,3 +88,5 @@ wf_fit <- fit(wf, data_tr)
 
 predict(wf_fit, data_tst)
 ```
+
+Please note that the nestedmodels project is released with a [Contributor Code of Conduct](https://ashbythorpe.github.io/nestedmodels/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.

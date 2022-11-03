@@ -22,5 +22,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Ashby Thorpe \email{ashbythorpe@gmail.com} (\href{https://orcid.org/0000-0003-3106-099X}{ORCID})
 
+Other contributors:
+\itemize{
+  \item Hadley Wickham \email{hadley@rstudio.com} (\href{https://orcid.org/0000-0003-4757-117X}{ORCID}) [contributor]
+}
+
 }
 \keyword{internal}
