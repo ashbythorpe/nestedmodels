@@ -29,7 +29,7 @@ The implementation of nestedmodels is very simple. Fitting a nested model fits t
 # A quick example
 In this vignette, we're going to explore the most basic example of a nested model. You're going to need the following packages:
 
-```{r setup, include = FALSE}
+```{r setup, message = FALSE}
 library(nestedmodels)
 library(tidyr)
 library(parsnip)
