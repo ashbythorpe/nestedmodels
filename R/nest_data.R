@@ -28,10 +28,22 @@
 #' @noRd
 nest_data <- function(data, inner_names, outer_names) {
   if (identical(outer_names, "nest_id")) {
+    nested_data <- tidyr::nest(data, data = -"nest_id")
+    
+    template <- nested_data[, "nest_id"]
+
+    template$.order <- seq_len(nrow(template))
+    
+    order <- order(order(dplyr::left_join(
+      data,
+      template,
+      by = "nest_id"
+    )[[".order"]]))
+    
     return(list(
-      nested_data = tidyr::nest(data, data = -"nest_id"),
+      nested_data = nested_data,
       column = "data",
-      order = order(order(as_ordered_factor(data$nest_id)))
+      order = order
     ))
   }
 
@@ -40,6 +52,7 @@ nest_data <- function(data, inner_names, outer_names) {
   if (nested) {
     nested_col <- find_nested_column_with_names(data, inner_names)
     nested_data <- data
+    
     unnested_data <- tidyr::unnest(data, tidyselect::all_of(nested_col))
     order <- seq_len(nrow(unnested_data))
   } else {
@@ -48,22 +61,27 @@ nest_data <- function(data, inner_names, outer_names) {
         dplyr::ungroup()
       unnested_data <- dplyr::ungroup(data)
       nested_col <- "data"
+      
       template_names <-
         colnames(nested_data)[colnames(nested_data) != "data"]
       template <- nested_data[, template_names]
+      
       order_var <- get_name(".order", colnames(template))
       template[[order_var]] <- seq_len(nrow(template))
+      
       order <- order(order(dplyr::left_join(
         unnested_data,
         template,
         by = template_names
       )[[order_var]]))
+      
       if (!all(outer_names %in% colnames(nested_data))) {
         return(nest_data(dplyr::ungroup(data), inner_names, outer_names))
       }
-      if (!all(inner_names %in%
-        colnames(nested_data$data[[1]]))) {
+      
+      if (!all(inner_names %in% colnames(nested_data$data[[1]]))) {
         try_2 <- nest_data(dplyr::ungroup(data), inner_names, outer_names)
+        
         if (sum(inner_names %in% colnames(nested_data$data[[1]])) <
           sum(inner_names %in% colnames(try_2$nested_data[[
           try_2$column]][[1]]))) {
@@ -73,13 +91,17 @@ nest_data <- function(data, inner_names, outer_names) {
     } else {
       to_nest <- inner_names[inner_names %in% colnames(data)]
       unnested_data <- data
+      
       nested_data <- tidyr::nest(data, data = c(!!!rlang::syms(to_nest)))
       nested_col <- "data"
+      
       template_names <-
         colnames(nested_data)[colnames(nested_data) != "data"]
       template <- nested_data[, template_names]
+      
       order_var <- get_name(".order", colnames(template))
       template[[order_var]] <- seq_len(nrow(template))
+      
       order <- order(order(dplyr::left_join(
         unnested_data,
         template,

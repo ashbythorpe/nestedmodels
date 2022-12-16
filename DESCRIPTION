@@ -20,7 +20,6 @@ Depends:
 Imports: 
     cli,
     dplyr,
-    forcats,
     generics,
     glue,
     lifecycle,
@@ -56,4 +55,4 @@ Encoding: UTF-8
 Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3

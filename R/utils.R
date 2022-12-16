@@ -88,11 +88,6 @@ get_nested_step_index <- function(recipe) {
     which()
 }
 
-as_ordered_factor <- function(x) {
-  forcats::as_factor(x) %>%
-    forcats::fct_inorder()
-}
-
 pass_down_args <- function(inner, outer) {
   inner_args <- inner$args
   outer_args <- outer$args
