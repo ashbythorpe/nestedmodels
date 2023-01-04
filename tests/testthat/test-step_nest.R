@@ -7,18 +7,16 @@ test_that("step_nest works", {
     tibble::tibble(id = NA, nest_id = NA_character_)
   )
 
-  expect_match(
-    purrr::quietly(print)(recipe)$output,
-    "Nest transformation"
+  expect_snapshot(
+    print(recipe)
   )
 
   prepped_recipe <- recipes::prep(recipe)
 
   expect_equal(tidy(prepped_recipe, 1), prepped_recipe$steps[[1]]$lookup_table)
 
-  expect_match(
-    purrr::quietly(print)(prepped_recipe)$output,
-    "Nest transformation"
+  expect_snapshot(
+    print(prepped_recipe)
   )
 
   expect_equal(
