@@ -1,4 +1,4 @@
-# nestedmodels (development version)
+# nestedmodels 1.0.3
 
 * Used expect_snapshot() to test printing (Thanks to a contribution from 
 Emil Hvitfeldt).
