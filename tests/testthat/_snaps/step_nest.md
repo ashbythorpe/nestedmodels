@@ -2,35 +2,34 @@
 
     Code
       print(recipe)
-    Output
-      Recipe
+    Message
       
-      Inputs:
+      -- Recipe ----------------------------------------------------------------------
       
-            role #variables
-         outcome          1
-       predictor          6
+      -- Inputs 
+      Number of variables by role
+      outcome:   1
+      predictor: 6
       
-      Operations:
-      
-      Nest transformation with id
+      -- Operations 
+      * Nest transformation with: id
 
 ---
 
     Code
       print(prepped_recipe)
-    Output
-      Recipe
+    Message
       
-      Inputs:
+      -- Recipe ----------------------------------------------------------------------
       
-            role #variables
-         outcome          1
-       predictor          6
+      -- Inputs 
+      Number of variables by role
+      outcome:   1
+      predictor: 6
       
-      Training data contained 1000 data points and no missing data.
+      -- Training information 
+      Training data contained 1000 data points and no incomplete rows.
       
-      Operations:
-      
-      Nest transformation with id [trained]
+      -- Operations 
+      * Nest transformation with: id | Trained
 

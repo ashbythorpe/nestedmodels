@@ -119,7 +119,7 @@ step_nest_new <- function(terms, role, trained, names, lookup_table, skip,
 }
 
 #' @export
-prep.step_nest <- function(x, training, info = NULL) {
+prep.step_nest <- function(x, training, info = NULL, ...) {
   names <- recipes::recipes_eval_select(x$terms, training, info)
 
   if (length(names) > 0) {
