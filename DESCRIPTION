@@ -1,6 +1,6 @@
 Package: nestedmodels
 Title: Tidy Modelling for Nested Data
-Version: 1.0.4
+Version: 1.0.4.9000
 Authors@R: c(
     person("Ashby", "Thorpe", , "ashbythorpe@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3106-099X")),
