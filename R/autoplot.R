@@ -19,6 +19,7 @@
 #' @examplesIf rlang::is_installed(c("patchwork", "glmnet", "ggrepel"))
 #' 
 #' library(glmnet)
+#' library(ggplot2)
 #' 
 #' data <- dplyr::filter(example_nested_data, id %in% 16:20)
 #'

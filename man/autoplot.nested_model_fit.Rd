@@ -4,7 +4,7 @@
 \alias{autoplot.nested_model_fit}
 \title{Create a set of ggplots for a nested model object}
 \usage{
-autoplot.nested_model_fit(object, ...)
+\method{autoplot}{nested_model_fit}(object, ...)
 }
 \arguments{
 \item{object}{A \code{nested_model_fit} object produced by
@@ -28,6 +28,7 @@ individually.
 \dontshow{if (rlang::is_installed(c("patchwork", "glmnet", "ggrepel"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 library(glmnet)
+library(ggplot2)
 
 data <- dplyr::filter(example_nested_data, id \%in\% 16:20)
 
