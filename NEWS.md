@@ -2,6 +2,7 @@
 
 * Added support for parallel processing in `nested()`.
 * Used ".nest_id" instead of "nest_id" as the column name in `step_nest()` to reduce the likelihood of overwriting an existing column.
+* Added an `autoplot()` method for the nested_model_fit object.
 
 # nestedmodels 1.0.4
 
