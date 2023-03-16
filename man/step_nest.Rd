@@ -34,7 +34,7 @@ preprocessing have been estimated.}
 once this preprocessing step has been trained by \code{\link[recipes:prep]{recipes::prep()}}.}
 
 \item{lookup_table}{The table describing which values of your selected
-columns correspond to which 'nest_id' are stored here once this
+columns correspond to which unique nest id are stored here once this
 preprocessing step has been trained by \code{\link[recipes:prep]{recipes::prep()}}.}
 
 \item{skip}{A logical. Should the step be skipped when the
@@ -56,7 +56,7 @@ convert specified data into a single model term, specifying the 'nest'
 that each row of the dataset corresponds to.
 }
 \details{
-\code{step_nest()} will create a single nominal variable (named 'nest_id')
+\code{step_nest()} will create a single nominal variable (named '.nest_id')
 from a set of variables (of any type). Every unique combination
 of the specified columns will receive a single nest id.
 
@@ -75,7 +75,7 @@ splits and this presents an issue, you may want to consider using
 \code{\link[=nested_resamples]{nested_resamples()}}.
 
 \code{step_nest()} is designed so that nesting the transformed data by its
-'nest_id' column is equivalent to the following action on the
+'.nest_id' column is equivalent to the following action on the
 non-transformed data:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{data \%>\%

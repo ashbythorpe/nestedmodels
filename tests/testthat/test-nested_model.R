@@ -1,7 +1,7 @@
 test_that("nested_model works", {
   normal_model <- parsnip::linear_reg(penalty = hardhat::tune()) %>%
     parsnip::set_engine("glmnet")
-  nested_model <- nested_model("regression", normal_model)
+  nested_model <- nested_model("regression", normal_model, allow_par = FALSE, pkgs = NULL)
 
   expect_equal(
     generics::tunable(normal_model) %>% dplyr::select(-"component"),
@@ -18,7 +18,8 @@ test_that("nested_model works", {
     parsnip::translate(nested_model),
     parsnip::translate(normal_model)
   )
-
-  purrr::quietly(print)(nested_model)$output %>%
-    expect_match("Nested Model Specification")
+  
+  expect_snapshot({
+    print(nested_model)
+  })
 })

@@ -20,6 +20,7 @@ Depends:
 Imports: 
     cli,
     dplyr,
+    foreach,
     generics,
     glue,
     lifecycle,
@@ -37,9 +38,11 @@ Imports:
 Suggests: 
     broom,
     covr,
+    doParallel,
     glmnet,
     hardhat,
     knitr,
+    parallel,
     rmarkdown,
     roxygen2,
     testthat (>= 3.0.0),

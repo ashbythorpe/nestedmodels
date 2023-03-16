@@ -18,11 +18,11 @@ is_nested(x, ...)
 
 \method{nested}{default}(x, ...)
 
-\method{nested}{model_spec}(x, ...)
+\method{nested}{model_spec}(x, allow_par = FALSE, pkgs = NULL, ...)
 
-\method{nested}{nested_model}(x, ...)
+\method{nested}{nested_model}(x, allow_par = FALSE, pkgs = NULL, ...)
 
-\method{nested}{workflow}(x, ...)
+\method{nested}{workflow}(x, allow_par = FALSE, pkgs = NULL, ...)
 
 \method{is_nested}{default}(x, ...)
 
@@ -34,6 +34,12 @@ is_nested(x, ...)
 \item{x}{A model specification or workflow.}
 
 \item{...}{Not currently used.}
+
+\item{allow_par}{A logical to allow parallel processing over nests during
+the fitting process (if a parallel backend is registered).}
+
+\item{pkgs}{An optional character string of R package names that should be
+loaded (by namespace) during parallel processing.}
 }
 \value{
 A nested model object, or a workflow containing a nested model.

@@ -27,17 +27,17 @@
 #'
 #' @noRd
 nest_data <- function(data, inner_names, outer_names) {
-  if (identical(outer_names, "nest_id")) {
-    nested_data <- tidyr::nest(data, data = -"nest_id")
+  if (identical(outer_names, ".nest_id")) {
+    nested_data <- tidyr::nest(data, data = -".nest_id")
     
-    template <- nested_data[, "nest_id"]
+    template <- nested_data[, ".nest_id"]
 
     template$.order <- seq_len(nrow(template))
     
     order <- order(order(dplyr::left_join(
       data,
       template,
-      by = "nest_id"
+      by = ".nest_id"
     )[[".order"]]))
     
     return(list(

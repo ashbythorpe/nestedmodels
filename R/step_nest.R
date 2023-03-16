@@ -17,7 +17,7 @@
 #' @param names The names of the variables selected by `...` are stored here
 #'   once this preprocessing step has been trained by [recipes::prep()].
 #' @param lookup_table The table describing which values of your selected
-#'   columns correspond to which 'nest_id' are stored here once this
+#'   columns correspond to which unique nest id are stored here once this
 #'   preprocessing step has been trained by [recipes::prep()].
 #' @param skip A logical. Should the step be skipped when the
 #'   recipe is baked by [recipes::bake()]? While all operations are baked
@@ -28,7 +28,7 @@
 #' @param id A character string that is unique to this step to identify it.
 #'
 #' @details
-#' `step_nest()` will create a single nominal variable (named 'nest_id')
+#' `step_nest()` will create a single nominal variable (named '.nest_id')
 #' from a set of variables (of any type). Every unique combination
 #' of the specified columns will receive a single nest id.
 #'
@@ -47,7 +47,7 @@
 #' [nested_resamples()].
 #'
 #' `step_nest()` is designed so that nesting the transformed data by its
-#' 'nest_id' column is equivalent to the following action on the
+#' '.nest_id' column is equivalent to the following action on the
 #' non-transformed data:
 #' ```
 #' data %>%
@@ -126,7 +126,7 @@ prep.step_nest <- function(x, training, info = NULL, ...) {
     lookup_table <- training %>%
       tidyr::nest(data = -c(!!!rlang::syms(names))) %>%
       dplyr::ungroup() %>%
-      dplyr::mutate(nest_id = glue::glue("Nest {1:dplyr::n()}")) %>%
+      dplyr::mutate(.nest_id = glue::glue("Nest {1:dplyr::n()}")) %>%
       dplyr::select(-"data")
   } else {
     lookup_table <- NULL
@@ -149,7 +149,7 @@ bake.step_nest <- function(object, new_data, ...) {
   lookup_table <- object$lookup_table
 
   if (is.null(lookup_table)) {
-    new_data$nest_id <- NA_character_
+    new_data$.nest_id <- NA_character_
     return(new_data)
   }
 
@@ -157,7 +157,7 @@ bake.step_nest <- function(object, new_data, ...) {
     dplyr::select(-tidyselect::all_of(names)) %>%
     tibble::as_tibble()
 
-  good_models <- purrr::discard(res$nest_id, is.na)
+  good_models <- purrr::discard(res$.nest_id, is.na)
   if (length(good_models) == 0) {
     cli::cli_warn(c(
       "{.arg new_data} contains no nests from the training set."
@@ -195,6 +195,6 @@ tidy.step_nest <- function(x, ...) {
       rlang::set_names(names)
 
     tibble::as_tibble(cols) %>%
-      tibble::add_column(nest_id = NA_character_)
+      tibble::add_column(.nest_id = NA_character_)
   }
 }

@@ -53,34 +53,44 @@ fit_xy.nested_model <- function(object, x, y, case_weights = NULL,
   }
 
   model <- extract_inner_model(object)
-
+  parallel <- object$eng_args$allow_par
+  pkgs <- object$eng_args$pkgs
+  
   if (!is.null(object$args)) {
     model <- pass_down_args(model, object)
   }
 
-  if (!"nest_id" %in% colnames(x)) {
+  if (!".nest_id" %in% colnames(x)) {
     cli::cli_abort(c(
-      "{.arg x} does not contain a \"nest_id\" column.",
+      "{.arg x} does not contain a \".nest_id\" column.",
       "i" = "Try using {.fun step_nest}."
     ))
   }
 
-  y$nest_id <- x$nest_id
+  y$.nest_id <- x$.nest_id
 
   nested_colname <- get_name(".data", c(colnames(x), colnames(y)))
 
   nested_x <- x %>%
-    tidyr::nest(!!nested_colname := -"nest_id") %>%
+    tidyr::nest(!!nested_colname := -".nest_id") %>%
     dplyr::ungroup()
 
   nested_y <- y %>%
-    tidyr::nest(!!nested_colname := -"nest_id") %>%
+    tidyr::nest(!!nested_colname := -".nest_id") %>%
     dplyr::ungroup()
-
-  fits <- purrr::map2(
-    nested_x[[nested_colname]], nested_y[[nested_colname]], safe_fit_xy,
-    object = model, case_weights = case_weights, control = control, ...
-  )
+  
+  `%op%` <- get_operator(parallel, model)
+  
+  rlang::local_options(doFuture.rng.onMisuse = "ignore")
+  
+  fits <- foreach::foreach(
+    x = nested_x[[nested_colname]],
+    y = nested_y[[nested_colname]],
+    .export = "safe_fit_xy",
+    .packages = unique(c(pkgs, generics::required_pkgs(model)))
+  ) %op% {
+    safe_fit_xy(model, x, y, case_weights = case_weights, control = control, ...)
+  }
 
   cols <- c(
     colnames(purrr::compact(nested_x[[nested_colname]])[[1]]),

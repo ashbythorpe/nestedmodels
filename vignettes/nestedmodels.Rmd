@@ -99,7 +99,7 @@ recipe <- recipe(data_tr, z ~ x + y + a + b + id) %>%
   step_nest(id)
 ```
 
-This is a little easier than nesting the data manually. Note that the recipe does not actually nest the data, but instead removes the specified columns and adds a new column, 'nest_id', which specifies which nest each row belongs to.
+This is a little easier than nesting the data manually. Note that the recipe does not actually nest the data, but instead removes the specified columns and adds a new column, '.nest_id', which specifies which nest each row belongs to.
 
 ```{r bake}
 recipe %>%

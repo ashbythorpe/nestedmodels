@@ -2,14 +2,17 @@
 #'
 #' Construct a 'nested_model' object.
 #'
-#' @param mode The model mode (e.g. 'regression')
+#' @param mode The model mode (e.g. 'regression').
 #' @param model_spec A `model_spec` object.
+#' @param allow_par Whether to allow parallel processing if a backend has been
+#'   registered.
+#' @param pkgs The packages to load during parallel processing.
 #'
 #' @returns An object with classes `nested_model` and `model_spec`
 #'
 #' @noRd
-nested_model <- function(mode, model_spec) {
-  eng_args <- list(model_spec = list(model_spec))
+nested_model <- function(mode, model_spec, allow_par, pkgs) {
+  eng_args <- list(model_spec = list(model_spec), allow_par = allow_par, pkgs = pkgs)
 
   tune_args <- generics::tune_args(model_spec)$name
   if (length(tune_args) != 0) {
@@ -39,7 +42,7 @@ tunable.nested_model <- function(x, ...) {
 }
 
 #' @importFrom stats update
-#'
+#' 
 #' @export
 update.nested_model <- function(object, ...) {
   spec <- object$eng_args$model_spec[[1]]

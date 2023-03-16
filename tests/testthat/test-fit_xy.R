@@ -15,6 +15,7 @@ test_that("workflows work", {
     nrow(predict(fit, example_nested_data)),
     nrow(example_nested_data)
   )
+  
   expect_equal(
     nrow(predict(fit, example_nested_data)),
     nrow(example_nested_data)
@@ -23,7 +24,7 @@ test_that("workflows work", {
   baked_data <- hardhat::extract_recipe(fit) %>%
     recipes::bake(example_nested_data)
 
-  baked_data$nest_id <- NULL
+  baked_data$.nest_id <- NULL
 
   x <- baked_data[, names(baked_data) != "z"]
   y <- baked_data$z

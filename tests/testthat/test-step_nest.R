@@ -4,7 +4,7 @@ test_that("step_nest works", {
 
   expect_equal(
     tidy(recipe, 1),
-    tibble::tibble(id = NA, nest_id = NA_character_)
+    tibble::tibble(id = NA, .nest_id = NA_character_)
   )
 
   expect_snapshot(
@@ -32,7 +32,7 @@ test_that("step_nest works", {
     tidyr::nest(data = -"id") %>%
     dplyr::select(data) %>%
     dplyr::mutate(
-      nest_id = factor(glue::glue("Nest {dplyr::row_number()}"))
+      .nest_id = factor(glue::glue("Nest {dplyr::row_number()}"))
     ) %>%
     tidyr::unnest(data) %>%
     dplyr::relocate(tidyselect::all_of(colnames(baked_data)))
@@ -44,11 +44,11 @@ test_that("step_nest works", {
   baked_data2 <- recipe %>%
     recipes::prep(example_nested_data) %>%
     recipes::bake(nested_data2) %>%
-    dplyr::mutate(nest_id = as.character(.data$nest_id))
+    dplyr::mutate(.nest_id = as.character(.data$.nest_id))
 
   data2 <- nested_data2 %>%
     dplyr::select(-id) %>%
-    dplyr::mutate(nest_id = "Nest 10") %>%
+    dplyr::mutate(.nest_id = "Nest 10") %>%
     dplyr::relocate(tidyselect::all_of(colnames(baked_data2)))
 
   expect_equal(baked_data2, data2)
@@ -66,7 +66,7 @@ test_that("step_nest works", {
     recipe %>%
       recipes::prep(example_nested_data) %>%
       recipes::bake(invalid_data) %>%
-      .$nest_id %>%
+      .$.nest_id %>%
       as.character() %>%
       expect_equal(c("Nest 1", NA))
   )
@@ -83,7 +83,7 @@ test_that("step_nest works", {
     recipe %>%
       recipes::prep(example_nested_data) %>%
       recipes::bake(invalid_data) %>%
-      .$nest_id %>%
+      .$.nest_id %>%
       as.character() %>%
       expect_equal(c(NA_character_, NA_character_))
   )
@@ -101,7 +101,7 @@ test_that("step_nest works with multiple columns", {
     tidyr::nest(data = -c("id", "id2")) %>%
     dplyr::select(data) %>%
     dplyr::mutate(
-      nest_id = factor(glue::glue("Nest {dplyr::row_number()}"))
+      .nest_id = factor(glue::glue("Nest {dplyr::row_number()}"))
     ) %>%
     tidyr::unnest(data) %>%
     dplyr::relocate(tidyselect::all_of(colnames(baked_data)))
@@ -122,7 +122,7 @@ test_that("step_nest works with multiple columns", {
     recipe %>%
       recipes::prep(example_nested_data) %>%
       recipes::bake(invalid_data) %>%
-      .$nest_id %>%
+      .$.nest_id %>%
       as.character() %>%
       expect_equal(c(NA_character_, NA_character_))
   )
@@ -139,6 +139,6 @@ test_that("recipe works with no selections", {
   expect_equal(
     baked_data,
     dplyr::select(example_nested_data, dplyr::any_of(colnames(baked_data))) %>%
-      dplyr::mutate(nest_id = NA_character_)
+      dplyr::mutate(.nest_id = NA_character_)
   )
 })

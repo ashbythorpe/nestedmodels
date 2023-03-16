@@ -28,13 +28,13 @@ test_that("nest_data works", {
 
 
   data3 <- tibble::tibble(
-    nest_id = id,
+    .nest_id = id,
     a = sample(1:15),
     x = 1:15,
     y = sample(letters[1:15])
   )
-  res3 <- nest_data(data3, c("a", "x", "y"), "nest_id")
-  expect_equal(res3$nested_data, tidyr::nest(data3, data = -"nest_id"))
+  res3 <- nest_data(data3, c("a", "x", "y"), ".nest_id")
+  expect_equal(res3$nested_data, tidyr::nest(data3, data = -".nest_id"))
   expect_equal(res3$column, "data")
   expect_equal(
     tidyr::unnest(res3$nested_data, "data")[res3$order, ],

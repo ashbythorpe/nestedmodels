@@ -1,5 +1,8 @@
 # nestedmodels (development version)
 
+* Added support for parallel processing in `nested()`.
+* Used ".nest_id" instead of "nest_id" as the column name in `step_nest()` to reduce the likelihood of overwriting an existing column.
+
 # nestedmodels 1.0.4
 
 * Fixed the prep.step_nest() method to include an ellipsis argument, to ensure consistency with the generic.

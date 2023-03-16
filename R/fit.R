@@ -40,7 +40,9 @@ fit.nested_model <- function(object, formula, data, case_weights = NULL,
   data <- check_df(data, "data")
 
   model <- extract_inner_model(object)
-
+  parallel <- object$eng_args$allow_par
+  pkgs <- object$eng_args$pkgs
+  
   if (!is.null(object$args)) {
     model <- pass_down_args(model, object)
   }
@@ -48,12 +50,19 @@ fit.nested_model <- function(object, formula, data, case_weights = NULL,
   nest_data_results <- nest_data_method(data)
   nested_data <- nest_data_results$data
   nested_colname <- nest_data_results$colname
-
-  fits <- purrr::map(nested_data[[nested_colname]], safe_fit,
-    object = model,
-    formula = formula, case_weights = case_weights,
-    control = control, ...
-  )
+  
+  `%op%` <- get_operator(parallel, model)
+  
+  rlang::local_options(doFuture.rng.onMisuse = "ignore")
+  
+  fits <- foreach::foreach(
+    data = nested_data[[nested_colname]],
+    .export = "safe_fit",
+    .packages = unique(c(pkgs, generics::required_pkgs(model)))
+  ) %op% {
+    safe_fit(model, formula, data, case_weights = case_weights, 
+             control = control, ...)
+  }
 
   cols <- colnames(purrr::compact(nested_data[[nested_colname]])[[1]])
 
