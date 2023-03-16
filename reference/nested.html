@@ -71,13 +71,13 @@ is_nested() checks if a model or workflow is nested."><meta property="og:image" 
 <span><span class="fu">nested</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for model_spec</span></span>
-<span><span class="fu">nested</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">nested</span><span class="op">(</span><span class="va">x</span>, allow_par <span class="op">=</span> <span class="cn">FALSE</span>, pkgs <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for nested_model</span></span>
-<span><span class="fu">nested</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">nested</span><span class="op">(</span><span class="va">x</span>, allow_par <span class="op">=</span> <span class="cn">FALSE</span>, pkgs <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for workflow</span></span>
-<span><span class="fu">nested</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">nested</span><span class="op">(</span><span class="va">x</span>, allow_par <span class="op">=</span> <span class="cn">FALSE</span>, pkgs <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for default</span></span>
 <span><span class="fu">is_nested</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -97,6 +97,16 @@ is_nested() checks if a model or workflow is nested."><meta property="og:image" 
 
 <dt>...</dt>
 <dd><p>Not currently used.</p></dd>
+
+
+<dt>allow_par</dt>
+<dd><p>A logical to allow parallel processing over nests during
+the fitting process (if a parallel backend is registered).</p></dd>
+
+
+<dt>pkgs</dt>
+<dd><p>An optional character string of R package names that should be
+loaded (by namespace) during parallel processing.</p></dd>
 
 </dl></div>
     <div class="section level2">
