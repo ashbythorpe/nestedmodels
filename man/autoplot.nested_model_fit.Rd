@@ -4,7 +4,7 @@
 \alias{autoplot.nested_model_fit}
 \title{Create a set of ggplots for a nested model object}
 \usage{
-\method{autoplot}{nested_model_fit}(object, ...)
+autoplot.nested_model_fit(object, ...)
 }
 \arguments{
 \item{object}{A \code{nested_model_fit} object produced by
@@ -25,7 +25,9 @@ store the result of this function in a variable to look at each plot
 individually.
 }
 \examples{
-\dontshow{if (rlang::is_installed("patchwork")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (rlang::is_installed(c("patchwork", "glmnet", "ggrepel"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
+library(glmnet)
 
 data <- dplyr::filter(example_nested_data, id \%in\% 16:20)
 
@@ -39,6 +41,7 @@ fit <- fit(model, z ~ x + y + a + b, nested_data)
 
 plots <- autoplot(fit)
 
+# View the first plot
 plots[[1]]
 
 # Use the patchwork package (or others) to combine the plots
