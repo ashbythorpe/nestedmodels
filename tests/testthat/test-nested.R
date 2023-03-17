@@ -1,4 +1,6 @@
 test_that("nested works", {
+  skip_if_not_installed("workflows")
+  
   expect_error(nested(1), class = "bad_class")
   spec <- parsnip::linear_reg()
 

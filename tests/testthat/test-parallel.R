@@ -1,4 +1,8 @@
 test_that("Fitting works in parallel", {
+  skip_if_not_installed("withr")
+  skip_if_not_installed("parallel")
+  skip_if_not_installed("doParallel")
+  
   withr::defer({
     doParallel::stopImplicitCluster()
     foreach::registerDoSEQ()
@@ -33,6 +37,11 @@ test_that("Fitting works in parallel", {
 })
 
 test_that("Fitting workflows works in parallel", {
+  skip_if_not_installed("withr")
+  skip_if_not_installed("parallel")
+  skip_if_not_installed("doParallel")
+  skip_if_not_installed("workflows")
+  
   withr::defer({
     doParallel::stopImplicitCluster()
     foreach::registerDoSEQ()

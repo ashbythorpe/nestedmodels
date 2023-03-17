@@ -1,4 +1,7 @@
-test_that("workflows work", {
+test_that("workflows with nested models work", {
+  skip_if_not_installed("workflows")
+  skip_if_not_installed("hardhat")
+  
   model <- parsnip::linear_reg() %>%
     nested()
 
@@ -34,7 +37,9 @@ test_that("workflows work", {
 
 test_that("Nested models can be tuned", {
   skip_on_cran() # Long test
+  skip_if_not_installed("withr")
   skip_if_not_installed("glmnet")
+  skip_if_not_installed("workflows")
   skip_if_not_installed("tune")
   withr::local_options(warnPartialMatchArgs = FALSE)
 

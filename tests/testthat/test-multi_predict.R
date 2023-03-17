@@ -1,4 +1,7 @@
 test_that("multi_predict.nested_model_fit works", {
+  skip_if_not_installed("glmnet")
+  skip_if_not_installed("withr")
+  
   withr::local_options(warnPartialMatchArgs = FALSE)
 
   model <- parsnip::linear_reg(penalty = hardhat::tune()) %>%
@@ -42,6 +45,9 @@ test_that("multi_predict.nested_model_fit works", {
 })
 
 test_that("multi_predict outer names warnings work", {
+  skip_if_not_installed("glmnet")
+  skip_if_not_installed("withr")
+  
   withr::local_options(warnPartialMatchArgs = FALSE)
 
   model <- parsnip::linear_reg(penalty = 1) %>%

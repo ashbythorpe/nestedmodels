@@ -1,4 +1,6 @@
 test_that("nested_model works", {
+  skip_if_not_installed("glmnet")
+  
   normal_model <- parsnip::linear_reg(penalty = hardhat::tune()) %>%
     parsnip::set_engine("glmnet")
   nested_model <- nested_model("regression", normal_model, allow_par = FALSE, pkgs = NULL)

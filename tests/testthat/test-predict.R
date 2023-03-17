@@ -85,6 +85,8 @@ test_that("multivariate predictions work", {
 })
 
 test_that("multivariate workflows work", {
+  skip_if_not_installed("workflows")
+  
   model <- parsnip::linear_reg() %>%
     parsnip::set_engine("lm") %>%
     nested()
