@@ -253,16 +253,16 @@ we use the same data that the model was fitted on.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 260 × 1</span></span></span>
 <span><span class="co">#&gt;    .pred</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  31.5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  26.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  37.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  30.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  29.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  33.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  27.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  32.7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  29.0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  25.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  29.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  31.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  30.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  40.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  22.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  27.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  26.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  40.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  22.0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  40.5</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 250 more rows</span></span></span></code></pre></div>
 <p>This method is fine, but having to nest the data ourselves is a pain.
 We can solve this by using a workflow.</p>
@@ -281,18 +281,18 @@ which nest each row belongs to.</p>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html" class="external-link">prep</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 740 × 6</span></span></span>
-<span><span class="co">#&gt;        x     y     a     b       z .nest_id</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>    98 -<span style="color: #BB0000;">49.7</span> 18.6  28.0   0.099<span style="text-decoration: underline;">0</span> Nest 1  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>    81  84.9  2.82 58.2  56.7    Nest 1  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>    84 -<span style="color: #BB0000;">26.1</span> 83.0  71.5  52.6    Nest 1  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>    74  75.8 98.7  57.2  38.8    Nest 1  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>    73 -<span style="color: #BB0000;">67.2</span> 31.3   5.80 33.6    Nest 1  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>    50  64.2 40.2  64.9  29.7    Nest 1  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>    76 -<span style="color: #BB0000;">37.7</span> 60.8  72.2  52.2    Nest 1  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>    67 113.  40.2  92.1  23.6    Nest 1  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>    97  51.9 79.9  74.1   3.78   Nest 1  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    92  39.9 77.3  99.6   3.31   Nest 1  </span></span>
+<span><span class="co">#&gt;        x     y     a     b      z .nest_id</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>    50  64.2  40.2 64.9  29.7   Nest 1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>    87  77.6  48.8 54.7  56.4   Nest 1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>    90 -<span style="color: #BB0000;">29.9</span>  84.2 65.3   0.767 Nest 1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>    66  46.0  30.4 60.6  21.2   Nest 1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>    74  75.8  98.7 57.2  38.8   Nest 1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>    53 -<span style="color: #BB0000;">94.2</span>  18.2 -<span style="color: #BB0000;">1.66</span> 23.9   Nest 1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>    54  72.6  83.8 38.8  30.0   Nest 1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>    79  66.1  57.7 53.9  56.0   Nest 1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>    65  94.6  54.8 74.7  22.9   Nest 1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    76 -<span style="color: #BB0000;">37.7</span>  60.8 72.2  52.2   Nest 1  </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 730 more rows</span></span></span></code></pre></div>
 <p>Now we create the workflow, combining the recipe and the model.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -310,49 +310,49 @@ nested.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 260 × 1</span></span></span>
 <span><span class="co">#&gt;    .pred</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  31.5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  26.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  37.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  30.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  29.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  33.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  27.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  32.7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  29.0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  25.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  29.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  31.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  30.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  40.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  22.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  27.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  26.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  40.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  22.0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  40.5</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 250 more rows</span></span></span></code></pre></div>
 <p>Other common parsnip functions can also be used on fitted nested
 models:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="va">wf_fit</span>, <span class="va">data_tst</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 260 × 8</span></span></span>
-<span><span class="co">#&gt;       id   id2     x      y     z     a     b .pred</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1     1    51 -<span style="color: #BB0000;">19.4</span>   26.6 43.2   38.0  31.5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     1     1    55 -<span style="color: #BB0000;">91.5</span>   24.0 91.7   40.7  26.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     1     1    58  32.4   28.6 25.4   20.5  37.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     1     1    61 -<span style="color: #BB0000;">79.5</span>   24.5 98.1   18.4  30.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     1     1    63   1.35  19.6 38.2   43.6  29.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     1     1    65  94.6   22.9 54.8   74.7  33.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     1     1    68  43.8   21.1  2.76  55.4  27.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     1     1    71   2.70  36.1 65.2   25.9  32.7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     1     2    78  32.9   54.7 87.1   61.1  29.0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     1     2    82  47.3   55.3 25.6   62.0  25.3</span></span>
+<span><span class="co">#&gt;       id   id2     x      y     z     a      b .pred</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1     1    51 -<span style="color: #BB0000;">19.4</span>   26.6 43.2  38.0    29.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     1     1    61 -<span style="color: #BB0000;">79.5</span>   24.5 98.1  18.4    31.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     1     1    70  -<span style="color: #BB0000;">8.65</span>  35.7  3.10 12.6    30.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     1     2    75  62.5   55.8 82.9   0.128  40.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     1     2    77 -<span style="color: #BB0000;">18.8</span>   52.9 13.8  51.9    22.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     1     2    80 129.    58.2 79.9  87.5    27.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     1     2    81  84.9   56.7  2.82 58.2    26.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     1     2    83 105.    57.4 75.7   4.30   40.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     1     2    84 -<span style="color: #BB0000;">26.1</span>   52.6 83.0  71.5    22.0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     1     2    86 104.    57.4 63.8  -<span style="color: #BB0000;">0.387</span>  40.5</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 250 more rows</span></span></span>
 <span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">wf_fit</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 4</span></span></span>
 <span><span class="co">#&gt;    .nest_id term         estimate penalty</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Nest 1   (Intercept)   49.6        0.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Nest 1   x             -<span style="color: #BB0000;">0.235</span>      0.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Nest 1   y              0.099<span style="text-decoration: underline;">7</span>     0.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Nest 1   a              0.065<span style="text-decoration: underline;">9</span>     0.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Nest 1   b             -<span style="color: #BB0000;">0.185</span>      0.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Nest 2   (Intercept) -<span style="color: #BB0000;">104.</span>         0.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Nest 2   x              0.853      0.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Nest 2   y             -<span style="color: #BB0000;">0.078</span><span style="color: #BB0000; text-decoration: underline;">3</span>     0.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Nest 2   a             -<span style="color: #BB0000;">0.171</span>      0.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Nest 2   b              0.112      0.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Nest 1   (Intercept)   40.4        0.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Nest 1   x             -<span style="color: #BB0000;">0.107</span>      0.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Nest 1   y              0.054<span style="text-decoration: underline;">1</span>     0.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Nest 1   a              0.057<span style="text-decoration: underline;">4</span>     0.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Nest 1   b             -<span style="color: #BB0000;">0.178</span>      0.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Nest 2   (Intercept) -<span style="color: #BB0000;">112.</span>         0.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Nest 2   x              0.765      0.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Nest 2   y             -<span style="color: #BB0000;">0.019</span><span style="color: #BB0000; text-decoration: underline;">4</span>     0.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Nest 2   a             -<span style="color: #BB0000;">0.027</span><span style="color: #BB0000; text-decoration: underline;">7</span>     0.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Nest 2   b              0.279      0.1</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 90 more rows</span></span></span></code></pre></div>
 <p>This is all you really need to know to use the nestedmodels package.
 These models and workflows can be compared, fitted and tuned in much the
