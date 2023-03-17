@@ -5,6 +5,8 @@ test_that("autoplot.nested_model_fit() works", {
   skip_if_not_installed("ggrepel")
   skip_if_not_installed("patchwork")
   
+  withr::local_seed(42)
+  
   nested_data <- tidyr::nest(example_nested_data, data = -id)
 
   model <- parsnip::linear_reg(penalty = 1) %>%
