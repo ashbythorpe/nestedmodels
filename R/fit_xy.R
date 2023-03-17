@@ -23,19 +23,25 @@
 #'
 #' @seealso [parsnip::fit.model_spec()] [parsnip::model_fit]
 #'
-#' @examples
-#' data <- dplyr::filter(example_nested_data, id %in% 11:20)
+#' @examplesIf rlang::is_installed("workflows")
+#' 
+#' library(dplyr)
+#' library(parsnip)
+#' library(recipes)
+#' library(workflows)
+#' 
+#' data <- filter(example_nested_data, id %in% 11:20)
 #'
-#' model <- parsnip::linear_reg() %>%
-#'   parsnip::set_engine("lm") %>%
+#' model <- linear_reg() %>%
+#'   set_engine("lm") %>%
 #'   nested()
 #'
-#' recipe <- recipes::recipe(data, z ~ x + y + id) %>%
+#' recipe <- recipe(data, z ~ x + y + id) %>%
 #'   step_nest(id)
 #'
-#' wf <- workflows::workflow() %>%
-#'   workflows::add_recipe(recipe) %>%
-#'   workflows::add_model(model)
+#' wf <- workflow() %>%
+#'   add_recipe(recipe) %>%
+#'   add_model(model)
 #'
 #' fit(wf, data)
 #'

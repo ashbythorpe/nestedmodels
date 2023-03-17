@@ -48,23 +48,27 @@ single row. Specifically:
 }
 }
 \examples{
-if (require("broom")) {
-  data <- dplyr::filter(example_nested_data, id \%in\% 1:5)
+\dontshow{if (rlang::is_installed("broom")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
-  model <- parsnip::linear_reg() \%>\%
-    parsnip::set_engine("lm") \%>\%
-    nested()
+library(dplyr)
+library(parsnip)
+library(broom)
 
-  fit <- fit(
-    model, z ~ x + y + a + b,
-    dplyr::group_by(data, id)
-  )
+data <- filter(example_nested_data, id \%in\% 1:5)
 
-  tidy(fit)
-  glance(fit)
-  glance_nested(fit)
-}
+model <- linear_reg() \%>\%
+  set_engine("lm") \%>\%
+  nested()
 
+fit <- fit(
+  model, z ~ x + y + a + b,
+  group_by(data, id)
+)
+
+tidy(fit)
+glance(fit)
+glance_nested(fit)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[generics:tidy]{generics::tidy()}} \code{\link[generics:glance]{generics::glance()}}

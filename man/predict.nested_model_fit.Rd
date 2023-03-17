@@ -34,19 +34,24 @@ Apply a fitted nested model to generate different types of predictions.
 \code{\link[stats:predict]{stats::predict()}} / \code{\link[parsnip:predict.model_fit]{parsnip::predict_raw()}} methods for nested model fits.
 }
 \examples{
-data <- dplyr::filter(example_nested_data, id \%in\% 5:15)
 
-nested_data <- tidyr::nest(data, data = -id)
+library(dplyr)
+library(tidyr)
+library(parsnip)
 
-model <- parsnip::linear_reg() \%>\%
-  parsnip::set_engine("lm") \%>\%
+data <- filter(example_nested_data, id \%in\% 5:15)
+
+nested_data <- nest(data, data = -id)
+
+model <- linear_reg() \%>\%
+  set_engine("lm") \%>\%
   nested()
 
 fitted <- fit(model, z ~ x + y + a + b, nested_data)
 
 predict(fitted, example_nested_data)
 
-parsnip::predict_raw(fitted, example_nested_data)
+predict_raw(fitted, example_nested_data)
 
 }
 \seealso{

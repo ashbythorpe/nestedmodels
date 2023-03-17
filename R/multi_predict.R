@@ -13,18 +13,24 @@
 #'
 #' @seealso [parsnip::multi_predict()]
 #'
-#' @examples
-#' data <- dplyr::filter(example_nested_data, id %in% 16:20)
+#' @examplesIf rlang::is_installed("glmnet")
+#' 
+#' library(dplyr)
+#' library(tidyr)
+#' library(parsnip)
+#' library(glmnet)
+#' 
+#' data <- filter(example_nested_data, id %in% 16:20)
 #'
-#' nested_data <- tidyr::nest(data, data = -id2)
+#' nested_data <- nest(data, data = -id2)
 #'
-#' model <- parsnip::linear_reg(penalty = 1) %>%
-#'   parsnip::set_engine("glmnet") %>%
+#' model <- linear_reg(penalty = 1) %>%
+#'   set_engine("glmnet") %>%
 #'   nested()
 #'
 #' fitted <- fit(model, z ~ x + y + a + b, nested_data)
 #'
-#' parsnip::multi_predict(fitted, example_nested_data,
+#' multi_predict(fitted, example_nested_data,
 #'   penalty = c(0.1, 0.2, 0.3)
 #' )
 #'

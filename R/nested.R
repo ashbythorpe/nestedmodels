@@ -13,17 +13,21 @@
 #' @return A nested model object, or a workflow containing a nested model.
 #' For `is_nested()`, a logical vector of length 1.
 #'
-#' @examples
-#' model <- parsnip::linear_reg() %>%
-#'   parsnip::set_engine("lm") %>%
+#' @examplesIf rlang::is_installed("workflows")
+#' 
+#' library(parsnip)
+#' library(workflows)
+#' 
+#' model <- linear_reg() %>%
+#'   set_engine("lm") %>%
 #'   nested()
 #'
 #' model
 #'
 #' is_nested(model)
 #'
-#' wf <- workflows::workflow() %>%
-#'   workflows::add_model(model)
+#' wf <- workflow() %>%
+#'   add_model(model)
 #'
 #' is_nested(wf)
 #'
@@ -89,8 +93,11 @@ is_nested.workflow <- function(x, ...) {
 #' @returns A `model_spec` object
 #'
 #' @examples
-#' model <- parsnip::linear_reg() %>%
-#'   parsnip::set_engine("lm") %>%
+#' 
+#' library(parsnip)
+#' 
+#' model <- linear_reg() %>%
+#'   set_engine("lm") %>%
 #'   nested()
 #'
 #' extract_inner_model(model)

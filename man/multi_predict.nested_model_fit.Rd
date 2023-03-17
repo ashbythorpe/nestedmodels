@@ -23,20 +23,27 @@ has been unnested.
 to be made on sub-models in a model object.
 }
 \examples{
-data <- dplyr::filter(example_nested_data, id \%in\% 16:20)
+\dontshow{if (rlang::is_installed("glmnet")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
-nested_data <- tidyr::nest(data, data = -id2)
+library(dplyr)
+library(tidyr)
+library(parsnip)
+library(glmnet)
 
-model <- parsnip::linear_reg(penalty = 1) \%>\%
-  parsnip::set_engine("glmnet") \%>\%
+data <- filter(example_nested_data, id \%in\% 16:20)
+
+nested_data <- nest(data, data = -id2)
+
+model <- linear_reg(penalty = 1) \%>\%
+  set_engine("glmnet") \%>\%
   nested()
 
 fitted <- fit(model, z ~ x + y + a + b, nested_data)
 
-parsnip::multi_predict(fitted, example_nested_data,
+multi_predict(fitted, example_nested_data,
   penalty = c(0.1, 0.2, 0.3)
 )
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[parsnip:multi_predict]{parsnip::multi_predict()}}

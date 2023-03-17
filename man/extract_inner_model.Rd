@@ -31,8 +31,11 @@ Extract the inner model of a \code{nested_model} object, or a workflow
 containing a nested model.
 }
 \examples{
-model <- parsnip::linear_reg() \%>\%
-  parsnip::set_engine("lm") \%>\%
+
+library(parsnip)
+
+model <- linear_reg() \%>\%
+  set_engine("lm") \%>\%
   nested()
 
 extract_inner_model(model)

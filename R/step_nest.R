@@ -67,19 +67,22 @@
 #' sequence of any existing operations.
 #'
 #' @examples
-#' recipe <- recipes::recipe(example_nested_data, z ~ x + id) %>%
+#' 
+#' library(recipes)
+#' 
+#' recipe <- recipe(example_nested_data, z ~ x + id) %>%
 #'   step_nest(id)
 #'
 #' recipe %>%
-#'   recipes::prep() %>%
-#'   recipes::bake(NULL)
+#'   prep() %>%
+#'   bake(NULL)
 #'
-#' recipe2 <- recipes::recipe(example_nested_data, z ~ x + id) %>%
+#' recipe2 <- recipe(example_nested_data, z ~ x + id) %>%
 #'   step_nest(-c(x, z))
 #'
 #' recipe2 %>%
-#'   recipes::prep() %>%
-#'   recipes::bake(NULL)
+#'   prep() %>%
+#'   bake(NULL)
 #'
 #' @importFrom recipes prep bake
 #'

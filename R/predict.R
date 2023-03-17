@@ -20,19 +20,24 @@
 #' @seealso [parsnip::predict.model_fit()]
 #'
 #' @examples
-#' data <- dplyr::filter(example_nested_data, id %in% 5:15)
+#' 
+#' library(dplyr)
+#' library(tidyr)
+#' library(parsnip)
+#' 
+#' data <- filter(example_nested_data, id %in% 5:15)
 #'
-#' nested_data <- tidyr::nest(data, data = -id)
+#' nested_data <- nest(data, data = -id)
 #'
-#' model <- parsnip::linear_reg() %>%
-#'   parsnip::set_engine("lm") %>%
+#' model <- linear_reg() %>%
+#'   set_engine("lm") %>%
 #'   nested()
 #'
 #' fitted <- fit(model, z ~ x + y + a + b, nested_data)
 #'
 #' predict(fitted, example_nested_data)
 #'
-#' parsnip::predict_raw(fitted, example_nested_data)
+#' predict_raw(fitted, example_nested_data)
 #'
 #' @importFrom stats predict
 #'

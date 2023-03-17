@@ -26,11 +26,15 @@
 #' @seealso [parsnip::fit.model_spec()] [parsnip::model_fit]
 #'
 #' @examples
-#' model <- parsnip::linear_reg() %>%
-#'   parsnip::set_engine("lm") %>%
+#' 
+#' library(parsnip)
+#' library(tidyr)
+#' 
+#' model <- linear_reg() %>%
+#'   set_engine("lm") %>%
 #'   nested()
 #'
-#' nested_data <- tidyr::nest(example_nested_data, data = -id)
+#' nested_data <- nest(example_nested_data, data = -id)
 #'
 #' fit(model, z ~ x + y + a + b, nested_data)
 #'

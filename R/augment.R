@@ -13,12 +13,17 @@
 #' @seealso [parsnip::augment.model_fit()]
 #'
 #' @examples
-#' data <- dplyr::filter(example_nested_data, id %in% 1:5)
+#' 
+#' library(dplyr)
+#' library(tidyr)
+#' library(parsnip)
+#' 
+#' data <- filter(example_nested_data, id %in% 1:5)
 #'
-#' nested_data <- tidyr::nest(data, data = -c(id, id2))
+#' nested_data <- nest(data, data = -c(id, id2))
 #'
-#' model <- parsnip::linear_reg() %>%
-#'   parsnip::set_engine("lm") %>%
+#' model <- linear_reg() %>%
+#'   set_engine("lm") %>%
 #'   nested()
 #'
 #' fitted <- fit(model, z ~ x + y + a + b, nested_data)

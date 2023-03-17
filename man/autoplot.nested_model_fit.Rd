@@ -27,15 +27,19 @@ individually.
 \examples{
 \dontshow{if (rlang::is_installed(c("patchwork", "glmnet", "ggrepel"))) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(parsnip)
 library(glmnet)
 library(ggplot2)
 
-data <- dplyr::filter(example_nested_data, id \%in\% 16:20)
+data <- filter(example_nested_data, id \%in\% 16:20)
 
-nested_data <- tidyr::nest(data, data = -id2)
+nested_data <- nest(data, data = -id2)
 
-model <- parsnip::linear_reg(penalty = 1) \%>\%
-  parsnip::set_engine("glmnet") \%>\%
+model <- linear_reg(penalty = 1) \%>\%
+  set_engine("glmnet") \%>\%
   nested()
 
 fit <- fit(model, z ~ x + y + a + b, nested_data)
@@ -48,7 +52,7 @@ plots[[1]]
 # Use the patchwork package (or others) to combine the plots
 library(patchwork)
 
-purrr::reduce(plots, `+`)
+reduce(plots, `+`)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

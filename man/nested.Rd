@@ -50,17 +50,22 @@ For \code{is_nested()}, a logical vector of length 1.
 \code{is_nested()} checks if a model or workflow is nested.
 }
 \examples{
-model <- parsnip::linear_reg() \%>\%
-  parsnip::set_engine("lm") \%>\%
+\dontshow{if (rlang::is_installed("workflows")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
+library(parsnip)
+library(workflows)
+
+model <- linear_reg() \%>\%
+  set_engine("lm") \%>\%
   nested()
 
 model
 
 is_nested(model)
 
-wf <- workflows::workflow() \%>\%
-  workflows::add_model(model)
+wf <- workflow() \%>\%
+  add_model(model)
 
 is_nested(wf)
-
+\dontshow{\}) # examplesIf}
 }

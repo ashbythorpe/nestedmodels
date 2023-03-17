@@ -32,23 +32,26 @@
 #'
 #' @seealso [generics::tidy()] [generics::glance()]
 #'
-#' @examples
-#' if (require("broom")) {
-#'   data <- dplyr::filter(example_nested_data, id %in% 1:5)
-#'
-#'   model <- parsnip::linear_reg() %>%
-#'     parsnip::set_engine("lm") %>%
-#'     nested()
-#'
-#'   fit <- fit(
-#'     model, z ~ x + y + a + b,
-#'     dplyr::group_by(data, id)
-#'   )
-#'
-#'   tidy(fit)
-#'   glance(fit)
-#'   glance_nested(fit)
-#' }
+#' @examplesIf rlang::is_installed("broom")
+#' 
+#' library(dplyr)
+#' library(parsnip)
+#' library(broom)
+#' 
+#' data <- filter(example_nested_data, id %in% 1:5)
+#' 
+#' model <- linear_reg() %>%
+#'   set_engine("lm") %>%
+#'   nested()
+#' 
+#' fit <- fit(
+#'   model, z ~ x + y + a + b,
+#'   group_by(data, id)
+#' )
+#' 
+#' tidy(fit)
+#' glance(fit)
+#' glance_nested(fit)
 #'
 #' @importFrom generics tidy
 #' @importFrom generics glance

@@ -123,40 +123,48 @@ of splits.
 }
 
 \examples{
+\dontshow{if (rlang::is_installed("workflows")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+
+library(tidyr)
+library(recipes)
+library(workflows)
+library(rsample)
+library(dplyr)
+
 nested_data <- example_nested_data \%>\%
-  tidyr::nest(data = -id)
+  nest(data = -id)
 
 grouped_data <- example_nested_data \%>\%
-  dplyr::group_by(id)
+  group_by(id)
 
-recipe <- recipes::recipe(example_nested_data, z ~ .) \%>\%
+recipe <- recipe(example_nested_data, z ~ .) \%>\%
   step_nest(id)
 
-wf <- workflows::workflow() \%>\%
-  workflows::add_recipe(recipe)
+wf <- workflow() \%>\%
+  add_recipe(recipe)
 
-nested_resamples(nested_data, rsample::vfold_cv())
+nested_resamples(nested_data, vfold_cv())
 
 nested_resamples(
-  dplyr::group_by(example_nested_data, id),
-  ~ rsample::initial_split(.)
+  group_by(example_nested_data, id),
+  ~ initial_split(.)
 )
 
 nested_resamples(example_nested_data, ~ {
   rsample::validation_split(.)
 }, nesting_method = recipe)
 
-nested_resamples(example_nested_data, rsample::bootstraps,
+nested_resamples(example_nested_data, bootstraps,
   times = 25, nesting_method = wf
 )
 
 # nested nested resamples
 
-nested_resamples(nested_data, rsample::nested_cv(
-  rsample::vfold_cv(),
-  rsample::bootstraps()
+nested_resamples(nested_data, nested_cv(
+  vfold_cv(),
+  bootstraps()
 ))
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[rsample:initial_split]{rsample::initial_split()}} for an example of the strata

@@ -45,21 +45,28 @@ called directly and instead should be called by
 \code{\link[workflows:fit-workflow]{workflows::fit.workflow()}}.
 }
 \examples{
-data <- dplyr::filter(example_nested_data, id \%in\% 11:20)
+\dontshow{if (rlang::is_installed("workflows")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
-model <- parsnip::linear_reg() \%>\%
-  parsnip::set_engine("lm") \%>\%
+library(dplyr)
+library(parsnip)
+library(recipes)
+library(workflows)
+
+data <- filter(example_nested_data, id \%in\% 11:20)
+
+model <- linear_reg() \%>\%
+  set_engine("lm") \%>\%
   nested()
 
-recipe <- recipes::recipe(data, z ~ x + y + id) \%>\%
+recipe <- recipe(data, z ~ x + y + id) \%>\%
   step_nest(id)
 
-wf <- workflows::workflow() \%>\%
-  workflows::add_recipe(recipe) \%>\%
-  workflows::add_model(model)
+wf <- workflow() \%>\%
+  add_recipe(recipe) \%>\%
+  add_model(model)
 
 fit(wf, data)
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[parsnip:fit]{parsnip::fit.model_spec()}} \link[parsnip:model_fit]{parsnip::model_fit}
