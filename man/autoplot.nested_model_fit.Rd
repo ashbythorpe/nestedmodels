@@ -4,7 +4,7 @@
 \alias{autoplot.nested_model_fit}
 \title{Create a set of ggplots for a nested model object}
 \usage{
-autoplot.nested_model_fit(object, ...)
+\method{autoplot}{nested_model_fit}(object, ...)
 }
 \arguments{
 \item{object}{A \code{nested_model_fit} object produced by

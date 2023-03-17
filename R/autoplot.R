@@ -41,6 +41,8 @@
 #' 
 #' purrr::reduce(plots, `+`)
 #' 
+#' @importFrom ggplot2 autoplot
+#' 
 #' @export
 autoplot.nested_model_fit <- function(object, ...) {
   purrr::map(object$fit$.model_fit, ggplot2::autoplot, ...)
