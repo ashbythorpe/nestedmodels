@@ -2,3 +2,5 @@ url: https://ashbythorpe.github.io/nestedmodels/
 template:
   bootstrap: 5
 
+development:
+  mode: auto
