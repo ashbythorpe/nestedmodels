@@ -30,15 +30,17 @@ nest_data <- function(data, inner_names, outer_names) {
   if (identical(outer_names, ".nest_id")) {
     nested_data <- tidyr::nest(data, data = -".nest_id")
     
-    template <- nested_data[, ".nest_id"]
+    template <- nested_data[".nest_id"]
+    
+    order_col <- get_name(".order", colnames(data))
 
-    template$.order <- seq_len(nrow(template))
+    template[[order_col]] <- seq_len(nrow(template))
     
     order <- order(order(dplyr::left_join(
       data,
       template,
       by = ".nest_id"
-    )[[".order"]]))
+    )[[order_col]]))
     
     return(list(
       nested_data = nested_data,
@@ -67,6 +69,7 @@ nest_data <- function(data, inner_names, outer_names) {
       template <- nested_data[, template_names]
       
       order_var <- get_name(".order", colnames(template))
+      
       template[[order_var]] <- seq_len(nrow(template))
       
       order <- order(order(dplyr::left_join(
