@@ -23,7 +23,6 @@ Imports:
     foreach,
     generics,
     ggplot2,
-    glue,
     lifecycle,
     magrittr,
     parsnip,
