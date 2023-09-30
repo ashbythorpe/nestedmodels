@@ -41,6 +41,7 @@ Suggests:
     doParallel,
     ggrepel,
     glmnet,
+    glue,
     hardhat,
     knitr,
     parallel,
