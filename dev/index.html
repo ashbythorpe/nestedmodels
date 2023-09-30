@@ -157,17 +157,17 @@
 <span><span class="co">#&gt; # A tibble: 260 × 1</span></span>
 <span><span class="co">#&gt;    .pred</span></span>
 <span><span class="co">#&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1  36.6</span></span>
-<span><span class="co">#&gt;  2  31.7</span></span>
-<span><span class="co">#&gt;  3  36.4</span></span>
-<span><span class="co">#&gt;  4  26.3</span></span>
-<span><span class="co">#&gt;  5  30.2</span></span>
-<span><span class="co">#&gt;  6  36.4</span></span>
-<span><span class="co">#&gt;  7  28.3</span></span>
-<span><span class="co">#&gt;  8  32.0</span></span>
-<span><span class="co">#&gt;  9  24.9</span></span>
-<span><span class="co">#&gt; 10  39.2</span></span>
-<span><span class="co">#&gt; # … with 250 more rows</span></span></code></pre></div>
+<span><span class="co">#&gt;  1  35.0</span></span>
+<span><span class="co">#&gt;  2  27.7</span></span>
+<span><span class="co">#&gt;  3  35.0</span></span>
+<span><span class="co">#&gt;  4  39.4</span></span>
+<span><span class="co">#&gt;  5  30.4</span></span>
+<span><span class="co">#&gt;  6  29.5</span></span>
+<span><span class="co">#&gt;  7  33.8</span></span>
+<span><span class="co">#&gt;  8  33.1</span></span>
+<span><span class="co">#&gt;  9  26.3</span></span>
+<span><span class="co">#&gt; 10  18.9</span></span>
+<span><span class="co">#&gt; # ℹ 250 more rows</span></span></code></pre></div>
 <p>If you don’t want to nest your data manually, use <code><a href="reference/step_nest.html">step_nest()</a></code> inside a workflow:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">recipe</span> <span class="op">&lt;-</span> <span class="fu">recipes</span><span class="fu">::</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">data_tr</span>, <span class="va">z</span> <span class="op">~</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span> <span class="op">+</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span> <span class="op">+</span> <span class="va">id</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -183,17 +183,17 @@
 <span><span class="co">#&gt; # A tibble: 260 × 1</span></span>
 <span><span class="co">#&gt;    .pred</span></span>
 <span><span class="co">#&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1  36.6</span></span>
-<span><span class="co">#&gt;  2  31.7</span></span>
-<span><span class="co">#&gt;  3  36.4</span></span>
-<span><span class="co">#&gt;  4  26.3</span></span>
-<span><span class="co">#&gt;  5  30.2</span></span>
-<span><span class="co">#&gt;  6  36.4</span></span>
-<span><span class="co">#&gt;  7  28.3</span></span>
-<span><span class="co">#&gt;  8  32.0</span></span>
-<span><span class="co">#&gt;  9  24.9</span></span>
-<span><span class="co">#&gt; 10  39.2</span></span>
-<span><span class="co">#&gt; # … with 250 more rows</span></span></code></pre></div>
+<span><span class="co">#&gt;  1  35.0</span></span>
+<span><span class="co">#&gt;  2  27.7</span></span>
+<span><span class="co">#&gt;  3  35.0</span></span>
+<span><span class="co">#&gt;  4  39.4</span></span>
+<span><span class="co">#&gt;  5  30.4</span></span>
+<span><span class="co">#&gt;  6  29.5</span></span>
+<span><span class="co">#&gt;  7  33.8</span></span>
+<span><span class="co">#&gt;  8  33.1</span></span>
+<span><span class="co">#&gt;  9  26.3</span></span>
+<span><span class="co">#&gt; 10  18.9</span></span>
+<span><span class="co">#&gt; # ℹ 250 more rows</span></span></code></pre></div>
 <p>Please note that the nestedmodels project is released with a <a href="https://ashbythorpe.github.io/nestedmodels/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
