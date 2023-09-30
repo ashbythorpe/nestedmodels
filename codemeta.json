@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/ashbythorpe/nestedmodels",
   "issueTracker": "https://github.com/ashbythorpe/nestedmodels/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "1.0.4.9000",
+  "version": "1.1.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.3 (2023-03-15)",
+  "runtimePlatform": "R version 4.3.1 (2023-06-16)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -108,6 +108,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=glmnet"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "glue",
+      "name": "glue",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=glue"
     },
     {
       "@type": "SoftwareApplication",
@@ -322,18 +334,6 @@
     },
     "7": {
       "@type": "SoftwareApplication",
-      "identifier": "glue",
-      "name": "glue",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=glue"
-    },
-    "8": {
-      "@type": "SoftwareApplication",
       "identifier": "lifecycle",
       "name": "lifecycle",
       "provider": {
@@ -344,7 +344,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=lifecycle"
     },
-    "9": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "magrittr",
       "name": "magrittr",
@@ -356,7 +356,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=magrittr"
     },
-    "10": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "parsnip",
       "name": "parsnip",
@@ -368,7 +368,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=parsnip"
     },
-    "11": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "purrr",
       "name": "purrr",
@@ -380,7 +380,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=purrr"
     },
-    "12": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "recipes",
       "name": "recipes",
@@ -392,7 +392,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=recipes"
     },
-    "13": {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
@@ -405,7 +405,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rlang"
     },
-    "14": {
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "rsample",
       "name": "rsample",
@@ -417,12 +417,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rsample"
     },
-    "15": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats"
     },
-    "16": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "stringr",
       "name": "stringr",
@@ -434,7 +434,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=stringr"
     },
-    "17": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
@@ -446,7 +446,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
-    "18": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "tidyr",
       "name": "tidyr",
@@ -459,7 +459,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tidyr"
     },
-    "19": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "vctrs",
       "name": "vctrs",
@@ -473,8 +473,8 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "475.609KB",
-  "releaseNotes": "https://github.com/ashbythorpe/nestedmodels/blob/main/NEWS.md",
+  "fileSize": "475.277KB",
+  "releaseNotes": "https://github.com/ashbythorpe/nestedmodels/blob/master/NEWS.md",
   "readme": "https://github.com/ashbythorpe/nestedmodels/blob/main/README.md",
   "contIntegration": ["https://github.com/ashbythorpe/nestedmodels/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/ashbythorpe/nestedmodels?branch=main"],
   "developmentStatus": "https://www.repostatus.org/#active",
