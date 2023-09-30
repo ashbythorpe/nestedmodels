@@ -41,6 +41,12 @@ test_that("nested_resamples works", {
   ) %>%
     expect_s3_class(class(rsample::initial_split(sample_data)))
 
+  nested_resamples(
+    example_nested_data, rsample::initial_validation_split,
+    nesting_method = recipe
+  ) %>%
+    expect_s3_class(class(rsample::initial_validation_split(sample_data)))
+
   nested_resamples(example_nested_data, rsample::bootstraps,
     times = 25,
     nesting_method = wf

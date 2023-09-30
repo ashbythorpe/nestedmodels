@@ -132,7 +132,7 @@ safe_sample <- function(x, ...) {
 
 #' @noRd
 combine_same_rsets <- function(splits) {
-  full_splits <- purrr::map(splits, rsample::populate)
+  full_splits <- purrr::map(splits, populate_all)
 
   data <- full_splits[[1]]$data
 
@@ -141,7 +141,7 @@ combine_same_rsets <- function(splits) {
       list(.$in_id, .$out_id)
     })
 
-  split_indexes %>%
+  res <- split_indexes %>%
     purrr::reduce(combine_indices, .init = list(integer(), integer())) %>%
     rlang::set_names("analysis", "assessment") %>%
     rsample::make_splits(data = data)
@@ -153,4 +153,13 @@ combine_indices <- function(l1, l2) {
     unique(c(l1[[1]], l2[[1]][!l2[[1]] %in% l1[[2]]])),
     unique(c(l1[[2]], l2[[2]][!l2[[2]] %in% l1[[1]]]))
   )
+}
+
+populate_all <- function(x) {
+  if (inherits(x, "three_way_split")) {
+    x$testing <- seq_len(nrow(x$data))[-sort(c(x$train_id, x$val_id))]
+    x
+  } else {
+    rsample::populate(x)
+  }
 }

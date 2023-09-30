@@ -130,6 +130,12 @@
 #'   ~ initial_split(.)
 #' )
 #'
+#' nested_resamples(
+#'   example_nested_data,
+#'   initial_validation_split,
+#'   nesting_method = recipe
+#' )
+#'
 #' nested_resamples(example_nested_data, bootstraps,
 #'   times = 25, nesting_method = wf
 #' )
