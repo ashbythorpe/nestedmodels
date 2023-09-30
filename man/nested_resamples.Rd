@@ -150,10 +150,6 @@ nested_resamples(
   ~ initial_split(.)
 )
 
-nested_resamples(example_nested_data, ~ {
-  rsample::validation_split(.)
-}, nesting_method = recipe)
-
 nested_resamples(example_nested_data, bootstraps,
   times = 25, nesting_method = wf
 )
