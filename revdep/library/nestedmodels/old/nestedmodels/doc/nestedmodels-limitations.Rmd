@@ -1,0 +1,60 @@
+---
+title: "Nestedmodels Limitations"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Nestedmodels Limitations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette outlines the limitations of nested modelling, and introduces some alternatives. It also gives an idea as to the properties of data that are most suited to nested modelling.
+
+```{r setup}
+library(nestedmodels)
+library(parsnip)
+```
+
+A nested model is already an unlikely candidate for most modelling problems.
+Yet even within their limited use cases, nested models have further limitations.
+
+The first of these is a more theoretical one. Nested models fit a model within each nested data frame of the data that they are given. This raises the issue that these models do not communicate with each other; each model exists only in the isolation of its corresponding nested data frame. These models therefore find it harder to recognise patterns that exist irrespective of, or outside of the nests. This is not necessarily an issue, provided that you remember that the model is identifying patterns within each nest.
+
+However, this negatively affects the performance of the model. In a more extreme example, if you were to fit a nested model to some data containing 200 nested data frames, each with 10 rows; each model would only be fit on 10 observations, likely resulting in wildly inaccurate predictions, despite the size of the overall data being fairly adequate. It is often useful to ponder whether a nested model is likely to be as useful as another approach.
+
+The second problem is more related to physical performance. Even when fitting a very simple model to a fairly small dataset, the fitting process takes more time than we might expect to complete.
+
+```{r time}
+model <- linear_reg() %>%
+  set_engine("lm") %>%
+  nested()
+
+system.time({
+  fit(model, z ~ ., tidyr::nest(example_nested_data, data = -id))
+})
+```
+
+This is because a model is fit to `r length(unique(example_nested_data$id))` nests. More computationally expensive models take more time to complete, and the time taken increases in direct proportion to the number of nested data frames. Furthermore, storing a nested model means storing a model for every nest. For more complex model objects, this can result in a monstrously sized fit object.
+
+```{r size}
+utils::object.size(fit)
+```
+
+This makes the nested model approach *non-scalable*, since it would take an unreasonable amount of computational power and time to fit a complex model to large datasets with thousands of nested data frames.
+
+These two limitations are important to consider, but note that they matter most for data with a large number of nests and/or not very much data in each nest.
+
+# What is the alternative?
+For some datasets, these issues will be too problematic to ignore. In most cases, the alternative approach is obvious: just use a non-nested model. The [recipes](https://recipes.tidymodels.org/) package has many methods for dealing with categorical data, and these models are likely to give you more promising results.
+
+However, for some models, most notably forecasting algorithms, nestedmodels can seem like the only solution for forecasting panel data. In this specific case, a global forecasting method would be recommended (e.g. [Prophet](https://facebook.github.io/prophet/) or a gradient boosting model), since these models can deal with categorical data. In general, it is better to find a model that will suit all of your needs, rather than sticking with the one you are the most comfortable with.
+
+# Conclusion
+In this vignette, we discussed the conditions and reasons why nested modelling is not the best approach for every situation, and how to respond if this is the case.
+

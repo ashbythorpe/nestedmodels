@@ -93,17 +93,17 @@ predict(fit, data_tst)
 #> # A tibble: 260 × 1
 #>    .pred
 #>    <dbl>
-#>  1  36.6
-#>  2  31.7
-#>  3  36.4
-#>  4  26.3
-#>  5  30.2
-#>  6  36.4
-#>  7  28.3
-#>  8  32.0
-#>  9  24.9
-#> 10  39.2
-#> # … with 250 more rows
+#>  1  35.0
+#>  2  27.7
+#>  3  35.0
+#>  4  39.4
+#>  5  30.4
+#>  6  29.5
+#>  7  33.8
+#>  8  33.1
+#>  9  26.3
+#> 10  18.9
+#> # ℹ 250 more rows
 ```
 
 If you don’t want to nest your data manually, use `step_nest()` inside a
@@ -123,17 +123,17 @@ predict(wf_fit, data_tst)
 #> # A tibble: 260 × 1
 #>    .pred
 #>    <dbl>
-#>  1  36.6
-#>  2  31.7
-#>  3  36.4
-#>  4  26.3
-#>  5  30.2
-#>  6  36.4
-#>  7  28.3
-#>  8  32.0
-#>  9  24.9
-#> 10  39.2
-#> # … with 250 more rows
+#>  1  35.0
+#>  2  27.7
+#>  3  35.0
+#>  4  39.4
+#>  5  30.4
+#>  6  29.5
+#>  7  33.8
+#>  8  33.1
+#>  9  26.3
+#> 10  18.9
+#> # ℹ 250 more rows
 ```
 
 Please note that the nestedmodels project is released with a
