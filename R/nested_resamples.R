@@ -104,13 +104,13 @@
 #' `resamples`.
 #'
 #' @examplesIf rlang::is_installed("workflows")
-#' 
+#'
 #' library(tidyr)
 #' library(recipes)
 #' library(workflows)
 #' library(rsample)
 #' library(dplyr)
-#' 
+#'
 #' nested_data <- example_nested_data %>%
 #'   nest(data = -id)
 #'
@@ -129,10 +129,6 @@
 #'   group_by(example_nested_data, id),
 #'   ~ initial_split(.)
 #' )
-#'
-#' nested_resamples(example_nested_data, ~ {
-#'   rsample::validation_split(.)
-#' }, nesting_method = recipe)
 #'
 #' nested_resamples(example_nested_data, bootstraps,
 #'   times = 25, nesting_method = wf
