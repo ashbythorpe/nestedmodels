@@ -1,4 +1,4 @@
-# nestedmodels (development version)
+# nestedmodels 1.1.0
 
 * Added support for parallel processing in `nested()`.
 
