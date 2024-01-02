@@ -116,8 +116,7 @@ step_nest_new <- function(terms, role, trained, names, lookup_table, skip,
     names = names,
     lookup_table = lookup_table,
     skip = skip,
-    id = id,
-    names = names
+    id = id
   )
 }
 
@@ -174,7 +173,7 @@ bake.step_nest <- function(object, new_data, ...) {
 }
 
 #' @export
-print.step_nest <- function(x, width = max(20, options()$width - 29), ...) {
+print.step_nest <- function(x, width = max(20, options()$width - 30), ...) {
   title <- "Nest transformation with "
   recipes::print_step(x$names, x$terms, x$trained, title, width)
   invisible(x)

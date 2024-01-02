@@ -34,6 +34,7 @@ Imports:
     stringr,
     tibble,
     tidyr (> 0.8.99),
+    utils,
     vctrs
 Suggests: 
     broom,
@@ -51,7 +52,6 @@ Suggests:
     testthat (>= 3.0.0),
     tidyselect,
     tune,
-    utils,
     vdiffr,
     withr,
     workflows
